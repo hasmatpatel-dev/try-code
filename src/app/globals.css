@@ -1,0 +1,825 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  --card-bg: var(--card);
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+  /* Legacy support */
+  --card-bg: var(--card);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .mdn {
+        box-sizing: border-box;
+    background-color: #2b7fff;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    outline: 4px solid #2b7fff;
+    width: 54px;
+    height: 54px;
+    margin: 0;
+    padding: 4px;
+    font-size: 2.6px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mdn::before {
+    content: "";
+    position: absolute;
+    width: 19em;
+    height: 14em;
+    border-top-left-radius: 2em;
+    border-top-right-radius: 2em;
+    transform: scale(0.9);
+
+    background:
+      linear-gradient(
+          128deg,
+          transparent 51%,
+          white 53%,
+          white 70%,
+          transparent 72%
+        )
+        no-repeat bottom left,
+      linear-gradient(
+          108deg,
+          transparent 38%,
+          white 40%,
+          white 63%,
+          transparent 65%
+        )
+        no-repeat bottom left 6.3em,
+      linear-gradient(
+          73deg,
+          transparent 36%,
+          white 38%,
+          white 63%,
+          transparent 65%
+        )
+        no-repeat bottom right 4.8em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat bottom 2.1em left 5.7em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat bottom 1.2em left 8.9em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat left 4.9em top 6.9em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat left 5.7em top 4.3em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat left 8.4em top 2.4em,
+      linear-gradient(
+          73deg,
+          transparent 36%,
+          white 38%,
+          white 63%,
+          transparent 66%
+        )
+        no-repeat bottom 2.8em left 2.7em,
+      linear-gradient(
+          112deg,
+          transparent 36%,
+          white 38%,
+          white 63%,
+          transparent 65%
+        )
+        no-repeat top 4em left 2.8em,
+      linear-gradient(
+          150deg,
+          transparent 47%,
+          white 48%,
+          white 66%,
+          transparent 68%
+        )
+        no-repeat top 1.1em left 3.5em,
+      linear-gradient(
+          151deg,
+          transparent 55%,
+          white 56%,
+          white 88%,
+          transparent 90%
+        )
+        no-repeat top 2.5em left 1em,
+      linear-gradient(
+          150deg,
+          transparent 57%,
+          white 58%,
+          white 88%,
+          transparent 90%
+        )
+        no-repeat top 4.5em left 0.8em,
+      linear-gradient(150deg, transparent 60%, white 63%, white 100%) no-repeat
+        bottom 4.5em left 0.8em,
+      linear-gradient(150deg, transparent 50%, white 53%, white 100%) no-repeat
+        bottom 2.8em left 1.8em,
+      linear-gradient(
+          15deg,
+          transparent 16%,
+          white 20%,
+          white 62%,
+          transparent 65%
+        )
+        no-repeat top 1em left 8.5em,
+      linear-gradient(
+          162deg,
+          transparent 30%,
+          white 32%,
+          white 70%,
+          transparent 66%
+        )
+        no-repeat top 1.6em right 6.2em,
+      linear-gradient(
+          45deg,
+          transparent 31%,
+          white 32%,
+          white 52%,
+          transparent 53%
+        )
+        no-repeat top 1.6em right 3.5em,
+      linear-gradient(
+          20deg,
+          transparent 30%,
+          white 31%,
+          white 52%,
+          transparent 54%
+        )
+        no-repeat top 2.8em right 1.6em,
+      linear-gradient(
+          45deg,
+          transparent 27%,
+          white 29%,
+          white 51%,
+          transparent 52%
+        )
+        no-repeat top 3.8em right 0.5em,
+      linear-gradient(90deg, transparent 38%, white 38%, white 60%) no-repeat
+        top 6em right 0.5em,
+      linear-gradient(45deg, transparent 35%, white 35%, white 70%) no-repeat
+        top 4.8em right 1.6em,
+      linear-gradient(108deg, white 40%, transparent 40%) no-repeat bottom 4.4em
+        right 0.1em,
+      linear-gradient(
+          150deg,
+          transparent 23%,
+          white 25%,
+          white 55%,
+          transparent 57%
+        )
+        no-repeat bottom 3em right 1em,
+      linear-gradient(
+          15deg,
+          transparent 40%,
+          white 41%,
+          white 60%,
+          transparent 62%
+        )
+        no-repeat bottom 2.8em right 3.5em,
+      linear-gradient(
+          110deg,
+          transparent 45%,
+          white 45%,
+          white 65%,
+          transparent 65%
+        )
+        no-repeat top 3.6em right 5.8em,
+      -webkit-radial-gradient(
+          center center,
+          ellipse contain,
+          white 28%,
+          transparent 30%
+        )
+        no-repeat right 4.9em top 3.5em,
+      linear-gradient(
+          40deg,
+          transparent 52%,
+          #2b7fff 52%,
+          #2b7fff 75%,
+          transparent 75%
+        )
+        no-repeat top 3.2em right 5em,
+      linear-gradient(
+          38deg,
+          transparent 30%,
+          #2b7fff 30%,
+          #2b7fff 52%,
+          transparent 52%
+        )
+        no-repeat top 3.8em right 6em,
+      linear-gradient(
+          162deg,
+          transparent 30%,
+          white 30%,
+          white 70%,
+          transparent 65%
+        )
+        no-repeat top 3.3em right 5.6em,
+      linear-gradient(
+          162deg,
+          transparent 10%,
+          white 25%,
+          white 55%,
+          transparent 55%
+        )
+        no-repeat top 4em right 5em,
+      linear-gradient(
+          15deg,
+          transparent 40%,
+          white 42%,
+          white 59%,
+          transparent 61%
+        )
+        no-repeat top 6em right 1em,
+      linear-gradient(
+          15deg,
+          transparent 43%,
+          white 45%,
+          white 59%,
+          transparent 59%
+        )
+        no-repeat top 7.5em right 1em,
+      linear-gradient(
+          15deg,
+          transparent 30%,
+          #2b7fff 30%,
+          #2b7fff 68%,
+          transparent 68%
+        )
+        no-repeat top 4em right 7.8em,
+      linear-gradient(
+          15deg,
+          transparent 30%,
+          #2b7fff 30%,
+          #2b7fff 68%,
+          transparent 68%
+        )
+        no-repeat top 5.1em right 8.3em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          #2b7fff 0%,
+          #2b7fff 33%,
+          white 33%,
+          white 50%,
+          transparent 50%
+        )
+        no-repeat right 6.5em top 3.2em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          #2b7fff 50%,
+          transparent 52%
+        )
+        no-repeat right 5.6em top 2.5em,
+      -webkit-radial-gradient(
+          center center,
+          circle contain,
+          white 52%,
+          transparent 53%
+        )
+        no-repeat right 4.6em top 1.5em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 6.9em right 5.1em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.1em right 4.3em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.3em right 3.5em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.5em right 2.6em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.7em right 1.8em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.7em right 0.8em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.5em right 1.6em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.3em right 2.5em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.1em right 3.3em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 6.8em right 4.1em,
+      linear-gradient(
+          15deg,
+          transparent 45%,
+          white 45%,
+          white 70%,
+          transparent 59%
+        )
+        no-repeat top 6.5em right 1.1em,
+      linear-gradient(45deg, gold 30%, white 35%, white 50%, transparent 55%)
+        no-repeat top 4.7em right 6.2em;
+
+    /*FF*/
+    background:
+      linear-gradient(
+          128deg,
+          transparent 51%,
+          white 53%,
+          white 70%,
+          transparent 72%
+        )
+        no-repeat bottom left,
+      linear-gradient(
+          108deg,
+          transparent 38%,
+          white 40%,
+          white 63%,
+          transparent 65%
+        )
+        no-repeat bottom left 6.3em,
+      linear-gradient(
+          73deg,
+          transparent 36%,
+          white 38%,
+          white 63%,
+          transparent 65%
+        )
+        no-repeat bottom right 4.8em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat bottom 2.1em left 5.7em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat bottom 1.2em left 8.9em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat left 4.9em top 6.9em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat left 5.7em top 4.3em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          white 60%,
+          transparent 60%
+        )
+        no-repeat left 8.4em top 2.4em,
+      linear-gradient(
+          73deg,
+          transparent 36%,
+          white 38%,
+          white 63%,
+          transparent 66%
+        )
+        no-repeat bottom 2.8em left 2.7em,
+      linear-gradient(
+          112deg,
+          transparent 36%,
+          white 38%,
+          white 63%,
+          transparent 65%
+        )
+        no-repeat top 4em left 2.8em,
+      linear-gradient(
+          150deg,
+          transparent 47%,
+          white 48%,
+          white 66%,
+          transparent 68%
+        )
+        no-repeat top 1.1em left 3.5em,
+      linear-gradient(
+          151deg,
+          transparent 55%,
+          white 56%,
+          white 88%,
+          transparent 90%
+        )
+        no-repeat top 2.5em left 1em,
+      linear-gradient(
+          150deg,
+          transparent 57%,
+          white 58%,
+          white 88%,
+          transparent 90%
+        )
+        no-repeat top 4.5em left 0.8em,
+      linear-gradient(150deg, transparent 60%, white 63%, white 100%) no-repeat
+        bottom 4.5em left 0.8em,
+      linear-gradient(150deg, transparent 50%, white 53%, white 100%) no-repeat
+        bottom 2.8em left 1.8em,
+      linear-gradient(
+          15deg,
+          transparent 16%,
+          white 20%,
+          white 62%,
+          transparent 65%
+        )
+        no-repeat top 1em left 8.5em,
+      linear-gradient(
+          162deg,
+          transparent 30%,
+          white 32%,
+          white 70%,
+          transparent 66%
+        )
+        no-repeat top 1.6em right 6.2em,
+      linear-gradient(
+          45deg,
+          transparent 31%,
+          white 32%,
+          white 52%,
+          transparent 53%
+        )
+        no-repeat top 1.6em right 3.5em,
+      linear-gradient(
+          20deg,
+          transparent 30%,
+          white 31%,
+          white 52%,
+          transparent 54%
+        )
+        no-repeat top 2.8em right 1.6em,
+      linear-gradient(
+          45deg,
+          transparent 27%,
+          white 29%,
+          white 51%,
+          transparent 52%
+        )
+        no-repeat top 3.8em right 0.5em,
+      linear-gradient(90deg, transparent 38%, white 38%, white 60%) no-repeat
+        top 6em right 0.5em,
+      linear-gradient(45deg, transparent 35%, white 35%, white 70%) no-repeat
+        top 4.8em right 1.6em,
+      linear-gradient(108deg, white 40%, transparent 40%) no-repeat bottom 4.4em
+        right 0.1em,
+      linear-gradient(
+          150deg,
+          transparent 23%,
+          white 25%,
+          white 55%,
+          transparent 57%
+        )
+        no-repeat bottom 3em right 1em,
+      linear-gradient(
+          15deg,
+          transparent 40%,
+          white 41%,
+          white 60%,
+          transparent 62%
+        )
+        no-repeat bottom 2.8em right 3.5em,
+      linear-gradient(
+          110deg,
+          transparent 45%,
+          white 45%,
+          white 65%,
+          transparent 65%
+        )
+        no-repeat top 3.6em right 5.8em,
+      -moz-radial-gradient(
+          center center,
+          ellipse contain,
+          white 28%,
+          transparent 30%
+        )
+        no-repeat right 4.9em top 3.5em,
+      linear-gradient(
+          40deg,
+          transparent 52%,
+          #2b7fff 52%,
+          #2b7fff 75%,
+          transparent 75%
+        )
+        no-repeat top 3.2em right 5em,
+      linear-gradient(
+          38deg,
+          transparent 30%,
+          #2b7fff 30%,
+          #2b7fff 52%,
+          transparent 52%
+        )
+        no-repeat top 3.8em right 6em,
+      linear-gradient(
+          162deg,
+          transparent 30%,
+          white 30%,
+          white 70%,
+          transparent 65%
+        )
+        no-repeat top 3.3em right 5.6em,
+      linear-gradient(
+          162deg,
+          transparent 10%,
+          white 25%,
+          white 55%,
+          transparent 55%
+        )
+        no-repeat top 4em right 5em,
+      linear-gradient(
+          15deg,
+          transparent 40%,
+          white 42%,
+          white 59%,
+          transparent 61%
+        )
+        no-repeat top 6em right 1em,
+      linear-gradient(
+          15deg,
+          transparent 43%,
+          white 45%,
+          white 59%,
+          transparent 59%
+        )
+        no-repeat top 7.5em right 1em,
+      linear-gradient(
+          15deg,
+          transparent 30%,
+          #2b7fff 30%,
+          #2b7fff 68%,
+          transparent 68%
+        )
+        no-repeat top 4em right 7.8em,
+      linear-gradient(
+          15deg,
+          transparent 30%,
+          #2b7fff 30%,
+          #2b7fff 68%,
+          transparent 68%
+        )
+        no-repeat top 5.1em right 8.3em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          #2b7fff 0%,
+          #2b7fff 33%,
+          white 33%,
+          white 50%,
+          transparent 50%
+        )
+        no-repeat right 6.5em top 3.2em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          #2b7fff 50%,
+          transparent 52%
+        )
+        no-repeat right 5.6em top 2.5em,
+      -moz-radial-gradient(
+          center center,
+          circle contain,
+          white 52%,
+          transparent 53%
+        )
+        no-repeat right 4.6em top 1.5em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 6.9em right 5.1em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.1em right 4.3em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.3em right 3.5em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.5em right 2.6em,
+      linear-gradient(80deg, transparent 84%, white 84%, white 55%) no-repeat
+        top 7.7em right 1.8em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.7em right 0.8em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.5em right 1.6em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.3em right 2.5em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 7.1em right 3.3em,
+      linear-gradient(120deg, white 40%, white 40%, transparent 40%) no-repeat
+        top 6.8em right 4.1em,
+      linear-gradient(
+          15deg,
+          transparent 45%,
+          white 45%,
+          white 70%,
+          transparent 59%
+        )
+        no-repeat top 6.5em right 1.1em,
+      linear-gradient(45deg, gold 30%, white 35%, white 50%, transparent 55%)
+        no-repeat top 4.7em right 6.2em;
+
+    background-size:
+      5.5em 2.8em,
+      3em 5.5em,
+      3em 4em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      3em 4em,
+      3em 3.3em,
+      5em 3.3em,
+      4em 3em,
+      3.5em 3em,
+      3em 3em,
+      3em 2em,
+      3em 1.8em,
+      2.5em 1.7em,
+      2.8em 2.8em,
+      2.8em 2.8em,
+      1.1em 2.8em,
+      1em 2em,
+      0.5em 2em,
+      1em 1.6em,
+      2.5em 1.7em,
+      6.5em 3em,
+      1em 1em,
+      2.8em 1.3em,
+      1.5em 1.3em,
+      2em 1.3em,
+      2em 1.3em,
+      2em 1.3em,
+      6em 2em,
+      6.9em 2em,
+      2.3em 3em,
+      2.3em 1em,
+      5.5em 6em,
+      7.5em 7.5em,
+      9.5em 10em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      1em 1em,
+      7em 3.2em,
+      1.1em 2em;
+
+    background-color: #2b7fff;
+  }
+}
