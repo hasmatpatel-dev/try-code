@@ -69,21 +69,23 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                       <li key={index} className="-mr-2 z-1 avatar-hover:ml-2">
                         <img
                           src={avatar.image}
-                          alt="Avatar"
+                          alt={`Student Avatar ${index + 1}`}
                           width={40}
                           height={40}
+                          loading="eager"
                           className="rounded-full border-2 border-white"
                         />
                       </li>
                     ))}
                   </ul>
                   <div className="gap-1 flex flex-col items-start">
-                    <div className="flex gap-1">
+                    <div className="flex gap-1" role="img" aria-label="5 out of 5 stars">
                       {Array.from({ length: 5 }).map((_, index) => (
                         <img
                           key={index}
                           src="https://images.shadcnspace.com/assets/svgs/icon-star.svg"
-                          alt="star"
+                          alt=""
+                          aria-hidden="true"
                           className="h-4 w-4"
                         />
                       ))}

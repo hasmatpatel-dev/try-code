@@ -80,7 +80,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           );
         } else {
           dispatch(clearSession());
-          router.push('/auth/login');
+          const redirectParam = typeof window !== 'undefined' && window.location.pathname
+            ? `?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`
+            : '';
+          router.push(`/auth/login${redirectParam}`);
         }
       } catch (err) {
         console.error('Session syncing failed:', err);

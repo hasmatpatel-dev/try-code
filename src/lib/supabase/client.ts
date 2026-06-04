@@ -78,6 +78,18 @@ class MockSupabaseClient {
         },
       };
     },
+    resend: async (options: any) => {
+      return { data: null, error: null };
+    },
+    signInWithOAuth: async (options: any) => {
+      return { data: null, error: null };
+    },
+    verifyOtp: async (options: any) => {
+      return { data: { user: {} as any, session: {} as any }, error: null };
+    },
+    resetPasswordForEmail: async (email: string, options?: any) => {
+      return { data: null, error: null };
+    },
   };
 
   storage = {
@@ -145,7 +157,7 @@ class MockSupabaseClient {
 
 let supabaseInstance: any = null;
 
-export const createClient = () => {
+export const createClient = (): ReturnType<typeof createBrowserClient> => {
   if (supabaseInstance) return supabaseInstance;
 
   if (isSupabaseConfigured()) {
@@ -154,7 +166,7 @@ export const createClient = () => {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
   } else {
-    supabaseInstance = new MockSupabaseClient();
+    supabaseInstance = new MockSupabaseClient() as unknown as ReturnType<typeof createBrowserClient>;
   }
 
   return supabaseInstance;

@@ -40,9 +40,12 @@ const Feature = ({ featureData }: { featureData: Features }) => {
                   We provide interactive coding courses to learn fast, building real-world projects and full-stack web apps
                 </p>
               </div>
-              <Button className="rounded-full px-5 py-2.5 shadow-xs h-auto cursor-pointer">
-                <a href="#">Browse all courses</a>
-              </Button>
+              <a
+                href="#"
+                className="rounded-full px-5 py-2.5 shadow-xs h-auto cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center text-sm font-medium transition-colors duration-200"
+              >
+                Browse all courses
+              </a>
             </motion.div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6">
               <motion.div
@@ -61,6 +64,7 @@ const Feature = ({ featureData }: { featureData: Features }) => {
                       <AvatarFallback>
                         <img
                           src="https://images.shadcnspace.com/assets/profiles/user-1.jpg"
+                          alt="Markus Kessler"
                           className="rounded-full"
                         />
                       </AvatarFallback>

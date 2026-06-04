@@ -134,22 +134,24 @@ const Services = () => {
                 </p>
               </div>
               <div className="flex md:flex-row flex-col items-center gap-4">
-                <Button className="group text-sm font-medium text-black bg-white hover:text-black dark:hover:text-black hover:bg-white/90 rounded-full flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer">
-                  <a href="#" className="flex items-center gap-4">
-                    <span>Enroll in Course</span>
-                    <div className="p-3 bg-black text-white rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
-                      <ArrowUpRight size={16} />
-                    </div>
-                  </a>
-                </Button>
-                <Button className="group text-sm font-medium text-white bg-gray-950 hover:text-white dark:hover:text-white hover:bg-gray-950/90 rounded-full border border-white/50 flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer">
-                  <a href="#" className="flex items-center gap-4">
-                    <span>View Bootcamps</span>
-                    <div className="p-3 bg-white text-black rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
-                      <ArrowUpRight size={16} />
-                    </div>
-                  </a>
-                </Button>
+                <a
+                  href="#"
+                  className="group text-sm font-medium text-black bg-white hover:text-black dark:hover:text-black hover:bg-white/90 rounded-full flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer transition-colors duration-200"
+                >
+                  <span>Enroll in Course</span>
+                  <div className="p-3 bg-black text-white rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
+                    <ArrowUpRight size={16} />
+                  </div>
+                </a>
+                <a
+                  href="#"
+                  className="group text-sm font-medium text-white bg-gray-950 hover:text-white dark:hover:text-white hover:bg-gray-950/90 rounded-full border border-white/50 flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer transition-colors duration-200"
+                >
+                  <span>View Bootcamps</span>
+                  <div className="p-3 bg-white text-black rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
+                    <ArrowUpRight size={16} />
+                  </div>
+                </a>
               </div>
             </div>
           </div>

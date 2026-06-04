@@ -1,9 +1,4 @@
-
-'use client'
-
-import { useState, useEffect } from "react";
 import Header from "@/components/shadcn-space/blocks/hero-01/header";
-import type { NavigationSection } from "@/components/shadcn-space/blocks/hero-01/header";
 import AboutAndStats01 from '@/components/shadcn-space/blocks/about-us-01/index'
 import Bentogrid from '@/components/shadcn-space/blocks/bento-grid-01/bentogrid'
 import Blog from '@/components/shadcn-space/blocks/blog-01/blog'
@@ -20,78 +15,9 @@ import Team01 from '@/components/shadcn-space/blocks/team-01/team'
 import Testimonial01 from '@/components/shadcn-space/blocks/testimonial-02'
 
 export default function Page() {
-  const [activeSection, setActiveSection] = useState<string>("home");
-
-  const navigationData: NavigationSection[] = [
-    {
-      title: "Home",
-      href: "#home",
-      isActive: activeSection === "home",
-    },
-    {
-      title: "About us",
-      href: "#about-us",
-      isActive: activeSection === "about-us",
-    },
-    {
-      title: "Services",
-      href: "#services",
-      isActive: activeSection === "services",
-    },
-    {
-      title: "Team",
-      href: "#team",
-      isActive: activeSection === "team",
-    },
-    {
-      title: "Pricing",
-      href: "#pricing",
-      isActive: activeSection === "pricing",
-    },
-    {
-      title: "Awards",
-      href: "#awards",
-      isActive: activeSection === "awards",
-    },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sectionIds = ["home", "about-us", "awards", "services", "team", "pricing"];
-      const headerHeight = 120; // height of sticky header plus a buffer
-
-      // Check if user has scrolled to the bottom of the page
-      const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50;
-      if (isAtBottom) {
-        setActiveSection("pricing");
-        return;
-      }
-
-      let currentActive = "home";
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const id = sectionIds[i];
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= headerHeight) {
-            currentActive = id;
-            break;
-          }
-        }
-      }
-      setActiveSection(currentActive);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    // Initialize active section on mount
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className=''>
-      <Header navigationData={navigationData} />
+      <Header />
       
       <div id="home" className="scroll-mt-20">
         <AgencyHeroSection />

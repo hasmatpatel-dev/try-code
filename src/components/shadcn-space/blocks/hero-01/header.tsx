@@ -18,7 +18,7 @@ export type NavigationSection = {
 };
 
 type HeaderProps = {
-  navigationData: NavigationSection[];
+  navigationData?: NavigationSection[];
   className?: string;
 };
 
@@ -40,9 +40,70 @@ const CollaborateButton = ({ className }: { className?: string }) => (
 const Header = ({ navigationData, className }: HeaderProps) => {
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
+
+  const defaultNavigationData: NavigationSection[] = [
+    {
+      title: "Home",
+      href: "#home",
+      isActive: activeSection === "home",
+    },
+    {
+      title: "About us",
+      href: "#about-us",
+      isActive: activeSection === "about-us",
+    },
+    {
+      title: "Services",
+      href: "#services",
+      isActive: activeSection === "services",
+    },
+    {
+      title: "Team",
+      href: "#team",
+      isActive: activeSection === "team",
+    },
+    {
+      title: "Pricing",
+      href: "#pricing",
+      isActive: activeSection === "pricing",
+    },
+    {
+      title: "Awards",
+      href: "#awards",
+      isActive: activeSection === "awards",
+    },
+  ];
+
+  const currentNavigationData = navigationData || defaultNavigationData;
 
   const handleScroll = useCallback(() => {
     setSticky(window.scrollY >= 50);
+
+    // Active Section Logic
+    const sectionIds = ["home", "about-us", "awards", "services", "team", "pricing"];
+    const headerHeight = 120; // height of sticky header plus a buffer
+
+    // Check if user has scrolled to the bottom of the page
+    const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50;
+    if (isAtBottom) {
+      setActiveSection("pricing");
+      return;
+    }
+
+    let currentActive = "home";
+    for (let i = sectionIds.length - 1; i >= 0; i--) {
+      const id = sectionIds[i];
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= headerHeight) {
+          currentActive = id;
+          break;
+        }
+      }
+    }
+    setActiveSection(currentActive);
   }, []);
 
   const handleResize = useCallback(() => {
@@ -52,6 +113,9 @@ const Header = ({ navigationData, className }: HeaderProps) => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
+
+    // Initialize active section on mount
+    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -89,7 +153,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
         <div>
           <NavigationMenu className="max-lg:hidden bg-muted p-0.5 rounded-full">
             <NavigationMenuList className="flex gap-0">
-              {navigationData.map((navItem) => (
+              {currentNavigationData.map((navItem) => (
                 <NavigationMenuItem key={navItem.title}>
                   <NavigationMenuLink
                     href={navItem.href}
@@ -109,7 +173,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger id="mobile-menu-trigger">
+              <SheetTrigger id="mobile-menu-trigger" aria-label="Open menu">
                 <span className="rounded-full border border-border p-2 block">
                   <Menu
                     width={20}
@@ -128,7 +192,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                   <a href="#">
                     <Logo className="gap-2" />
                   </a>
-                  <SheetClose id="mobile-menu-close">
+                  <SheetClose id="mobile-menu-close" aria-label="Close menu">
                     <span className="rounded-full border border-border p-2.5 block">
                       <X width={16} height={16} />
                     </span>
@@ -143,7 +207,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                       className="items-start flex-none"
                     >
                       <NavigationMenuList className="flex flex-col items-start gap-3">
-                        {navigationData.map((item) => (
+                        {currentNavigationData.map((item) => (
                           <NavigationMenuItem key={item.title}>
                             <NavigationMenuLink
                               href={item.href}
@@ -177,14 +241,15 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                   <div className="mt-auto flex flex-col gap-4">
                     <div className="flex gap-3">
                       {[
-                        "lucide:dribbble",
-                        "lucide:instagram",
-                        "lucide:twitter",
-                        "lucide:linkedin",
-                      ].map((icon) => (
+                        { icon: "lucide:dribbble", label: "Dribbble" },
+                        { icon: "lucide:instagram", label: "Instagram" },
+                        { icon: "lucide:twitter", label: "Twitter" },
+                        { icon: "lucide:linkedin", label: "LinkedIn" },
+                      ].map(({ icon, label }) => (
                         <a
                           key={icon}
                           href="#"
+                          aria-label={label}
                           className="flex items-center justify-center rounded-full outline outline-border hover:bg-muted transition p-3 shadow-xs"
                         >
                           <Icon icon={icon} width={16} height={16} />

@@ -83,7 +83,7 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
   return (
     <div className="rounded-2xl border border-[#161C2C] bg-gray-950 overflow-hidden shadow-xl">
       {/* Styles Injection */}
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .ProseMirror {
           outline: none !important;
           min-height: 380px;
@@ -169,7 +169,7 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
           pointer-events: none;
           height: 0;
         }
-      `}</style>
+      ` }} />
 
       {/* Menu bar */}
       <div className="flex flex-wrap items-center gap-1.5 bg-[#090D1A] p-2 border-b border-[#161C2C]">

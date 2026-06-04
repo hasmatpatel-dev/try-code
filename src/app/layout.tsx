@@ -7,6 +7,10 @@ import Providers from "@/components/providers";
 export const metadata: Metadata = {
   title: 'TryCode - Full-Stack Blog CMS & LMS',
   description: 'A scalable CMS and Learning Management Foundation powering Blog Articles, AI Tutorials, Courses, and Student Dashboards.',
+  metadataBase: new URL('https://hasmat-try-code.vercel.app'),
+  alternates: {
+    canonical: '/',
+  },
 }
 const inter = Inter({ subsets: ["latin"] });
 

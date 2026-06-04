@@ -103,7 +103,7 @@ const Team = () => {
                   <img
                     className="w-full h-full group-hover:grayscale transition-all duration-300"
                     src={value.image}
-                    alt="team-img"
+                    alt={value.name}
                   />
                   <div className="w-full flex flex-col gap-4 items-center justify-center">
                     <div className="flex flex-col items-center justify-center gap-2">
@@ -120,6 +120,7 @@ const Team = () => {
                         className="p-2 hover:bg-accent/80 rounded-full"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`${value.name}'s Website`}
                       >
                         <Globe size={16} />
                       </a>
@@ -128,6 +129,7 @@ const Team = () => {
                         className="p-2 hover:bg-accent/80 rounded-full"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`${value.name}'s LinkedIn`}
                       >
                         <LinkedinIcon size={16} />
                       </a>

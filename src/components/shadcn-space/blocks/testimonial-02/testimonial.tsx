@@ -71,12 +71,14 @@ export default function Testimonial01({
                                                 <div className="shrink-0 flex items-start">
                                                     <img
                                                         src="https://images.shadcnspace.com/assets/svgs/icon-quote.svg"
-                                                        alt="muted quote"
+                                                        alt=""
+                                                        aria-hidden="true"
                                                         className="dark:hidden"
                                                     />
                                                     <img
                                                         src="https://images.shadcnspace.com/assets/svgs/icon-quote-white.svg"
-                                                        alt="muted quote"
+                                                        alt=""
+                                                        aria-hidden="true"
                                                         className="hidden dark:block"
                                                     />
                                                 </div>

@@ -138,7 +138,7 @@ const Blog = () => {
                         />
                       </div>
                       <div className="p-5 pt-0 flex flex-col gap-2">
-                        <p className="text-xs font-normal text-gray-500">
+                        <p className="text-xs font-normal text-gray-400">
                           {formattedDate}
                         </p>
                         <p className="text-xl font-bold text-white group-hover:text-purple-400 transition leading-snug">
