@@ -26,8 +26,8 @@ const serviceData: ServiceData[] = [
   {
     service_icon: SwatchBook,
     service_title: "Learn React UI",
-    service_bg_color: "bg-blue-500/10",
-    service_text_color: "text-blue-500",
+    service_bg_color: "bg-blue-400/10",
+    service_text_color: "text-blue-400",
   },
   {
     service_icon: WandSparkles,
@@ -50,8 +50,8 @@ const serviceData: ServiceData[] = [
   {
     service_icon: AppWindowMac,
     service_title: "AI Coding Agent",
-    service_bg_color: "bg-red-500/10",
-    service_text_color: "text-red-500",
+    service_bg_color: "bg-red-400/10",
+    service_text_color: "text-red-400",
   },
 ];
 

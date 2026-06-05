@@ -19,7 +19,7 @@ export default function AnimatedUiBlock() {
                         ease: "easeInOut",
                         repeat: Infinity
                     }}>
-                    <span aria-label="Multiple Layouts" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="Multiple Layouts" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
                         <AppWindowMac size={32} />
                     </span>
                 </motion.div>
@@ -33,7 +33,7 @@ export default function AnimatedUiBlock() {
                         ease: "easeInOut",
                         repeat: Infinity,
                     }}>
-                    <span aria-label="UI Blocks" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="UI Blocks" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
                         <Command size={24} />
                     </span>
                 </motion.div>
@@ -48,7 +48,7 @@ export default function AnimatedUiBlock() {
                         repeat: Infinity,
                         delay: 1
                     }}>
-                    <span aria-label="Authentication" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="Authentication" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
                         <ShieldCheck size={36} />
                     </span>
                 </motion.div>
@@ -62,7 +62,7 @@ export default function AnimatedUiBlock() {
                         ease: "easeInOut",
                         repeat: Infinity,
                     }}>
-                    <span aria-label="Animated Components" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="Animated Components" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
                         <Presentation size={20} />
                     </span>
                 </motion.div>
@@ -77,7 +77,7 @@ export default function AnimatedUiBlock() {
                         repeat: Infinity,
                         delay: 0.2
                     }}>
-                    <span aria-label="Ai Builder" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="Ai Builder" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
                         <WandSparkles size={32} />
                     </span>
                 </motion.div>
@@ -92,7 +92,7 @@ export default function AnimatedUiBlock() {
                         repeat: Infinity,
                         delay: 0.5
                     }}>
-                    <span aria-label="Charts" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="Charts" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
                         <BarChart3 size={32} />
                     </span>
                 </motion.div>
@@ -107,7 +107,7 @@ export default function AnimatedUiBlock() {
                         repeat: Infinity,
                         delay: 0.7
                     }}>
-                    <span aria-label="UI Components" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
+                    <span role="img" aria-label="UI Components" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
                         <Box size={22} />
                     </span>
                 </motion.div>

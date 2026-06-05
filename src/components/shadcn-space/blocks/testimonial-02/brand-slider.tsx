@@ -15,7 +15,7 @@ function BrandSlider({ brandList }: { brandList: BrandList[] }) {
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
   return (
-    <section ref={sectionRef}>
+    <section className="overflow-hidden max-w-svw" ref={sectionRef}>
       <div className="py-6 md:py-10">
         <div className="max-w-7xl mx-auto sm:px-16 px-4">
           <motion.div

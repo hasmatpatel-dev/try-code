@@ -6,7 +6,7 @@ const aboutusData = [
     {
       icon: WandSparkles,
       title: "Interactive",
-      color: "bg-blue-500/10 text-blue-500"
+      color: "bg-blue-400/10 text-blue-400"
     },
     {
       icon: Zap,

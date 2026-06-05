@@ -48,20 +48,21 @@ const DATA: Item[] = [
 ];
 
 export default function ReminderCarousel() {
-  const [visible, setVisible] = useState<Item[]>(DATA.slice(0, 3));
-  const [pointer, setPointer] = useState(2);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisible((prev) => {
-        const nextIndex = (pointer + 1) % DATA.length;
-        setPointer(nextIndex);
-        return [...prev.slice(1), DATA[nextIndex]];
-      });
+      setIndex((prev) => (prev + 1) % DATA.length);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [pointer]);
+  }, []);
+
+  const visible = [
+    DATA[index],
+    DATA[(index + 1) % DATA.length],
+    DATA[(index + 2) % DATA.length],
+  ];
 
   return (
     <div className="relative flex flex-col items-center rounded-2xl h-52 w-full overflow-hidden">

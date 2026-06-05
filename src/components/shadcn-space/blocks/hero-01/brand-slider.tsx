@@ -10,7 +10,7 @@ export interface BrandList {
 
 function BrandSlider({ brandList }: { brandList: BrandList[] }) {
   return (
-    <section>
+    <section className="overflow-hidden max-w-svw">
       <div className="py-6 md:py-10">
         <div className="mx-auto max-w-6xl">
           <motion.div 

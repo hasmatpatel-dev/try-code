@@ -62,6 +62,7 @@ const ContactForm = () => {
                       id="firstName"
                       name="firstName"
                       placeholder="First name"
+                      aria-label="First name"
                       value={formData.firstName}
                       onChange={handleChange}
                       className="dark:bg-background h-9 shadow-xs"
@@ -73,6 +74,7 @@ const ContactForm = () => {
                       id="lastName"
                       name="lastName"
                       placeholder="Last name"
+                      aria-label="Last name"
                       value={formData.lastName}
                       onChange={handleChange}
                       className="dark:bg-background h-9 shadow-xs"
@@ -86,6 +88,7 @@ const ContactForm = () => {
                     id="email"
                     name="email"
                     placeholder="youremail@website.com"
+                    aria-label="Email address"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
@@ -101,7 +104,7 @@ const ContactForm = () => {
                       setFormData((prev) => ({ ...prev, country: value ?? "" }))
                     }
                   >
-                    <SelectTrigger id="country" className="w-full h-9! dark:bg-background shadow-xs">
+                    <SelectTrigger id="country" aria-label="Country" className="w-full h-9! dark:bg-background shadow-xs">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -125,6 +128,7 @@ const ContactForm = () => {
                     id="message"
                     name="message"
                     placeholder="Let us know about your project"
+                    aria-label="Message"
                     value={formData.message}
                     onChange={handleChange}
                     className="h-20 resize-none dark:bg-background shadow-xs"

@@ -68,7 +68,7 @@ export default function Faq() {
               >
                 <AccordionTrigger className="p-0 text-xl font-medium hover:no-underline **:data-[slot=accordion-trigger-icon]:hidden cursor-pointer">
                   {faq.question}
-                  <PlusIcon className="w-6 h-6 shrink-0 transition-transform duration-200 group-aria-expanded/accordion-trigger:rotate-45" />
+                  <PlusIcon className="w-6 h-6 shrink-0 transition-transform duration-200 group-aria-expanded/accordion-trigger:rotate-45" aria-hidden="true" />
                 </AccordionTrigger>
                 <AccordionContent className="p-0 text-muted-foreground text-base">
                   {faq.answer}

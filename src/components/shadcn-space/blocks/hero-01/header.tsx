@@ -25,15 +25,19 @@ type HeaderProps = {
 import Link from 'next/link';
 
 const CollaborateButton = ({ className }: { className?: string }) => (
-  <Link href="/dashboard" className="block">
-    <Button className={cn("relative text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden", className, "cursor-pointer")}>
-      <span className="relative z-10 transition-all duration-500">
-        CMS Dashboard
-      </span>
-      <span className="absolute right-1 w-8 h-8 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-36px)] group-hover:rotate-45">
-        <ArrowUpRight size={16} />
-      </span>
-    </Button>
+  <Link
+    href="/dashboard"
+    className={cn(
+      "relative inline-flex items-center justify-center text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs",
+      className
+    )}
+  >
+    <span className="relative z-10 transition-all duration-500">
+      CMS Dashboard
+    </span>
+    <span className="absolute right-1 w-8 h-8 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-36px)] group-hover:rotate-45">
+      <ArrowUpRight size={16} />
+    </span>
   </Link>
 );
 
@@ -144,7 +148,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
       >
         {/* Logo */}
         <div>
-          <a href="#">
+          <a href="#" aria-label="TryCode Homepage">
             <Logo className="gap-3" />
           </a>
         </div>
@@ -189,7 +193,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                 className="w-full sm:w-96 p-0 border-l-0"
               >
                 <div className="flex items-center justify-between p-6">
-                  <a href="#">
+                  <a href="#" aria-label="TryCode Homepage">
                     <Logo className="gap-2" />
                   </a>
                   <SheetClose id="mobile-menu-close" aria-label="Close menu">
