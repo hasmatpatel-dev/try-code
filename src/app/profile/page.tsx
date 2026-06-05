@@ -4,27 +4,39 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  User,
-  Flame,
-  Award,
-  BookOpen,
   Mail,
-  Lock,
-  ChevronRight,
-  ShieldCheck,
-  CheckCircle,
-  Save,
   LogOut,
+  MailCheck,
+  ShieldCheck,
   Calendar,
+  Flame,
+  BookOpen,
+  Award,
+  Save,
 } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { clearSession } from '@/features/authSlice';
 import { supabase } from '@/lib/supabase/client';
 import { toast } from 'sonner';
-import Header from '@/components/shadcn-space/blocks/hero-01/header';
-import { Badge } from '@/components/ui/badge';
+import Header from '@/components/shadcn-space/blocks/hero/header';
+import Footer02 from '@/components/shadcn-space/blocks/footer/footer';
+import { Instrument_Serif } from 'next/font/google';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['italic'],
+});
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -98,10 +110,32 @@ export default function ProfilePage() {
   const maxMins = 120; // for height scaling
 
   return (
-    <div className="min-h-screen bg-[#030712]">
-      <Header className="hidden md:flex" />
+    <div className="min-h-screen bg-[#030712] text-foreground">
+      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
 
-      <div className="py-12 px-4 md:py-20 max-w-7xl mx-auto space-y-10">
+      {/* Background radial glow */}
+      <div className="relative overflow-hidden pt-20">
+        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-950/10 blur-[120px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
+          <div className="border-x border-border px-5 md:px-8 py-12 lg:py-16 space-y-10 flex flex-col min-h-screen">
+            {/* Title Section (Matching Landing Page Style) */}
+            <div className="flex flex-col gap-4 max-w-2xl text-left pb-8 border-b border-border/40">
+              <div className="flex gap-2 items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                <p className="text-sm text-muted-foreground font-normal tracking-wide uppercase">Student Profile</p>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-medium tracking-tight text-white leading-tight">
+                Your learning{" "}
+                <span className={`${instrumentSerif.className} tracking-tight text-purple-400`}>
+                  dashboard
+                </span>
+              </h1>
+              <p className="text-base md:text-lg font-normal text-muted-foreground leading-relaxed">
+                Track your study activity, active streaks, achievements, and manage your account preferences.
+              </p>
+            </div>
         
         {/* Profile Header Widget */}
         <Card className="bg-muted ring-0 border border-border/40 rounded-2xl shadow-2xl relative overflow-hidden group">
@@ -281,6 +315,9 @@ export default function ProfilePage() {
           <LogOut className="h-4 w-4" />
           <span>Log Out Account</span>
         </button>
+          </div>
+        </div>
+        <Footer02 />
       </div>
     </div>
   );

@@ -134,18 +134,23 @@ const Header = ({ navigationData, className }: HeaderProps) => {
   const defaultNavigationData: NavigationSection[] = [
     {
       title: "Home",
-      href: "/#home",
-      isActive: pathname === "/" && activeSection === "home",
+      href: "/",
+      isActive: pathname === "/",
     },
     {
-      title: "About us",
-      href: "/#about-us",
-      isActive: pathname === "/" && activeSection === "about-us",
+      title: "Blog",
+      href: "/blog",
+      isActive: pathname === "/blog" || pathname.startsWith("/blog/"),
     },
     {
-      title: "Services",
-      href: "/#services",
-      isActive: pathname === "/" && activeSection === "services",
+      title: "Learning",
+      href: "/learning",
+      isActive: pathname === "/learning",
+    },
+    {
+      title: "Community",
+      href: "/community",
+      isActive: pathname === "/community" || (pathname.startsWith("/community") && pathname !== "/community/courses"),
     },
     {
       title: "Courses",
@@ -153,19 +158,9 @@ const Header = ({ navigationData, className }: HeaderProps) => {
       isActive: pathname === "/community/courses",
     },
     {
-      title: "Team",
-      href: "/#team",
-      isActive: pathname === "/" && activeSection === "team",
-    },
-    {
-      title: "Pricing",
-      href: "/#pricing",
-      isActive: pathname === "/" && activeSection === "pricing",
-    },
-    {
-      title: "Awards",
-      href: "/#awards",
-      isActive: pathname === "/" && activeSection === "awards",
+      title: "Profile",
+      href: "/profile",
+      isActive: pathname === "/profile",
     },
   ];
 

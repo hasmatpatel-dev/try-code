@@ -1,11 +1,11 @@
 
 'use client'
 
-import ForgotPassword from '@/components/shadcn-space/blocks/forgot-password-01/forgot-password'
-import LoginForm from '@/components/shadcn-space/blocks/login-01/login'
-import RegisterForm from '@/components/shadcn-space/blocks/register-01/register'
-import TwoFactorAuthForm from '@/components/shadcn-space/blocks/two-factor-authentication-01/two-factor-auth'
-import VerifyEmail from '@/components/shadcn-space/blocks/verify-email-01/verify-email'
+import ForgotPassword from '@/components/shadcn-space/blocks/forgot-password/forgot-password'
+import LoginForm from '@/components/shadcn-space/blocks/login/login'
+import RegisterForm from '@/components/shadcn-space/blocks/register/register'
+import TwoFactorAuthForm from '@/components/shadcn-space/blocks/two-factor-authentication/two-factor-auth'
+import VerifyEmail from '@/components/shadcn-space/blocks/verify-email/verify-email'
 
 
 

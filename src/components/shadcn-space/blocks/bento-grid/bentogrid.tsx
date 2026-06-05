@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import ReminderAnimation from "@/components/shadcn-space/blocks/bento-grid-01/ReminderAnimation";
-import AnimatedUiBlock from "@/components/shadcn-space/blocks/bento-grid-01/AnimatedUiBlock";
+import ReminderAnimation from "@/components/shadcn-space/blocks/bento-grid/ReminderAnimation";
+import AnimatedUiBlock from "@/components/shadcn-space/blocks/bento-grid/AnimatedUiBlock";
 
 const Bentogrid = () => {
   return (

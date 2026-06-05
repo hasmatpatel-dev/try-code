@@ -102,169 +102,160 @@ export default function RegisterPage() {
   };
 
   return (
-    <section className="bg-foreground dark:bg-background min-h-screen relative flex items-center justify-center">
-      <div className="pointer-events-none absolute inset-0 right-0 overflow-hidden md:block hidden">
-        {/* Outer big circle */}
-        <div className="absolute left-1/1 top-0 h-650 w-650 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10" />
-        {/* Inner circle */}
-        <div className="absolute left-1/1 top-0 h-175 w-175 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground dark:bg-background" />
-      </div>
+    <div className="max-w-lg px-4 sm:px-0 mx-auto w-full z-10">
+      <Card className="max-w-lg px-6 py-8 sm:p-12 relative gap-6 border border-border/40 bg-[#090D1A] shadow-2xl">
+        <CardHeader className="text-center gap-6 p-0">
+          <div className="mx-auto">
+            <Link href="/">
+              <div className="mdn">TryCode</div>
+            </Link>
+          </div>
+          <div className="flex flex-col gap-1">
+            <CardTitle className="text-2xl font-medium text-white">
+              Signup to TryCode
+            </CardTitle>
+            <CardDescription className="text-sm text-muted-foreground font-normal">
+              Signup to your account now
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FieldGroup className="gap-6">
+              <Field className="flex w-full">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => handleOAuthSignUp('google')}
+                  className="w-full text-sm text-medium text-card-foreground gap-2 cursor-pointer dark:bg-background rounded-lg h-9 shadow-xs"
+                >
+                  <img
+                    src="https://images.shadcnspace.com/assets/svgs/icon-google.svg"
+                    alt="google icon"
+                    className="h-4 w-4"
+                  />
+                  Sign up with Google
+                </Button>
+              </Field>
+              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-[#090D1A] text-sm text-muted-foreground bg-transparent">
+                <span className="px-4">or sign up with</span>
+              </FieldSeparator>
 
-      <div className="py-10 md:py-20 max-w-lg px-4 sm:px-0 mx-auto w-full z-10">
-        <Card className="max-w-lg px-6 py-8 sm:p-12 relative gap-6">
-          <CardHeader className="text-center gap-6 p-0">
-            <div className="mx-auto">
-              <Link href="/">
-                <div className="mdn">TryCode</div>
-              </Link>
-            </div>
-            <div className="flex flex-col gap-1">
-              <CardTitle className="text-2xl font-medium text-card-foreground">
-                Signup to TryCode
-              </CardTitle>
-              <CardDescription className="text-sm text-muted-foreground font-normal">
-                Signup to your account now
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="p-0">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FieldGroup className="gap-6">
-                <Field className="flex w-full">
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => handleOAuthSignUp('google')}
-                    className="w-full text-sm text-medium text-card-foreground gap-2 cursor-pointer dark:bg-background rounded-lg h-9 shadow-xs"
+              <div className="flex flex-col gap-4">
+                <Field className="gap-1.5">
+                  <FieldLabel
+                    htmlFor="name"
+                    className="text-sm text-muted-foreground font-normal"
                   >
-                    <img
-                      src="https://images.shadcnspace.com/assets/svgs/icon-google.svg"
-                      alt="google icon"
-                      className="h-4 w-4"
-                    />
-                    Sign up with Google
-                  </Button>
+                    Name*
+                  </FieldLabel>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="enter your name"
+                    className="dark:bg-background shadow-xs h-9 text-white"
+                    {...register('name')}
+                  />
+                  {errors.name && (
+                    <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
+                  )}
                 </Field>
-                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-sm text-muted-foreground bg-transparent">
-                  <span className="px-4">or sign up with</span>
-                </FieldSeparator>
-
-                <div className="flex flex-col gap-4">
-                  <Field className="gap-1.5">
-                    <FieldLabel
-                      htmlFor="name"
-                      className="text-sm text-muted-foreground font-normal"
-                    >
-                      Name*
-                    </FieldLabel>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="enter your name"
-                      className="dark:bg-background shadow-xs h-9"
-                      {...register('name')}
-                    />
-                    {errors.name && (
-                      <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
-                    )}
-                  </Field>
-                  <Field className="gap-1.5">
-                    <FieldLabel
-                      htmlFor="email"
-                      className="text-sm text-muted-foreground font-normal"
-                    >
-                      Email*
-                    </FieldLabel>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="example@trycode.com"
-                      className="dark:bg-background shadow-xs h-9"
-                      {...register('email')}
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
-                    )}
-                  </Field>
-                  <Field className="gap-1.5">
-                    <FieldLabel
-                      htmlFor="password"
-                      className="text-sm text-muted-foreground font-normal"
-                    >
-                      Password*
-                    </FieldLabel>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      className="dark:bg-background shadow-xs h-9"
-                      {...register('password')}
-                    />
-                    {errors.password && (
-                      <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
-                    )}
-                  </Field>
-                  <Field className="gap-1.5">
-                    <FieldLabel
-                      htmlFor="role"
-                      className="text-sm text-muted-foreground font-normal"
-                    >
-                      Account Role*
-                    </FieldLabel>
-                    <Controller
-                      name="role"
-                      control={control}
-                      render={({ field }) => (
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className="w-full h-9 dark:bg-background border rounded-lg shadow-xs px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer">
-                            <SelectValue placeholder="Select account role" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-popover text-popover-foreground">
-                            <SelectItem value="Student">Student (Read-only)</SelectItem>
-                            <SelectItem value="Author">Author (Manage own posts)</SelectItem>
-                            <SelectItem value="Editor">Editor (Manage all content)</SelectItem>
-                            <SelectItem value="Admin">Admin (Full Control)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      )}
-                    />
-                    {errors.role && (
-                      <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
-                    )}
-                  </Field>
-                </div>
-
-                <Field className="gap-4">
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    size="lg"
-                    className="rounded-lg cursor-pointer h-10 hover:bg-primary/80 w-full"
+                <Field className="gap-1.5">
+                  <FieldLabel
+                    htmlFor="email"
+                    className="text-sm text-muted-foreground font-normal"
                   >
-                    {loading ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      'Sign up'
-                    )}
-                  </Button>
-                  <FieldDescription className="text-center text-sm font-normal text-muted-foreground">
-                    Already have an account?{' '}
-                    <Link
-                      href="/auth/login"
-                      className="font-medium text-card-foreground no-underline hover:underline"
-                    >
-                      Sign in
-                    </Link>
-                  </FieldDescription>
+                    Email*
+                  </FieldLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="example@trycode.com"
+                    className="dark:bg-background shadow-xs h-9 text-white"
+                    {...register('email')}
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+                  )}
                 </Field>
-              </FieldGroup>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
+                <Field className="gap-1.5">
+                  <FieldLabel
+                    htmlFor="password"
+                    className="text-sm text-muted-foreground font-normal"
+                  >
+                    Password*
+                  </FieldLabel>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    className="dark:bg-background shadow-xs h-9 text-white"
+                    {...register('password')}
+                  />
+                  {errors.password && (
+                    <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
+                  )}
+                </Field>
+                <Field className="gap-1.5">
+                  <FieldLabel
+                    htmlFor="role"
+                    className="text-sm text-muted-foreground font-normal"
+                  >
+                    Account Role*
+                  </FieldLabel>
+                  <Controller
+                    name="role"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-full h-9 dark:bg-background border rounded-lg shadow-xs px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer text-white">
+                          <SelectValue placeholder="Select account role" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-popover text-popover-foreground">
+                          <SelectItem value="Student">Student (Read-only)</SelectItem>
+                          <SelectItem value="Author">Author (Manage own posts)</SelectItem>
+                          <SelectItem value="Editor">Editor (Manage all content)</SelectItem>
+                          <SelectItem value="Admin">Admin (Full Control)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.role && (
+                    <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
+                  )}
+                </Field>
+              </div>
+
+              <Field className="gap-4">
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  size="lg"
+                  className="rounded-lg cursor-pointer h-10 hover:bg-primary/80 w-full"
+                >
+                  {loading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    'Sign up'
+                  )}
+                </Button>
+                <FieldDescription className="text-center text-sm font-normal text-muted-foreground">
+                  Already have an account?{' '}
+                  <Link
+                    href="/auth/login"
+                    className="font-medium text-white no-underline hover:underline"
+                  >
+                    Sign in
+                  </Link>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

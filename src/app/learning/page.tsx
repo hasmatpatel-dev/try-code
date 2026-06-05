@@ -18,6 +18,16 @@ import {
 } from 'lucide-react';
 import { useMobileShell } from '@/components/mobile/mobile-shell-context';
 import { toast } from 'sonner';
+import Header from '@/components/shadcn-space/blocks/hero/header';
+import Footer02 from '@/components/shadcn-space/blocks/footer/footer';
+import { Instrument_Serif } from 'next/font/google';
+import { cn } from '@/lib/utils';
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['italic'],
+});
 
 interface Lesson {
   id: string;
@@ -145,38 +155,51 @@ export default function LearningPage() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#030712] ${readingMode ? 'p-5 py-8' : 'p-4 md:p-8'} space-y-5 flex flex-col`}>
-      {/* Header and Progress Indicator */}
-      <div className="space-y-3 shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <BookOpenCheck className="h-5 w-5 text-purple-500" />
-            <span className="text-xs font-bold text-gray-400 tracking-wider uppercase">
-              NEXT.JS PLATFORM BOOTCAMP
-            </span>
-          </div>
+    <div className="min-h-screen bg-[#030712] text-foreground flex flex-col">
+      {!readingMode && <Header className="fixed top-0 z-50 w-full hidden md:flex" />}
 
-          {/* Full-Screen Reading Mode Button */}
-          <button
-            onClick={() => {
-              setReadingMode(!readingMode);
-              toast(readingMode ? 'Exited reading mode' : 'Entered full-screen reading mode');
-            }}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-[#090D1A] border border-[#161C2C] text-[10px] font-bold text-gray-300 hover:text-white transition active:scale-95"
-          >
-            {readingMode ? (
-              <>
-                <Minimize2 className="h-3 w-3 mr-1" />
-                <span>Exit Fullscreen</span>
-              </>
-            ) : (
-              <>
-                <Maximize2 className="h-3 w-3 mr-1" />
-                <span>Reading Mode</span>
-              </>
-            )}
-          </button>
-        </div>
+      {/* Background radial glow */}
+      <div className={cn("relative flex-1 flex flex-col w-full", readingMode ? "" : "pt-20")}>
+        {!readingMode && (
+          <>
+            <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />
+            <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-950/10 blur-[120px] pointer-events-none" />
+          </>
+        )}
+
+        <div className={cn("w-full flex-1 flex flex-col", readingMode ? "p-5 py-8" : "max-w-7xl mx-auto px-4 lg:px-8 xl:px-16")}>
+          <div className={cn("w-full flex-1 flex flex-col space-y-6", readingMode ? "" : "border-x border-border px-5 md:px-8 py-12 lg:py-16")}>
+            {/* Header and Progress Indicator */}
+            <div className="space-y-3 shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <BookOpenCheck className="h-5 w-5 text-purple-500" />
+                  <span className="text-xs font-bold text-gray-400 tracking-wider uppercase">
+                    NEXT.JS PLATFORM BOOTCAMP
+                  </span>
+                </div>
+
+                {/* Full-Screen Reading Mode Button */}
+                <button
+                  onClick={() => {
+                    setReadingMode(!readingMode);
+                    toast(readingMode ? 'Exited reading mode' : 'Entered full-screen reading mode');
+                  }}
+                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-[#090D1A] border border-[#161C2C] text-[10px] font-bold text-gray-300 hover:text-white transition active:scale-95 cursor-pointer"
+                >
+                  {readingMode ? (
+                    <>
+                      <Minimize2 className="h-3 w-3 mr-1" />
+                      <span>Exit Fullscreen</span>
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="h-3 w-3 mr-1" />
+                      <span>Reading Mode</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
         {/* Progress Bar with Micro-animation */}
         <div className="space-y-1 bg-[#090D1A] p-3 rounded-2xl border border-[#161C2C]/60">
@@ -310,6 +333,10 @@ export default function LearningPage() {
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
+      </div>
+      </div>
+      </div>
+      {!readingMode && <Footer02 />}
       </div>
     </div>
   );

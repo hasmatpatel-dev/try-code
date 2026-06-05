@@ -1,7 +1,7 @@
-import HeroSection from "@/components/shadcn-space/blocks/hero-01/hero";
+import HeroSection from "@/components/shadcn-space/blocks/hero/hero";
 
-import BrandSlider, { BrandList } from "@/components/shadcn-space/blocks/hero-01/brand-slider";
-import type { AvatarList } from "@/components/shadcn-space/blocks/hero-01/hero";
+import BrandSlider, { BrandList } from "@/components/shadcn-space/blocks/hero/brand-slider";
+import type { AvatarList } from "@/components/shadcn-space/blocks/hero/hero";
 
 export default function AgencyHeroSection() {
   const avatarList: AvatarList[] = [

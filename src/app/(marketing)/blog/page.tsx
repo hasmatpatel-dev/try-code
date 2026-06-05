@@ -16,6 +16,22 @@ import {
   Folder,
 } from 'lucide-react';
 import { format } from 'date-fns';
+import Header from '@/components/shadcn-space/blocks/hero/header';
+import Footer02 from '@/components/shadcn-space/blocks/footer/footer';
+import { Instrument_Serif } from 'next/font/google';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['italic'],
+});
 
 const fetchPublicPosts = async ({
   search,
@@ -69,37 +85,32 @@ export default function BlogListingPage() {
   const totalPages = postsData ? Math.ceil(postsData.totalCount / 9) : 0;
 
   return (
-    <div className="relative min-h-screen bg-[#030712] text-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#030712] text-foreground">
+      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+
       {/* Background radial glow */}
-      <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-950/10 blur-[120px] pointer-events-none" />
+      <div className="relative overflow-hidden pt-20">
+        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-950/10 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto space-y-12 relative">
-        {/* Navigation back home */}
-        <div className="hidden md:flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2 text-white font-bold text-xl group">
-            <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/10">
-              <BookOpen className="h-4.5 w-4.5" />
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
+          <div className="border-x border-border px-5 md:px-8 py-12 lg:py-16 space-y-12 flex flex-col min-h-screen">
+            {/* Title Section (Matching Landing Page Style) */}
+            <div className="flex flex-col gap-4 max-w-2xl text-left pb-8 border-b border-border/40">
+              <div className="flex gap-2 items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                <p className="text-sm text-muted-foreground font-normal tracking-wide uppercase">TryCode Blog</p>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-medium tracking-tight text-white leading-tight">
+                Articles, guides &{" "}
+                <span className={`${instrumentSerif.className} tracking-tight text-purple-400`}>
+                  AI tutorials
+                </span>
+              </h1>
+              <p className="text-base md:text-lg font-normal text-muted-foreground leading-relaxed">
+                Deep dives into software architecture, full-stack design patterns, Next.js, and database scaling.
+              </p>
             </div>
-            <span>TryCode <span className="text-purple-400 font-semibold">Blog</span></span>
-          </Link>
-          <Link
-            href="/dashboard"
-            className="rounded-xl border border-[#161C2C] bg-[#090D1A]/50 px-4 py-2 text-xs font-semibold text-gray-300 hover:text-white hover:bg-gray-800 transition"
-          >
-            Access CMS
-          </Link>
-        </div>
-
-        {/* Title Banner */}
-        <div className="text-center max-w-2xl mx-auto space-y-4">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Articles, Guides & AI Tutorials
-          </h1>
-          <p className="text-base text-gray-400">
-            Deep dives into software architecture, full-stack design patterns, next.js, and database scaling.
-          </p>
-        </div>
 
         {/* Search & filters bar */}
         <div className="flex flex-col md:flex-row gap-4 bg-[#090D1A]/50 border border-[#161C2C] p-4 rounded-2xl backdrop-blur-xl">
@@ -119,38 +130,46 @@ export default function BlogListingPage() {
 
           <div className="flex flex-wrap gap-2">
             {/* Category selection */}
-            <select
-              value={selectedCategory}
-              onChange={(e) => {
-                setSelectedCategory(e.target.value);
+            <Select
+              value={selectedCategory || "ALL_CATEGORIES"}
+              onValueChange={(val) => {
+                setSelectedCategory(val === "ALL_CATEGORIES" ? "" : (val ?? ""));
                 setPage(1);
               }}
-              className="rounded-xl border border-[#161C2C] bg-gray-950 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-purple-500 max-w-[180px]"
             >
-              <option value="">All Categories</option>
-              {filters?.categories.map((c: any) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="rounded-xl border border-[#161C2C] bg-gray-950 px-3.5 py-2 h-10 text-sm text-white outline-none transition focus:border-purple-500 cursor-pointer max-w-[180px] min-w-[150px] flex items-center justify-between">
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent className="bg-popover text-popover-foreground">
+                <SelectItem value="ALL_CATEGORIES">All Categories</SelectItem>
+                {filters?.categories.map((c: any) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             {/* Tag selection */}
-            <select
-              value={selectedTag}
-              onChange={(e) => {
-                setSelectedTag(e.target.value);
+            <Select
+              value={selectedTag || "ALL_TAGS"}
+              onValueChange={(val) => {
+                setSelectedTag(val === "ALL_TAGS" ? "" : (val ?? ""));
                 setPage(1);
               }}
-              className="rounded-xl border border-[#161C2C] bg-gray-950 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-purple-500 max-w-[180px]"
             >
-              <option value="">All Tags</option>
-              {filters?.tags.map((t: any) => (
-                <option key={t.id} value={t.id}>
-                  #{t.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="rounded-xl border border-[#161C2C] bg-gray-950 px-3.5 py-2 h-10 text-sm text-white outline-none transition focus:border-purple-500 cursor-pointer max-w-[180px] min-w-[150px] flex items-center justify-between">
+                <SelectValue placeholder="All Tags" />
+              </SelectTrigger>
+              <SelectContent className="bg-popover text-popover-foreground">
+                <SelectItem value="ALL_TAGS">All Tags</SelectItem>
+                {filters?.tags.map((t: any) => (
+                  <SelectItem key={t.id} value={t.id}>
+                    #{t.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -276,6 +295,9 @@ export default function BlogListingPage() {
             )}
           </div>
         )}
+          </div>
+        </div>
+        <Footer02 />
       </div>
     </div>
   );

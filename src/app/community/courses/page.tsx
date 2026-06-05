@@ -4,10 +4,18 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Search, Flame, BookOpen, Clock, Users, ArrowRight, Star, GraduationCap } from 'lucide-react';
-import Header from '@/components/shadcn-space/blocks/hero-01/header';
+import Header from '@/components/shadcn-space/blocks/hero/header';
+import Footer02 from '@/components/shadcn-space/blocks/footer/footer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Instrument_Serif } from 'next/font/google';
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['italic'],
+});
 
 interface Course {
   id: string;
@@ -93,24 +101,32 @@ export default function CoursesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#030712]">
-      <Header className="hidden md:flex" />
-      
-      <div className="py-12 px-4 md:py-20 max-w-7xl mx-auto space-y-12">
-        {/* Page Title & Intro (Matching Landing Page Style) */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-border/40">
-          <div className="flex flex-col gap-4 max-w-2xl">
-            <Badge variant="outline" className="px-3 py-1 h-auto text-sm font-normal w-fit">
-              Bootcamps
-            </Badge>
-            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-white flex items-center gap-3">
-              <GraduationCap className="h-9 w-9 text-primary" />
-              Interactive Bootcamps
-            </h1>
-            <p className="text-base md:text-lg font-normal text-muted-foreground leading-relaxed">
-              Master full-stack programming, Next.js production architectures, and AI engineering with expert, interactive lessons.
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#030712] text-foreground">
+      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+
+      {/* Background radial glow */}
+      <div className="relative overflow-hidden pt-20">
+        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-950/10 blur-[120px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
+          <div className="border-x border-border px-5 md:px-8 py-12 lg:py-16 space-y-12 flex flex-col min-h-screen">
+            {/* Title Section (Matching Landing Page Style) */}
+            <div className="flex flex-col gap-4 max-w-2xl text-left pb-8 border-b border-border/40">
+              <div className="flex gap-2 items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                <p className="text-sm text-muted-foreground font-normal tracking-wide uppercase">Bootcamps</p>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-medium tracking-tight text-white leading-tight">
+                Interactive{" "}
+                <span className={`${instrumentSerif.className} tracking-tight text-purple-400`}>
+                  bootcamps
+                </span>
+              </h1>
+              <p className="text-base md:text-lg font-normal text-muted-foreground leading-relaxed">
+                Master full-stack programming, Next.js production architectures, and AI engineering with expert, interactive lessons.
+              </p>
+            </div>
           
           {/* Search Bar - Nested style */}
           <div className="relative w-full md:max-w-md shrink-0">
@@ -125,7 +141,6 @@ export default function CoursesPage() {
               className="w-full pl-12 pr-4 py-3.5 rounded-full bg-muted border border-border/40 text-sm text-white placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-md"
             />
           </div>
-        </div>
 
         {/* Categories Tab Selector */}
         <div className="flex overflow-x-auto gap-2.5 pb-2 -mx-4 px-4 scrollbar-none snap-x snap-mandatory">
@@ -252,6 +267,9 @@ export default function CoursesPage() {
             </div>
           )}
         </div>
+          </div>
+        </div>
+        <Footer02 />
       </div>
     </div>
   );

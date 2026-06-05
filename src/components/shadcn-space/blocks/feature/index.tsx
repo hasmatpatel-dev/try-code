@@ -1,4 +1,4 @@
-import Feature from "@/components/shadcn-space/blocks/feature-01/feature";
+import Feature from "@/components/shadcn-space/blocks/feature/feature";
 
 const Feature01 = () => {
   return <Feature />;
