@@ -17,22 +17,33 @@ export async function GET(request: Request) {
     if (!error && data.user) {
       const user = data.user;
       
-      // Update role if passed from register page OAuth signup
-      if (role && ['Admin', 'Editor', 'Author', 'Student'].includes(role)) {
-        try {
-          // Update role in Prisma database
-          await prisma.user.update({
-            where: { id: user.id },
-            data: { role },
-          });
+      // Sync user profile in Prisma database
+      try {
+        const userMetadata = user.user_metadata || {};
+        await prisma.user.upsert({
+          where: { id: user.id },
+          create: {
+            id: user.id,
+            email: user.email!,
+            name: userMetadata.name || user.email!.split('@')[0],
+            avatarUrl: userMetadata.avatarUrl || userMetadata.avatar_url || userMetadata.picture || null,
+            role: userMetadata.role || role || 'Student',
+          },
+          update: {
+            name: userMetadata.name || undefined,
+            avatarUrl: userMetadata.avatarUrl || userMetadata.avatar_url || userMetadata.picture || undefined,
+            role: role || undefined,
+          },
+        });
 
-          // Update role in Supabase Auth user metadata
+        // Update role in Supabase Auth user metadata if role was passed and differs
+        if (role && ['Admin', 'Editor', 'Author', 'Student'].includes(role) && userMetadata.role !== role) {
           await supabase.auth.updateUser({
             data: { role },
           });
-        } catch (dbError) {
-          console.error('Failed to sync role in auth callback:', dbError);
         }
+      } catch (dbError) {
+        console.error('Failed to sync user in auth callback:', dbError);
       }
       
       // Determine if this is the first email confirmation

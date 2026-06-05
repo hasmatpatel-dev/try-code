@@ -71,7 +71,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 id: data.session.user.id,
                 email: data.session.user.email!,
                 name: data.session.user.user_metadata?.name || data.session.user.email!.split('@')[0],
-                avatarUrl: data.session.user.user_metadata?.avatarUrl || null,
+                avatarUrl: data.session.user.user_metadata?.avatarUrl || data.session.user.user_metadata?.avatar_url || data.session.user.user_metadata?.picture || null,
                 role: data.session.user.user_metadata?.role || 'Student',
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),

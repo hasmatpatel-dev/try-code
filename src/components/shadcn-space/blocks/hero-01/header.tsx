@@ -5,11 +5,27 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/com
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, User as UserIcon, ChevronDown } from 'lucide-react';
 import Logo from "@/assets/logo/logo";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import Link from 'next/link';
+
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import { clearSession } from "@/features/authSlice";
+import { supabase } from "@/lib/supabase/client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export type NavigationSection = {
   title: string;
@@ -21,8 +37,6 @@ type HeaderProps = {
   navigationData?: NavigationSection[];
   className?: string;
 };
-
-import Link from 'next/link';
 
 const CollaborateButton = ({ className }: { className?: string }) => (
   <Link
@@ -41,10 +55,82 @@ const CollaborateButton = ({ className }: { className?: string }) => (
   </Link>
 );
 
+const UserProfileMenu = ({ user, handleLogout, router }: { user: any; handleLogout: () => void; router: any }) => {
+  const avatarSrc = user.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.email}`;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="flex items-center space-x-2.5 rounded-full border border-border/85 bg-[#090D1A]/95 p-1 ps-1 pr-4 hover:bg-[#161C2C]/50 hover:border-purple-500/30 transition-all select-none cursor-pointer focus:outline-none">
+          <Avatar className="h-8 w-8 rounded-full ring-2 ring-purple-500/20">
+            <AvatarImage src={avatarSrc} alt={user.name || 'User'} className="object-cover" />
+            <AvatarFallback className="bg-purple-600/10 text-purple-400 font-bold text-xs uppercase">
+              {user.name ? user.name.substring(0, 2) : 'US'}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col text-left">
+            <span className="text-xs font-bold text-white leading-tight max-w-[100px] truncate">
+              {user.name}
+            </span>
+            <span className="text-[9px] font-bold text-purple-400 leading-none capitalize">
+              {user.role}
+            </span>
+          </div>
+          <ChevronDown className="h-3.5 w-3.5 text-gray-400 ml-1 shrink-0 animate-pulse" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56 mt-2 border border-[#161C2C] bg-[#090D1A]/95 backdrop-blur-xl shadow-2xl p-1.5 rounded-2xl">
+        <DropdownMenuLabel className="px-2.5 py-2 flex flex-col">
+          <span className="text-xs font-bold text-white truncate">{user.name}</span>
+          <span className="text-[10px] text-gray-400 truncate">{user.email}</span>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator className="bg-[#161C2C] my-1" />
+        <DropdownMenuItem
+          onClick={() => router.push('/dashboard')}
+          className="flex items-center rounded-xl px-2.5 py-2.5 text-xs font-semibold text-gray-300 hover:bg-[#161C2C]/50 hover:text-white cursor-pointer transition"
+        >
+          <LayoutDashboard className="h-4 w-4 mr-2.5 text-gray-400" />
+          <span>CMS Dashboard</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => router.push('/profile')}
+          className="flex items-center rounded-xl px-2.5 py-2.5 text-xs font-semibold text-gray-300 hover:bg-[#161C2C]/50 hover:text-white cursor-pointer transition"
+        >
+          <UserIcon className="h-4 w-4 mr-2.5 text-gray-400" />
+          <span>My Profile</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="bg-[#161C2C] my-1" />
+        <DropdownMenuItem
+          onClick={handleLogout}
+          className="flex items-center rounded-xl px-2.5 py-2.5 text-xs font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-300 cursor-pointer transition"
+        >
+          <LogOut className="h-4 w-4 mr-2.5 text-red-400" />
+          <span>Sign Out</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 const Header = ({ navigationData, className }: HeaderProps) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
+
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      dispatch(clearSession());
+      toast.success('Logged out successfully');
+      router.push('/auth/login');
+    } catch (err) {
+      toast.error('Logout failed');
+    }
+  };
 
   const defaultNavigationData: NavigationSection[] = [
     {
@@ -173,7 +259,13 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
         {/* Desktop CTA */}
         <div className="flex gap-4">
-          <CollaborateButton className="hidden lg:flex" />
+          {user ? (
+            <div className="hidden lg:flex">
+              <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
+            </div>
+          ) : (
+            <CollaborateButton className="hidden lg:flex" />
+          )}
 
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -238,7 +330,11 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     </NavigationMenu>
 
                     <div className="w-fit">
-                      <CollaborateButton />
+                      {user ? (
+                        <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
+                      ) : (
+                        <CollaborateButton />
+                      )}
                     </div>
                   </div>
 
