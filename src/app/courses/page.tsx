@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Search, Flame, BookOpen, Clock, Users, ArrowRight, Star, GraduationCap } from 'lucide-react';
+import Header from '@/components/shadcn-space/blocks/hero-01/header';
 
 interface Course {
   id: string;
@@ -89,9 +90,11 @@ export default function CoursesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#030712] py-4 px-4 md:py-8 md:px-8 space-y-6">
-      {/* Page Title & Intro */}
-      <div className="space-y-1">
+    <div className="min-h-screen bg-[#030712]">
+      <Header className="hidden md:flex" />
+      <div className="py-4 px-4 md:py-8 md:px-8 space-y-6 max-w-6xl mx-auto">
+        {/* Page Title & Intro */}
+        <div className="space-y-1">
         <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight flex items-center">
           <GraduationCap className="h-7 w-7 mr-2 text-purple-500" />
           Interactive Bootcamps
@@ -217,5 +220,6 @@ export default function CoursesPage() {
         )}
       </div>
     </div>
+  </div>
   );
 }

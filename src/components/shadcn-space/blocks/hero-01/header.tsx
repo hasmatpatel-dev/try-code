@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { clearSession } from "@/features/authSlice";
 import { supabase } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -113,6 +113,7 @@ const UserProfileMenu = ({ user, handleLogout, router }: { user: any; handleLogo
 const Header = ({ navigationData, className }: HeaderProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathname = usePathname();
   const { user } = useAppSelector((state) => state.auth);
 
   const [sticky, setSticky] = useState(false);
@@ -133,33 +134,38 @@ const Header = ({ navigationData, className }: HeaderProps) => {
   const defaultNavigationData: NavigationSection[] = [
     {
       title: "Home",
-      href: "#home",
-      isActive: activeSection === "home",
+      href: "/#home",
+      isActive: pathname === "/" && activeSection === "home",
     },
     {
       title: "About us",
-      href: "#about-us",
-      isActive: activeSection === "about-us",
+      href: "/#about-us",
+      isActive: pathname === "/" && activeSection === "about-us",
     },
     {
       title: "Services",
-      href: "#services",
-      isActive: activeSection === "services",
+      href: "/#services",
+      isActive: pathname === "/" && activeSection === "services",
+    },
+    {
+      title: "Courses",
+      href: "/courses",
+      isActive: pathname === "/courses",
     },
     {
       title: "Team",
-      href: "#team",
-      isActive: activeSection === "team",
+      href: "/#team",
+      isActive: pathname === "/" && activeSection === "team",
     },
     {
       title: "Pricing",
-      href: "#pricing",
-      isActive: activeSection === "pricing",
+      href: "/#pricing",
+      isActive: pathname === "/" && activeSection === "pricing",
     },
     {
       title: "Awards",
-      href: "#awards",
-      isActive: activeSection === "awards",
+      href: "/#awards",
+      isActive: pathname === "/" && activeSection === "awards",
     },
   ];
 
@@ -232,9 +238,9 @@ const Header = ({ navigationData, className }: HeaderProps) => {
       >
         {/* Logo */}
         <div>
-          <a href="#" aria-label="TryCode Homepage">
+          <Link href="/" aria-label="TryCode Homepage">
             <Logo className="gap-3" />
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
@@ -283,9 +289,9 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                 className="w-full sm:w-96 p-0 border-l-0"
               >
                 <div className="flex items-center justify-between p-6">
-                  <a href="#" aria-label="TryCode Homepage">
+                  <Link href="/" aria-label="TryCode Homepage">
                     <Logo className="gap-2" />
-                  </a>
+                  </Link>
                   <SheetClose id="mobile-menu-close" aria-label="Close menu">
                     <span className="rounded-full border border-border p-2.5 block">
                       <X width={16} height={16} />
