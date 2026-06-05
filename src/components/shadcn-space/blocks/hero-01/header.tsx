@@ -149,8 +149,8 @@ const Header = ({ navigationData, className }: HeaderProps) => {
     },
     {
       title: "Courses",
-      href: "/courses",
-      isActive: pathname === "/courses",
+      href: "/community/courses",
+      isActive: pathname === "/community/courses",
     },
     {
       title: "Team",

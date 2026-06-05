@@ -40,7 +40,7 @@ interface NavigationItem {
 
 const mainNavItems: NavigationItem[] = [
   { label: 'Home', href: '/', icon: Home },
-  { label: 'Courses', href: '/courses', icon: BookOpen },
+  { label: 'Courses', href: '/community/courses', icon: BookOpen },
   { label: 'Learning', href: '/learning', icon: GraduationCap },
   { label: 'Community', href: '/community', icon: Users },
   { label: 'Profile', href: '/profile', icon: User },

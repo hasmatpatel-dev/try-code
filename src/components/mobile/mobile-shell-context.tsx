@@ -57,20 +57,20 @@ export function MobileShellProvider({ children }: { children: React.ReactNode })
           setBackButtonHref(null);
         }
       }
-    } else if (pathname.startsWith('/courses')) {
-      if (pathname === '/courses') {
+    } else if (pathname.startsWith('/community/courses')) {
+      if (pathname === '/community/courses') {
         setTitle('Courses');
         setShowBackButton(false);
         setBackButtonHref(null);
       } else {
         setTitle('Course Details');
         setShowBackButton(true);
-        setBackButtonHref('/courses');
+        setBackButtonHref('/community/courses');
       }
     } else if (pathname.startsWith('/learning')) {
       setTitle('Learning Player');
       setShowBackButton(true);
-      setBackButtonHref('/courses');
+      setBackButtonHref('/community/courses');
     } else if (pathname === '/community') {
       setTitle('Community Hub');
       setShowBackButton(false);
