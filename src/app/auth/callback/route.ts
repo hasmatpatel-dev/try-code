@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { sendWelcomeEmail } from '@/lib/email';
+import { prisma } from '@/lib/prisma/client';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/dashboard';
+  const role = searchParams.get('role');
 
   if (code) {
     const supabase = await createClient();
@@ -14,6 +16,24 @@ export async function GET(request: Request) {
 
     if (!error && data.user) {
       const user = data.user;
+      
+      // Update role if passed from register page OAuth signup
+      if (role && ['Admin', 'Editor', 'Author', 'Student'].includes(role)) {
+        try {
+          // Update role in Prisma database
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { role },
+          });
+
+          // Update role in Supabase Auth user metadata
+          await supabase.auth.updateUser({
+            data: { role },
+          });
+        } catch (dbError) {
+          console.error('Failed to sync role in auth callback:', dbError);
+        }
+      }
       
       // Determine if this is the first email confirmation
       // If email_confirmed_at is within the last 10 seconds, trigger welcome email

@@ -1,8 +1,61 @@
 import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
+
+const isSupabaseConfigured = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  return (
+    !!url &&
+    !!key &&
+    url !== 'https://your-supabase-project.supabase.co' &&
+    key !== 'your-anon-key-here'
+  );
+};
 
 export async function getSessionCookie() {
   try {
     const cookieStore = await cookies();
+
+    if (isSupabaseConfigured()) {
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            getAll() {
+              return cookieStore.getAll();
+            },
+            setAll(cookiesToSet) {
+              try {
+                cookiesToSet.forEach(({ name, value, options }) =>
+                  cookieStore.set(name, value, options)
+                );
+              } catch {
+                // Ignore if called from Server Component
+              }
+            },
+          },
+        }
+      );
+
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error || !session) return null;
+
+      return {
+        access_token: session.access_token,
+        user: {
+          id: session.user.id,
+          email: session.user.email,
+          role: session.user.user_metadata?.role || 'Student',
+          user_metadata: {
+            name: session.user.user_metadata?.name || session.user.email?.split('@')[0],
+            avatarUrl: session.user.user_metadata?.avatarUrl || session.user.user_metadata?.avatar_url || null,
+            role: session.user.user_metadata?.role || 'Student',
+          },
+        },
+      };
+    }
+
     const sessionData = cookieStore.get('trycode-session')?.value;
     if (!sessionData) return null;
     return JSON.parse(sessionData);

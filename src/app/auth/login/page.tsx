@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -34,6 +34,17 @@ function LoginContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const redirectUrl = searchParams.get('redirect') || '/dashboard';
+
+  // Display error message from URL query params (e.g., from OAuth redirect errors)
+  useEffect(() => {
+    const errorParam = searchParams.get('error');
+    if (errorParam) {
+      toast.error(decodeURIComponent(errorParam));
+      // Clean up error parameter from URL to prevent showing it again on refresh
+      const newUrl = window.location.pathname + (searchParams.get('redirect') ? `?redirect=${encodeURIComponent(redirectUrl)}` : '');
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [searchParams, redirectUrl]);
 
   const {
     register,
@@ -74,12 +85,13 @@ function LoginContent() {
     toast.info('Demo credentials loaded!');
   };
 
-  const handleOAuthSignIn = async (provider: 'google' | 'github') => {
+  const handleOAuthSignIn = async (provider: 'google') => {
     try {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectUrl)}`,
+          redirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(redirectUrl)}`,
         },
       });
       if (error) toast.error(error.message);
@@ -117,12 +129,12 @@ function LoginContent() {
           <CardContent className="p-0">
             <form onSubmit={handleSubmit(onSubmit)}>
               <FieldGroup className="gap-6">
-                <Field className="grid md:grid-cols-2 md:gap-6 gap-3">
+                <Field className="flex w-full">
                   <Button
                     variant="outline"
                     type="button"
                     onClick={() => handleOAuthSignIn('google')}
-                    className="text-sm text-medium text-card-foreground gap-2 dark:bg-background rounded-lg h-9 shadow-xs cursor-pointer"
+                    className="w-full text-sm text-medium text-card-foreground gap-2 dark:bg-background rounded-lg h-9 shadow-xs cursor-pointer"
                   >
                     <img
                       src="https://images.shadcnspace.com/assets/svgs/icon-google.svg"
@@ -130,24 +142,6 @@ function LoginContent() {
                       className="h-4 w-4"
                     />
                     Sign in with Google
-                  </Button>
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => handleOAuthSignIn('github')}
-                    className="text-sm text-medium text-card-foreground gap-2 dark:bg-background rounded-lg h-9 shadow-xs cursor-pointer"
-                  >
-                    <img
-                      src="https://images.shadcnspace.com/assets/svgs/icon-github.svg"
-                      alt="github icon"
-                      className="dark:hidden h-4 w-4"
-                    />
-                    <img
-                      src="https://images.shadcnspace.com/assets/svgs/icon-github-white.svg"
-                      alt="github icon"
-                      className="hidden dark:block h-4 w-4"
-                    />
-                    Sign in with GitHub
                   </Button>
                 </Field>
                 <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-sm text-muted-foreground bg-transparent">

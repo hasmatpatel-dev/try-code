@@ -47,6 +47,7 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<RegisterInputs>({
     resolver: zodResolver(registerSchema),
@@ -84,12 +85,14 @@ export default function RegisterPage() {
     }
   };
 
-  const handleOAuthSignUp = async (provider: 'google' | 'github') => {
+  const handleOAuthSignUp = async (provider: 'google') => {
+    const selectedRole = watch('role') || 'Student';
     try {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${appUrl}/auth/callback?role=${selectedRole}`,
         },
       });
       if (error) toast.error(error.message);
@@ -127,12 +130,12 @@ export default function RegisterPage() {
           <CardContent className="p-0">
             <form onSubmit={handleSubmit(onSubmit)}>
               <FieldGroup className="gap-6">
-                <Field className="grid md:grid-cols-2 md:gap-6 gap-3">
+                <Field className="flex w-full">
                   <Button
                     variant="outline"
                     type="button"
                     onClick={() => handleOAuthSignUp('google')}
-                    className="text-sm text-medium text-card-foreground gap-2 cursor-pointer dark:bg-background rounded-lg h-9 shadow-xs"
+                    className="w-full text-sm text-medium text-card-foreground gap-2 cursor-pointer dark:bg-background rounded-lg h-9 shadow-xs"
                   >
                     <img
                       src="https://images.shadcnspace.com/assets/svgs/icon-google.svg"
@@ -140,24 +143,6 @@ export default function RegisterPage() {
                       className="h-4 w-4"
                     />
                     Sign up with Google
-                  </Button>
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => handleOAuthSignUp('github')}
-                    className="text-sm text-medium text-card-foreground gap-2 cursor-pointer dark:bg-background rounded-lg h-9 shadow-xs"
-                  >
-                    <img
-                      src="https://images.shadcnspace.com/assets/svgs/icon-github.svg"
-                      alt="github icon"
-                      className="dark:hidden  h-4 w-4"
-                    />
-                    <img
-                      src="https://images.shadcnspace.com/assets/svgs/icon-github-white.svg"
-                      alt="github icon"
-                      className="hidden dark:block  h-4 w-4"
-                    />
-                    Sign up with GitHub
                   </Button>
                 </Field>
                 <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-sm text-muted-foreground bg-transparent">
