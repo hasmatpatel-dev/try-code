@@ -76,7 +76,7 @@ export default function BlogListingPage() {
 
       <div className="max-w-7xl mx-auto space-y-12 relative">
         {/* Navigation back home */}
-        <div className="flex items-center justify-between">
+        <div className="hidden md:flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 text-white font-bold text-xl group">
             <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/10">
               <BookOpen className="h-4.5 w-4.5" />

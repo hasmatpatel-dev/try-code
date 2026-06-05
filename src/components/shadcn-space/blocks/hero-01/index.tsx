@@ -49,7 +49,7 @@ export default function AgencyHeroSection() {
 
   return (
     <div className="relative">
-      <main className="min-h-[calc(100dvh-80px)] flex justify-center items-center flex-col">
+      <main className="min-h-[calc(100dvh-80px)] flex justify-center items-center flex-col max-xl:px-4">
         <HeroSection avatarList={avatarList} />
         <BrandSlider brandList={brandList} />
       </main>

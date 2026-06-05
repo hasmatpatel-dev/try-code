@@ -140,7 +140,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
 
       <div className="max-w-7xl mx-auto space-y-10 relative">
         {/* Navigation */}
-        <div className="flex items-center justify-between border-b border-[#161C2C] pb-6">
+        <div className="hidden md:flex items-center justify-between border-b border-[#161C2C] pb-6">
           <Link href="/blog" className="flex items-center text-xs font-semibold text-gray-400 hover:text-white transition group">
             <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition" />
             Back to Articles

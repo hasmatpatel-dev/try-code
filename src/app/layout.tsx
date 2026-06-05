@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { Inter } from "next/font/google";
 import Providers from "@/components/providers";
+import ResponsiveShell from "@/components/mobile/responsive-shell";
 
 export const metadata: Metadata = {
   title: 'TryCode - Full-Stack Blog CMS & LMS',
@@ -16,12 +17,14 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth dark">
-      <body className= {`flex min-h-screen flex-col bg-background text-foreground antialiased ${inter.className}`}>
+    <html lang="en" className="scroll-smooth dark" data-scroll-behavior="smooth">
+      <body className= {`flex min-h-screen flex-col bg-[#030712] text-foreground antialiased ${inter.className}`}>
         <Providers>
-          <main className="flex-1">
-            {children}
-          </main>
+          <ResponsiveShell>
+            <main className="flex-1">
+              {children}
+            </main>
+          </ResponsiveShell>
         </Providers>
       </body>
     </html>

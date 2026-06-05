@@ -17,7 +17,7 @@ import Testimonial01 from '@/components/shadcn-space/blocks/testimonial-02'
 export default function Page() {
   return (
     <div className=''>
-      <Header />
+      <Header className="hidden md:flex" />
       
       <div id="home" className="scroll-mt-20">
         <AgencyHeroSection />

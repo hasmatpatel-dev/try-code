@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>TryCode PWA Style Guide</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Reset & Base variables matching TryCode OKLCH/Hex system */
+    :root {
+      --background: #030712;
+      --foreground: #f3f4f6;
+      --card: #090d1a;
+      --card-border: #161c2c;
+      --primary: #8b5cf6;
+      --primary-hover: #7c3aed;
+      --secondary: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --muted-text: #9ca3af;
+      --border-color: rgba(255, 255, 255, 0.08);
+      
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* Layout structure */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: white;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted-text);
+      margin-top: 4px;
+    }
+
+    .badge-pwa {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #a78bfa;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Grid layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: white;
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    /* Card styling styling */
+    .card {
+      background-color: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(139, 92, 246, 0.25);
+    }
+
+    /* Color Swatches */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+    }
+
+    .swatch-item {
+      display: flex;
+      flex-col: column;
+      flex-direction: column;
+    }
+
+    .swatch-color {
+      height: 64px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 8px;
+    }
+
+    .swatch-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .swatch-hex {
+      font-size: 10px;
+      color: var(--muted-text);
+      font-family: monospace;
+    }
+
+    /* Typo elements */
+    .typo-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .typo-sample {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 12px;
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    /* Interactive Component Mockups */
+    .mobile-mockup {
+      width: 340px;
+      height: 600px;
+      border: 6px solid #161c2c;
+      border-radius: 40px;
+      background-color: var(--background);
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .notch {
+      width: 130px;
+      height: 20px;
+      background-color: #161c2c;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    /* Mobile Shell Header */
+    .mock-header {
+      background-color: var(--card);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 24px 16px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .mock-header-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+    }
+
+    /* Mobile Bottom Navigation */
+    .mock-bottom-nav {
+      background-color: rgba(9, 13, 26, 0.95);
+      backdrop-filter: blur(10px);
+      border-t: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid var(--card-border);
+      padding: 10px 12px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .mock-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--muted-text);
+      font-size: 9px;
+      font-weight: 600;
+      text-decoration: none;
+      width: 50px;
+      cursor: pointer;
+    }
+
+    .mock-nav-item.active {
+      color: var(--primary);
+    }
+
+    .mock-nav-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .mock-nav-item.active .mock-nav-icon {
+      background-color: rgba(139, 92, 246, 0.12);
+    }
+
+    .mock-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Hide scrollbar on mock content */
+    .mock-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Buttons */
+    .btn-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.2);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border-color: var(--card-border);
+      color: var(--foreground);
+    }
+
+    .btn-secondary:active {
+      background-color: rgba(255, 255, 255, 0.05);
+      transform: scale(0.97);
+    }
+
+    /* Forms */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .form-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      background-color: #030712;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      color: white;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+    }
+
+    .form-input.error {
+      border-color: var(--danger);
+    }
+
+    .form-error {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--danger);
+    }
+
+    /* Custom Mobile components demo */
+    .mock-course-card {
+      background-color: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .mock-course-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      background-color: rgba(139, 92, 246, 0.15);
+      color: #a78bfa;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .mock-progress-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mock-progress-bar {
+      height: 6px;
+      background-color: var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .mock-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+    }
+
+    /* Study Tracker minutes graph */
+    .mock-chart {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 80px;
+      padding-top: 10px;
+    }
+
+    .mock-chart-bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      gap: 4px;
+    }
+
+    .mock-chart-bar {
+      width: 6px;
+      background-color: var(--card-border);
+      border-radius: 10px;
+      height: 60px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .mock-chart-fill {
+      width: 100%;
+      border-radius: 10px;
+      background: linear-gradient(to top, var(--primary), var(--secondary));
+    }
+
+    .mock-chart-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--muted-text);
+    }
+
+    /* Heart animation mock */
+    .mock-heart-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .mock-heart-icon {
+      font-size: 16px;
+      color: var(--danger);
+      animation: heartPop 0.4s ease-out infinite alternate;
+    }
+
+    @keyframes heartPop {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.25); }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand-logo">
+        <div class="logo-mark">T</div>
+        <div>
+          <h1>TryCode UI Style Guide</h1>
+          <div class="subtitle">Design manual for PWA mobile layout & theme structures</div>
+        </div>
+      </div>
+      <span class="badge-pwa">PWA Standard</span>
+    </header>
+
+    <!-- Design Tokens Section -->
+    <h2 class="section-title">Design Tokens (Palette & Typography)</h2>
+    <div class="grid">
+      <!-- Colors card -->
+      <div class="card">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 16px; color: white;">Brand Colors</h3>
+        <div class="swatch-grid">
+          <div class="swatch-item">
+            <div class="swatch-color" style="background-color: var(--background);"></div>
+            <span class="swatch-label">Background</span>
+            <span class="swatch-hex">#030712</span>
+          </div>
+          <div class="swatch-item">
+            <div class="swatch-color" style="background-color: var(--card);"></div>
+            <span class="swatch-label">Card BG</span>
+            <span class="swatch-hex">#090D1A</span>
+          </div>
+          <div class="swatch-item">
+            <div class="swatch-color" style="background-color: var(--card-border);"></div>
+            <span class="swatch-label">Border</span>
+            <span class="swatch-hex">#161C2C</span>
+          </div>
+          <div class="swatch-item">
+            <div class="swatch-color" style="background-color: var(--primary);"></div>
+            <span class="swatch-label">Primary</span>
+            <span class="swatch-hex">#8B5CF6</span>
+          </div>
+          <div class="swatch-item">
+            <div class="swatch-color" style="background-color: var(--secondary);"></div>
+            <span class="swatch-label">Secondary</span>
+            <span class="swatch-hex">#3B82F6</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography card -->
+      <div class="card typo-block">
+        <h3 style="font-size: 15px; font-weight: 700; color: white;">Typography Hierarchy</h3>
+        
+        <div class="typo-sample">
+          <span style="font-size: 9px; font-weight: 700; color: var(--muted-text); uppercase block">H1 TITLE</span>
+          <p style="font-size: 24px; font-weight: 800; color: white; tracking-tight">Interactive Bootcamps</p>
+        </div>
+
+        <div class="typo-sample">
+          <span style="font-size: 9px; font-weight: 700; color: var(--muted-text); uppercase block">H2 CARD TITLE</span>
+          <p style="font-size: 16px; font-weight: 700; color: white;">Next.js 16 Production Architectures</p>
+        </div>
+
+        <div class="typo-sample">
+          <span style="font-size: 9px; font-weight: 700; color: var(--muted-text); uppercase block">BODY/TEXT</span>
+          <p style="font-size: 12px; color: var(--muted-text); font-weight: normal;">Master React Server Components, Server Actions, App Router optimization, and edge deployment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interface components demo -->
+    <h2 class="section-title">UI Elements & Spacing</h2>
+    <div class="grid">
+      <!-- Buttons Card -->
+      <div class="card">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 16px; color: white;">Action Components</h3>
+        <div class="btn-demo">
+          <div class="form-label">Primary Active Action (Tap Target: 48px)</div>
+          <button class="btn btn-primary">Resume Learning</button>
+          
+          <div class="form-label">Secondary Action (Outline/Card)</div>
+          <button class="btn btn-secondary">Explore Chapters</button>
+        </div>
+      </div>
+
+      <!-- Forms card -->
+      <div class="card">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 16px; color: white;">Keyboard & Form Sizing</h3>
+        <div class="btn-demo">
+          <div class="form-group">
+            <label class="form-label">Full Name input (touch-first)</label>
+            <input type="text" class="form-input" value="Alex Mercer" placeholder="e.g. John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Invalid validation state</label>
+            <input type="text" class="form-input error" value="invalid-email" placeholder="e.g. email@example.com">
+            <span class="form-error">Please enter a valid email address</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PWA Interactive Mockup -->
+    <h2 class="section-title">Interactive Mobile Mockup (PWA Layout)</h2>
+    <div style="padding: 20px 0;">
+      <div class="mobile-mockup">
+        <!-- iOS/Android Notch -->
+        <div class="notch"></div>
+
+        <!-- Sticky Header -->
+        <div class="mock-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 24px; height: 24px; border-radius: 6px; background-color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white;">T</div>
+            <span class="mock-header-title">TryCode <span style="font-size: 9px; padding: 1px 6px; background-color: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; border-radius: 20px; font-weight: 600;">PWA</span></span>
+          </div>
+          
+          <div style="width: 26px; height: 26px; border-radius: 8px; background-color: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted-text)">👤</div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="mock-content">
+          <!-- Study Tracker Widget -->
+          <div class="mock-course-card">
+            <div style="text-align: left;">
+              <span class="form-label">Weekly progress</span>
+              <h4 style="font-size: 13px; font-weight: 700; color: white; margin-top: 2px;">Study Minutes Tracker</h4>
+            </div>
+            
+            <div class="mock-chart">
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 38%;"></div></div>
+                <span class="mock-chart-label">M</span>
+              </div>
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 66%;"></div></div>
+                <span class="mock-chart-label">T</span>
+              </div>
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 25%;"></div></div>
+                <span class="mock-chart-label">W</span>
+              </div>
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 100%;"></div></div>
+                <span class="mock-chart-label">T</span>
+              </div>
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 50%;"></div></div>
+                <span class="mock-chart-label">F</span>
+              </div>
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 12%;"></div></div>
+                <span class="mock-chart-label">S</span>
+              </div>
+              <div class="mock-chart-bar-container">
+                <div class="mock-chart-bar"><div class="mock-chart-fill" style="height: 75%;"></div></div>
+                <span class="mock-chart-label">S</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Card Widget -->
+          <div class="mock-course-card">
+            <span class="mock-course-badge">Hot</span>
+            <div style="text-align: left; padding-right: 30px;">
+              <span class="form-label" style="font-size: 8px;">FULL-STACK</span>
+              <h4 style="font-size: 13px; font-weight: 700; color: white; margin-top: 2px;">Next.js 16 Production Architectures</h4>
+            </div>
+            
+            <div class="mock-progress-container">
+              <div style="display: flex; justify-content: space-between; font-size: 8px; font-weight: bold; color: var(--muted-text)">
+                <span>COMPLETE</span>
+                <span>62%</span>
+              </div>
+              <div class="mock-progress-bar">
+                <div class="mock-progress-fill" style="width: 62%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Feed Card -->
+          <div class="mock-course-card" style="text-align: left; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <div style="width: 20px; height: 20px; border-radius: 4px; background-color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 10px;">💬</div>
+              <div>
+                <span style="font-size: 10px; font-weight: bold; color: white; display: block;">Clara Oswald</span>
+                <span style="font-size: 7px; color: var(--muted-text); display: block;">Just now</span>
+              </div>
+            </div>
+            <p style="font-size: 10px; color: var(--foreground);">My student CMS dashboard is fully responsive! Spacing fits mobile notches perfectly.</p>
+            
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 10px; color: var(--muted-text); margin-top: 4px;">
+              <div class="mock-heart-container">
+                <span class="mock-heart-icon">❤️</span>
+                <span style="font-size: 9px; font-weight: bold; color: var(--danger);">43</span>
+              </div>
+              <span>💬 15 comments</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fixed Bottom Tab Bar -->
+        <div class="mock-bottom-nav">
+          <a class="mock-nav-item active">
+            <div class="mock-nav-icon">🏠</div>
+            <span>Home</span>
+          </a>
+          <a class="mock-nav-item">
+            <div class="mock-nav-icon">📚</div>
+            <span>Courses</span>
+          </a>
+          <a class="mock-nav-item">
+            <div class="mock-nav-icon">🎓</div>
+            <span>Learning</span>
+          </a>
+          <a class="mock-nav-item">
+            <div class="mock-nav-icon">👥</div>
+            <span>Community</span>
+          </a>
+          <a class="mock-nav-item">
+            <div class="mock-nav-icon">👤</div>
+            <span>Profile</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

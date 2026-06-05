@@ -238,7 +238,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#090D1A]/85 backdrop-blur-md border-b border-[#161C2C] sticky top-0 z-20">
+        <header className="h-16 hidden md:flex items-center justify-between px-4 md:px-6 bg-[#090D1A]/85 backdrop-blur-md border-b border-[#161C2C] sticky top-0 z-20">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
