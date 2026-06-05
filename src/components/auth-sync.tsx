@@ -39,7 +39,7 @@ export default function AuthSync() {
     syncSession();
 
     // Listen for auth state changes (e.g. login, logout, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       if (session) {
         const userMetadata = session.user.user_metadata || {};
         dispatch(
