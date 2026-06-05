@@ -60,24 +60,22 @@ const UserProfileMenu = ({ user, handleLogout, router }: { user: any; handleLogo
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="flex items-center space-x-2.5 rounded-full border border-border/85 bg-[#090D1A]/95 p-1 ps-1 pr-4 hover:bg-[#161C2C]/50 hover:border-purple-500/30 transition-all select-none cursor-pointer focus:outline-none">
-          <Avatar className="h-8 w-8 rounded-full ring-2 ring-purple-500/20">
-            <AvatarImage src={avatarSrc} alt={user.name || 'User'} className="object-cover" />
-            <AvatarFallback className="bg-purple-600/10 text-purple-400 font-bold text-xs uppercase">
-              {user.name ? user.name.substring(0, 2) : 'US'}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col text-left">
-            <span className="text-xs font-bold text-white leading-tight max-w-[100px] truncate">
-              {user.name}
-            </span>
-            <span className="text-[9px] font-bold text-purple-400 leading-none capitalize">
-              {user.role}
-            </span>
-          </div>
-          <ChevronDown className="h-3.5 w-3.5 text-gray-400 ml-1 shrink-0 animate-pulse" />
-        </button>
+      <DropdownMenuTrigger className="flex items-center space-x-2.5 rounded-full border border-border/85 bg-[#090D1A]/95 p-1 ps-1 pr-4 hover:bg-[#161C2C]/50 hover:border-purple-500/30 transition-all select-none cursor-pointer focus:outline-none">
+        <Avatar className="h-8 w-8 rounded-full ring-2 ring-purple-500/20">
+          <AvatarImage src={avatarSrc} alt={user.name || 'User'} className="object-cover" />
+          <AvatarFallback className="bg-purple-600/10 text-purple-400 font-bold text-xs uppercase">
+            {user.name ? user.name.substring(0, 2) : 'US'}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col text-left">
+          <span className="text-xs font-bold text-white leading-tight max-w-[100px] truncate">
+            {user.name}
+          </span>
+          <span className="text-[9px] font-bold text-purple-400 leading-none capitalize">
+            {user.role}
+          </span>
+        </div>
+        <ChevronDown className="h-3.5 w-3.5 text-gray-400 ml-1 shrink-0 animate-pulse" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 mt-2 border border-[#161C2C] bg-[#090D1A]/95 backdrop-blur-xl shadow-2xl p-1.5 rounded-2xl">
         <DropdownMenuLabel className="px-2.5 py-2 flex flex-col">
