@@ -11,7 +11,7 @@ const Testimonials = () => {
 
   return (
     <section ref={sectionRef} className="py-10">
-      <div className="max-w-7xl mx-auto px-4 xl:px-16">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
         <div className="flex flex-col items-center self-stretch gap-12">
           {/* Heading */}
           <motion.div

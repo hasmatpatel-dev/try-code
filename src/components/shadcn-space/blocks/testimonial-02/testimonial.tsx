@@ -41,7 +41,7 @@ export default function Testimonial01({
 
     return (
         <section ref={sectionRef}>
-            <div className="max-w-7xl mx-auto sm:px-16 px-4 pt-12">
+            <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 pt-12">
                 <div className="">
                     <motion.div
                         initial={{ opacity: 0, y: -40 }}

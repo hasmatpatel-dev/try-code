@@ -1,192 +1,217 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { Check, Flame } from "lucide-react";
 import { motion } from "motion/react";
+import { Check } from "lucide-react";
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 
 type PricingPlan = {
   plan_name: string;
   plan_descp: string;
-  plan_price: number;
+  monthly_price: number;
+  annual_price: number;
   plan_feature: string[];
-  plan_recommended: boolean;
+  plan_popular: boolean;
+  cta_label: string;
+  cta_href: string;
 };
 
 const pricingData: PricingPlan[] = [
   {
-    plan_name: "Basic",
-    plan_descp:
-      "Learn coding fundamentals online with introductory programming classes and basic interactive web developer labs.",
-    plan_price: 25,
+    plan_name: "Starter Plan",
+    plan_descp: "For individuals, self-taught learners, and beginners.",
+    monthly_price: 25,
+    annual_price: 20,
     plan_feature: [
       "Access to introductory coding courses",
       "Interactive code playground & compiler",
       "Regular weekly lesson updates",
-      "Community Discord & forum access",
+      "Community forum access",
       "Certificate of basic completion",
     ],
-    plan_recommended: false,
+    plan_popular: false,
+    cta_label: "Get Starter Plan",
+    cta_href: "/auth/sign-up",
   },
   {
-    plan_name: "Bootcamp",
-    plan_descp:
-      "Accelerate career growth using advanced React tutorials, Next.js courses, and mentor guidance.",
-    plan_price: 199,
+    plan_name: "Growth Plan",
+    plan_descp: "For growing developers and bootcamp students.",
+    monthly_price: 199,
+    annual_price: 159,
     plan_feature: [
-      "Everything in Basic plan tier",
-      "Advanced MERN & PERN stack courses",
-      "Access to real-world code projects",
-      "Private channel with career coaches",
-      "Monthly strategy & code reviews",
+      "Everything in Starter",
+      "Advanced Full Stack courses",
+      "Access to real-world projects",
+      "Private mentor channel access",
+      "Priority support",
+      "Monthly code reviews",
     ],
-    plan_recommended: true,
+    plan_popular: true,
+    cta_label: "Start Growth Plan",
+    cta_href: "/auth/sign-up",
   },
   {
-    plan_name: "Enterprise",
-    plan_descp:
-      "Advance to software engineering jobs with personal coaching, mock interviews, and resume help.",
-    plan_price: 499,
+    plan_name: "Enterprise Plan",
+    plan_descp: "For teams, companies, and career-changers.",
+    monthly_price: 499,
+    annual_price: 399,
     plan_feature: [
-      "Everything in Bootcamp tier",
-      "Unlimited one-on-one coaching seats",
-      "Priority resume and job placement",
+      "Everything in Growth",
+      "Unlimited one-on-one coaching",
+      "Priority job placement support",
       "Custom portfolio project reviews",
-      "Mock interview preparation calls",
+      "Mock interview preparation",
+      "Dedicated account manager",
     ],
-    plan_recommended: false,
+    plan_popular: false,
+    cta_label: "Get Enterprise Plan",
+    cta_href: "/auth/sign-up",
   },
 ];
 
 const Pricing = () => {
-  const pricingCardVariants = {
-    hidden: {
-      opacity: 0,
-      x: -60,
-    },
-    visible: (index: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: index * 0.25,
-        duration: 0.6,
-        ease: "easeInOut" as const,
-      },
-    }),
-  };
+  const [isAnnual, setIsAnnual] = useState(false);
 
   return (
-    <section className="bg-background py-10 lg:py-0">
-      <div className="max-w-7xl mx-auto px-4 xl:px-16 lg:py-20 sm:py-16 py-8">
-        <div className="flex flex-col gap-8 md:gap-12 items-center justify-center w-full">
-          {/* Heading */}
-          <div className="flex flex-col gap-4 justify-center items-center">
-            {/* Badge */}
-            <Badge
-              variant={"outline"}
-              className="py-1 px-3 text-sm font-normal leading-5 w-fit h-7"
-            >
-              Pricing
-            </Badge>
-            {/* Heading */}
-            <div className="max-w-3xs sm:max-w-md mx-auto text-center">
-              <h2 className="text-foreground text-3xl sm:text-5xl font-medium">
-                Choose the plan to start your journey
+    <section className="relative bg-background overflow-hidden">
+      {/* Radial gradient glow */}
+      <div className="absolute left-1/2 -translate-x-1/2 -bottom-[12%] translate-y-1/3 w-[42rem] h-[36rem] bg-[radial-gradient(100%_100%_at_50%_0%,rgba(41,126,255,0.5)_9.13%,rgba(56,189,248,0.5)_100%)] blur-[100px] rounded-full pointer-events-none" />
+
+      {/* Heading */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
+        <div className="border-x border-border px-8 py-8 md:py-16">
+          <motion.div
+            className="flex flex-col gap-2 sm:gap-4 md:gap-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <p className="text-foreground">Pricing</p>
+            <div className="flex flex-wrap gap-12 items-end justify-between">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-foreground max-w-md tracking-tight">
+                Start free{" "}
+                <span className="text-foreground/50">Upgrade to scale</span>
               </h2>
-            </div>
-          </div>
-          {/*  */}
-          <div className="flex flex-col lg:flex-row gap-6 items-stretch h-full w-full">
-            {pricingData.map((plan: PricingPlan, index: number) => {
-              const isFeatured = plan.plan_recommended;
 
-              return (
-                <motion.div
-                  key={index}
-                  variants={pricingCardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={index}
-                  className={cn(
-                    "relative flex-1 flex flex-col w-full",
-                    isFeatured && "z-10 scale-102"
-                  )}
-                >
-                  {/* GRADIENT BORDER */}
-                  {isFeatured && (
-                    <div className="absolute -inset-0.5 rounded-2xl overflow-hidden">
-                      {/* Animated conic-gradient border */}
-                      <div className="absolute -inset-full blur-xs animate-spin [animation-duration:2s] bg-conic from-blue-500 via-red-500 to-teal-400" />
-
-                      {/* Inner mask */}
-                      <div className="absolute inset-0.5 rounded-2xl bg-card" />
-                    </div>
-                  )}
-
-                  {/* CARD */}
-                  <Card
+              {/* Billing toggle */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center space-x-2">
+                  <Label
+                    htmlFor="billing"
                     className={cn(
-                      "relative flex-1 flex flex-col rounded-2xl p-8 gap-8",
-                      isFeatured ? "border-0 ring-0" : "border border-border"
+                      "text-base font-normal cursor-pointer transition-colors",
+                      !isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
                     )}
                   >
-                    <CardHeader className="p-0">
-                      <div className="flex flex-col gap-3 self-stretch">
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-2xl font-medium text-primary">
-                            {plan.plan_name}
-                          </CardTitle>
-                          {isFeatured && (
-                            <Badge className="py-1 px-3 text-sm font-medium leading-5 w-fit h-7 flex items-center gap-1.5 [&>svg]:size-4!">
-                              <Flame size={16} /> Recommend
-                            </Badge>
-                          )}
-                        </div>
-                        <CardDescription className="text-base font-normal max-w-2x">
-                          {plan.plan_descp}
-                        </CardDescription>
+                    Monthly
+                  </Label>
+                  <Switch
+                    id="billing"
+                    checked={isAnnual}
+                    onCheckedChange={setIsAnnual}
+                    className="cursor-pointer"
+                  />
+                  <Label
+                    htmlFor="billing"
+                    className={cn(
+                      "text-base font-normal cursor-pointer transition-colors",
+                      isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
+                    )}
+                  >
+                    Annual
+                  </Label>
+                </div>
+                <Badge variant="outline" className="text-sm font-normal h-auto">
+                  SAVE 20%
+                </Badge>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Pricing cards grid */}
+      <div className="border-y border-border">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
+          <div className="border-x border-border">
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {pricingData.map((plan, index) => (
+                <motion.div
+                  key={plan.plan_name}
+                  className="flex flex-col border-border bg-muted/10 lg:odd:bg-muted/20 lg:even:bg-muted/10 border-b last:border-b-0 md:even:border-r-0 md:border-r lg:border-r lg:last:border-r-0 lg:border-b-0"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.12, ease: "easeOut" }}
+                >
+                  {/* Plan header */}
+                  <div className="px-8 xl:px-16 py-6 xl:py-12 flex flex-col gap-10 border-b border-border">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <p className="text-2xl font-medium text-foreground">
+                          {plan.plan_name}
+                        </p>
+                        {plan.plan_popular && (
+                          <Badge variant="outline" className="text-sm font-normal h-auto">
+                            Popular
+                          </Badge>
+                        )}
                       </div>
-                    </CardHeader>
+                      <p className="text-lg font-normal text-muted-foreground">
+                        {plan.plan_descp}
+                      </p>
+                    </div>
 
-                    <CardContent className="flex flex-col flex-1 gap-8 p-0">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-foreground text-4xl sm:text-5xl font-medium">
-                          ${plan.plan_price}
-                        </span>
-                        <span className="text-muted-foreground text-base font-normal">
-                          /month
-                        </span>
-                      </div>
+                    {/* Price */}
+                    <p className="text-6xl font-medium text-foreground">
+                      $
+                      <span>
+                        {isAnnual ? plan.annual_price : plan.monthly_price}
+                      </span>
+                      <span className="text-base font-normal ml-1.5 text-muted-foreground">
+                        /{isAnnual ? "mo, billed annually" : "month"}
+                      </span>
+                    </p>
+                  </div>
 
-                      <Separator orientation="horizontal" />
+                  {/* Features + CTA */}
+                  <div className="px-8 xl:px-16 py-8 xl:py-12 flex flex-col flex-1 justify-between gap-12">
+                    <ul className="flex flex-col gap-2">
+                      {plan.plan_feature.map((feature) => (
+                        <li
+                          key={feature}
+                          className="flex items-center gap-2 text-sm text-foreground"
+                        >
+                          <Check
+                            size={20}
+                            className="text-muted-foreground/80 shrink-0"
+                            aria-hidden="true"
+                          />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
 
-                      <ul className="flex flex-col gap-4 flex-1">
-                        {plan.plan_feature.map((feature, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-center gap-3 text-base font-normal text-muted-foreground"
-                          >
-                            <Check className="size-4 text-primary shrink-0" />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <Button
-                        className="w-full h-12 cursor-pointer"
-                        variant={isFeatured ? "default" : "outline"}
-                      >
-                        Get started
-                      </Button>
-                    </CardContent>
-                  </Card>
+                    <Link
+                      href={plan.cta_href}
+                      className={cn(
+                        "w-full py-3.5 text-sm font-medium text-center rounded-full transition-colors cursor-pointer inline-block",
+                        plan.plan_popular
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                          : "border border-border bg-background text-foreground hover:bg-muted"
+                      )}
+                    >
+                      {plan.cta_label}
+                    </Link>
+                  </div>
                 </motion.div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>

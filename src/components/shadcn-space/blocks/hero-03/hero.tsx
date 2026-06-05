@@ -31,7 +31,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 xl:px-16">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 xl:px-16">
         <div className="flex flex-col gap-4 sm:gap-6 py-10 sm:py-16">
           <div className="flex items-start gap-2.5 md:gap-4">
             <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0">

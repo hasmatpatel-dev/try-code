@@ -5,9 +5,9 @@ import { AppWindowMac, BarChart3, Box, ChartColumnBig, Command, Presentation, Sh
 export default function AnimatedUiBlock() {
     return (
         <>
-            <div className="min-h-[216px] flex items-center justify-center relative">
+            <div className="min-h-[216px] flex items-center justify-center relative w-full">
                 <span className="flex items-center justify-center rounded-full shadow-lg">
-                    <img alt="shadcn dark logo" src="https://images.shadcnspace.com/assets/logo/shadcn-logo.png" width={96} height={96} />
+                    <div className="mdn" aria-hidden="true"></div>
                 </span>
                 <motion.div
                     className="absolute start-[70%] top-0 z-10"

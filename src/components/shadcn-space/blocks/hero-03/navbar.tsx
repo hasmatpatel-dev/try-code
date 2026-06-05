@@ -51,7 +51,7 @@ const Header = ({ navigationData }: NavbarProps) => {
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -32 }}
         transition={{ duration: 0.7, ease: "easeInOut" }}
         className={cn(
-          "relative mx-auto max-w-7xl px-4 xl:px-16 flex item-center justify-between w-full"
+          "relative mx-auto max-w-7xl px-4 lg:px-8 xl:px-16 flex item-center justify-between w-full"
         )}
       >
         <a href="#">

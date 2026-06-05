@@ -48,7 +48,7 @@ function Services({ data = servicesData }: ServicesProps) {
 
     return (
         <section className="bg-background">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 lg:py-20 sm:py-16 py-8">
+            <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 lg:py-20 sm:py-16 py-8">
                 <div className="flex flex-col sm:gap-16 gap-8">
                     <div className="flex md:flex-row flex-col justify-between md:items-end items-start gap-4">
                         <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-left-10 duration-1000 delay-200 ease-in-out fill-mode-both">

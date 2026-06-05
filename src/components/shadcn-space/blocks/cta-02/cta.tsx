@@ -15,7 +15,7 @@ const defaultMarqueeItems = [
 const CTA: React.FC<CTAProps> = ({ marqueeItems = defaultMarqueeItems }) => {
     return (
         <section>
-            <div className='max-w-7xl mx-auto sm:px-16 px-4 sm:py-20 py-8'>
+            <div className='max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 sm:py-20 py-8'>
                 <div className="relative rounded-t-2xl overflow-hidden min-h-96 bg-black/30 flex items-center justify-center">
                     <video
                         className="absolute top-0 left-0 -z-10 max-w-fit w-7xl"

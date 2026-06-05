@@ -96,7 +96,7 @@ export default function CoursesPage() {
     <div className="min-h-screen bg-[#030712]">
       <Header className="hidden md:flex" />
       
-      <div className="py-12 px-4 md:py-20 md:px-8 max-w-6xl mx-auto space-y-12">
+      <div className="py-12 px-4 md:py-20 max-w-7xl mx-auto space-y-12">
         {/* Page Title & Intro (Matching Landing Page Style) */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-border/40">
           <div className="flex flex-col gap-4 max-w-2xl">

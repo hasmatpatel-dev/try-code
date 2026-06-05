@@ -220,154 +220,149 @@ const Header = ({ navigationData, className }: HeaderProps) => {
   return (
     <motion.header
       initial={{ opacity: 0, y: -32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeInOut" }}
       className={cn(
-        "inset-x-0 z-50 px-4 flex items-center justify-center sticky top-0 h-20",
+        "inset-x-0 z-50 sticky top-0 w-full bg-background/80 backdrop-blur-md border-b border-border transition-all duration-300",
+        sticky ? "shadow-md shadow-primary/5" : "",
         className,
       )}
     >
-      <div
-        className={cn(
-          "w-full max-w-6xl flex items-center h-fit justify-between gap-3.5 lg:gap-6 transition-all duration-500",
-          sticky
-            ? "p-2.5 bg-background/60 backdrop-blur-lg border border-border/40 shadow-2xl shadow-primary/5 rounded-full"
-            : "bg-transparent border-transparent",
-        )}
-      >
-        {/* Logo */}
-        <div>
-          <Link href="/" aria-label="TryCode Homepage">
-            <Logo className="gap-3" />
-          </Link>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 w-full">
+        <div className="border-x border-border px-4 md:px-8 h-20 flex items-center justify-between gap-3.5 lg:gap-6 w-full">
+          {/* Logo */}
+          <div>
+            <Link href="/" aria-label="TryCode Homepage">
+              <Logo className="gap-3" />
+            </Link>
+          </div>
 
-        {/* Desktop Navigation */}
-        <div>
-          <NavigationMenu className="max-lg:hidden bg-muted p-0.5 rounded-full">
-            <NavigationMenuList className="flex gap-0">
-              {currentNavigationData.map((navItem) => (
-                <NavigationMenuItem key={navItem.title}>
-                  <NavigationMenuLink
-                    href={navItem.href}
-                    className={cn("px-2 lg:px-4 py-2 text-sm font-medium rounded-full text-muted-foreground hover:text-foreground hover:bg-background outline outline-transparent hover:outline-border hover:shadow-xs transition tracking-normal", navItem.isActive ? "bg-background text-foreground" : "")}
-                  >
-                    {navItem.title}
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-
-        {/* Desktop CTA */}
-        <div className="flex gap-4">
-          {user ? (
-            <div className="hidden lg:flex">
-              <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
-            </div>
-          ) : (
-            <CollaborateButton className="hidden lg:flex" />
-          )}
-
-          <div className="lg:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger id="mobile-menu-trigger" aria-label="Open menu">
-                <span className="rounded-full border border-border p-2 block">
-                  <Menu
-                    width={20}
-                    height={20}
-                  />
-                  <span className="sr-only">Menu</span>
-                </span>
-              </SheetTrigger>
-
-              <SheetContent
-                showCloseButton={false}
-                side="right"
-                className="w-full sm:w-96 p-0 border-l-0"
-              >
-                <div className="flex items-center justify-between p-6">
-                  <Link href="/" aria-label="TryCode Homepage">
-                    <Logo className="gap-2" />
-                  </Link>
-                  <SheetClose id="mobile-menu-close" aria-label="Close menu">
-                    <span className="rounded-full border border-border p-2.5 block">
-                      <X width={16} height={16} />
-                    </span>
-                  </SheetClose>
-                </div>
-
-                <div className="flex flex-col gap-12 px-6 pb-6 overflow-y-auto">
-                  <div className="flex flex-col gap-8">
-                    <SheetTitle className="sr-only">Menu</SheetTitle>
-                    <NavigationMenu
-                      orientation="vertical"
-                      className="items-start flex-none"
+          {/* Desktop Navigation */}
+          <div>
+            <NavigationMenu className="max-lg:hidden bg-muted p-0.5 rounded-full">
+              <NavigationMenuList className="flex gap-0">
+                {currentNavigationData.map((navItem) => (
+                  <NavigationMenuItem key={navItem.title}>
+                    <NavigationMenuLink
+                      href={navItem.href}
+                      className={cn("px-2 lg:px-4 py-2 text-sm font-medium rounded-full text-muted-foreground hover:text-foreground hover:bg-background outline outline-transparent hover:outline-border hover:shadow-xs transition tracking-normal", navItem.isActive ? "bg-background text-foreground" : "")}
                     >
-                      <NavigationMenuList className="flex flex-col items-start gap-3">
-                        {currentNavigationData.map((item) => (
-                          <NavigationMenuItem key={item.title}>
-                            <NavigationMenuLink
-                              href={item.href}
-                              className={cn(
-                                "group/nav flex items-center text-2xl font-semibold tracking-tight transition-all p-0 hover:bg-transparent focus:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent",
-                                item.isActive
-                                  ? "text-primary"
-                                  : "text-muted-foreground hover:text-foreground hover:translate-x-2",
-                              )}
-                            >
-                              <div
+                      {navItem.title}
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+
+          {/* Desktop CTA */}
+          <div className="flex gap-4">
+            {user ? (
+              <div className="hidden lg:flex">
+                <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
+              </div>
+            ) : (
+              <CollaborateButton className="hidden lg:flex" />
+            )}
+
+            <div className="lg:hidden">
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger id="mobile-menu-trigger" aria-label="Open menu">
+                  <span className="rounded-full border border-border p-2 block">
+                    <Menu
+                      width={20}
+                      height={20}
+                    />
+                    <span className="sr-only">Menu</span>
+                  </span>
+                </SheetTrigger>
+
+                <SheetContent
+                  showCloseButton={false}
+                  side="right"
+                  className="w-full sm:w-96 p-0 border-l-0"
+                >
+                  <div className="flex items-center justify-between p-6">
+                    <Link href="/" aria-label="TryCode Homepage">
+                      <Logo className="gap-2" />
+                    </Link>
+                    <SheetClose id="mobile-menu-close" aria-label="Close menu">
+                      <span className="rounded-full border border-border p-2.5 block">
+                        <X width={16} height={16} />
+                      </span>
+                    </SheetClose>
+                  </div>
+
+                  <div className="flex flex-col gap-12 px-6 pb-6 overflow-y-auto">
+                    <div className="flex flex-col gap-8">
+                      <SheetTitle className="sr-only">Menu</SheetTitle>
+                      <NavigationMenu
+                        orientation="vertical"
+                        className="items-start flex-none"
+                      >
+                        <NavigationMenuList className="flex flex-col items-start gap-3">
+                          {currentNavigationData.map((item) => (
+                            <NavigationMenuItem key={item.title}>
+                              <NavigationMenuLink
+                                href={item.href}
                                 className={cn(
-                                  "h-0.5 bg-primary transition-all duration-300 overflow-hidden",
+                                  "group/nav flex items-center text-2xl font-semibold tracking-tight transition-all p-0 hover:bg-transparent focus:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent",
                                   item.isActive
-                                    ? "w-4 mr-2 opacity-100"
-                                    : "w-0 opacity-0 group-hover/nav:w-4 group-hover/nav:mr-2 group-hover/nav:opacity-100",
+                                    ? "text-primary"
+                                    : "text-muted-foreground hover:text-foreground hover:translate-x-2",
                                 )}
-                              />
-                              {item.title}
-                            </NavigationMenuLink>
-                          </NavigationMenuItem>
+                              >
+                                <div
+                                  className={cn(
+                                    "h-0.5 bg-primary transition-all duration-300 overflow-hidden",
+                                    item.isActive
+                                      ? "w-4 mr-2 opacity-100"
+                                      : "w-0 opacity-0 group-hover/nav:w-4 group-hover/nav:mr-2 group-hover/nav:opacity-100",
+                                  )}
+                                />
+                                {item.title}
+                              </NavigationMenuLink>
+                            </NavigationMenuItem>
+                          ))}
+                        </NavigationMenuList>
+                      </NavigationMenu>
+
+                      <div className="w-fit">
+                        {user ? (
+                          <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
+                        ) : (
+                          <CollaborateButton />
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="mt-auto flex flex-col gap-4">
+                      <div className="flex gap-3">
+                        {[
+                          { icon: "lucide:dribbble", label: "Dribbble" },
+                          { icon: "lucide:instagram", label: "Instagram" },
+                          { icon: "lucide:twitter", label: "Twitter" },
+                          { icon: "lucide:linkedin", label: "LinkedIn" },
+                        ].map(({ icon, label }) => (
+                          <a
+                            key={icon}
+                            href="#"
+                            aria-label={label}
+                            className="flex items-center justify-center rounded-full outline outline-border hover:bg-muted transition p-3 shadow-xs"
+                          >
+                            <Icon icon={icon} width={16} height={16} />
+                          </a>
                         ))}
-                      </NavigationMenuList>
-                    </NavigationMenu>
+                      </div>
 
-                    <div className="w-fit">
-                      {user ? (
-                        <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
-                      ) : (
-                        <CollaborateButton />
-                      )}
+                      <p className="text-sm text-muted-foreground">
+                        © 2026 Shadcn Space
+                      </p>
                     </div>
                   </div>
-
-                  <div className="mt-auto flex flex-col gap-4">
-                    <div className="flex gap-3">
-                      {[
-                        { icon: "lucide:dribbble", label: "Dribbble" },
-                        { icon: "lucide:instagram", label: "Instagram" },
-                        { icon: "lucide:twitter", label: "Twitter" },
-                        { icon: "lucide:linkedin", label: "LinkedIn" },
-                      ].map(({ icon, label }) => (
-                        <a
-                          key={icon}
-                          href="#"
-                          aria-label={label}
-                          className="flex items-center justify-center rounded-full outline outline-border hover:bg-muted transition p-3 shadow-xs"
-                        >
-                          <Icon icon={icon} width={16} height={16} />
-                        </a>
-                      ))}
-                    </div>
-
-                    <p className="text-sm text-muted-foreground">
-                      © 2026 Shadcn Space
-                    </p>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>

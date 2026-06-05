@@ -74,7 +74,7 @@ const Navbar = () => {
   return (
     <div>
       <header className="bg-background">
-        <div className="max-w-7xl mx-auto w-full px-4 py-4 sm:px-6">
+        <div className="max-w-7xl mx-auto w-full px-4 lg:px-8 xl:px-16 py-4">
           <nav
             className={cn(
               "w-full flex items-center h-fit justify-between gap-3.5 lg:gap-6 transition-all duration-500",

@@ -48,11 +48,15 @@ export default function AgencyHeroSection() {
   ];
 
   return (
-    <div className="relative">
-      <main className="min-h-[calc(100dvh-80px)] flex justify-center items-center flex-col max-xl:px-4">
-        <HeroSection avatarList={avatarList} />
-        <BrandSlider brandList={brandList} />
-      </main>
-    </div>
+    <section className="relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
+        <div className="border-x border-border w-full flex flex-col">
+          <HeroSection avatarList={avatarList} />
+          <div className="border-t border-b border-border w-full">
+            <BrandSlider brandList={brandList} />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

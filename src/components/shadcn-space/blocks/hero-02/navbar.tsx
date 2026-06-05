@@ -80,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ navData }) => {
       )}
     >
       <nav
-        className={`max-w-7xl mx-auto sm:px-16 px-4 w-full`}>
+        className={`max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 w-full`}>
         <div className={`flex items-center justify-between duration-300 ${sticky
           ? 'shadow-lg bg-background rounded-full p-3'
           : 'shadow-none px-0'
