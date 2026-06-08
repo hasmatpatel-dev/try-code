@@ -22,9 +22,9 @@ const CTA = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
               >
-                Start your{" "}
+                Ready to{" "}
                 <span className="bg-[linear-gradient(90deg,#FFFFFF_-20%,#3B82F6_94.54%,#FFFFFF_104.51%)] bg-clip-text text-transparent">
-                  Coding Career
+                  Level Up?
                 </span>
               </motion.h2>
 
@@ -36,7 +36,7 @@ const CTA = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
               >
-                Learn full stack development through interactive courses, real-world projects, and AI-powered guidance — and land your first software engineering job.
+                Join developers learning modern skills and building real-world projects.
               </motion.p>
 
               {/* Animated border button */}
@@ -47,13 +47,11 @@ const CTA = () => {
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
               >
                 <div className="w-fit h-fit relative inline-flex overflow-hidden p-px rounded-xl">
-                
-
                   <Link
-                      href="/auth/sign-up"
+                      href="/auth/register"
                       className="relative text-sm font-medium rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden bg-primary text-primary-foreground hover:bg-primary/80 inline-flex items-center"
                     >
-                      <span className="relative z-10 transition-all duration-500">Get Started</span>
+                      <span className="relative z-10 transition-all duration-500">Start Learning</span>
                       <div className="absolute right-1 w-10 h-10 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-44px)] group-hover:rotate-45">
                         <ArrowUpRight size={16} aria-hidden="true" />
                       </div>

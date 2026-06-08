@@ -13,37 +13,51 @@ type ServiceItem = {
 const serviceData: ServiceItem[] = [
   {
     number: "01",
-    title: "Full Stack Development",
+    title: "AI-Powered Developer",
     description:
-      "Master end-to-end web development with hands-on projects covering React, Next.js, Node.js, and cloud deployment pipelines.",
-    image: "https://images.shadcnspace.com/assets/services/app-design.webp",
+      "Master Prompt Engineering, AI Tools, AI Workflows, and AI Automation to accelerate your coding workflow.",
+    image: "https://images.pexels.com/photos/1921326/pexels-photo-1921326.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     number: "02",
-    title: "React & Next.js",
+    title: "React Developer",
     description:
-      "Deep dive into modern React architecture, Server Components, App Router, and performance optimisation techniques for production apps.",
-    image: "https://images.shadcnspace.com/assets/services/web-design.webp",
+      "Deep dive into React Fundamentals, State Management, performance optimization, and integration testing.",
+    image: "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     number: "03",
-    title: "Database & Backend",
+    title: "Next.js Full Stack",
     description:
-      "Learn PostgreSQL, Supabase, Prisma ORM, and RESTful API design with real-world schema design and Row-Level Security patterns.",
-    image: "https://images.shadcnspace.com/assets/services/project-design.webp",
+      "Build interactive products using React, Next.js App Router, secure Authentication, databases, and optimized Deployment.",
+    image: "https://images.pexels.com/photos/14553720/pexels-photo-14553720.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     number: "04",
-    title: "AI & Machine Learning",
+    title: "WordPress Professional",
     description:
-      "Build intelligent applications using LLMs, vector databases, and AI coding agents — from prompt engineering to production deployment.",
-    image: "https://images.shadcnspace.com/assets/services/brand-design.webp",
+      "Create high-performance client sites using WordPress, Elementor, ACF Pro, Custom Post Types (CPT UI), and dynamic layouts.",
+    image: "https://images.pexels.com/photos/285814/pexels-photo-285814.jpeg?auto=compress&cs=tinysrgb&w=800",
+  },
+  {
+    number: "05",
+    title: "Modern Web Creator",
+    description:
+      "Master UI/UX design, custom layouts in Webflow, Framer animations, and AI-assisted multimedia generation.",
+    image: "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg?auto=compress&cs=tinysrgb&w=800",
+  },
+  {
+    number: "06",
+    title: "Software Architect",
+    description:
+      "Ensure quality at scale with end-to-end testing, page speed performance, system design architecture, and database scalability.",
+    image: "https://images.pexels.com/photos/4425112/pexels-photo-4425112.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
 ];
 
 const Services = () => {
   return (
-    <section className="border-y">
+    <section id="roadmaps" className="border-y">
       {/* Heading */}
       <div className="mx-auto max-w-7xl px-4 lg:px-8 xl:px-16">
         <div className="border-x border-b px-4 md:px-8 py-12 lg:py-16 flex flex-col gap-8 md:gap-16">
@@ -56,10 +70,10 @@ const Services = () => {
           >
             <div className="flex gap-2 items-center">
               <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" />
-              <p className="text-base text-muted-foreground font-normal">Courses</p>
+              <p className="text-base text-muted-foreground font-normal">Roadmaps</p>
             </div>
             <h2 className="text-5xl md:text-7xl font-semibold text-foreground">
-              What we teach.
+              Featured Roadmaps.
             </h2>
           </motion.div>
         </div>
@@ -102,10 +116,10 @@ const Services = () => {
                 <p className="text-base text-primary/50 group-hover:text-white dark:group-hover:text-primary-foreground/50 transition-colors duration-300">
                   {service.description}
                 </p>
-                <div className="h-10 w-10 rounded-full bg-foreground dark:group-hover:bg-primary-foreground text-white flex justify-center items-center group-hover:bg-white transition-colors duration-300">
+                <div className="h-10 w-10 rounded-full bg-foreground dark:group-hover:bg-primary-foreground text-foreground flex justify-center items-center group-hover:bg-white transition-colors duration-300">
                   <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 ease-out group-hover:text-card-foreground"
+                    size={20}
+                    className="transition-transform duration-300 ease-out text-background group-hover:text-card-foreground"
                   />
                 </div>
               </div>

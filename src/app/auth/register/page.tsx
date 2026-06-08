@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 
 import { Button } from '@/components/ui/button';
@@ -42,6 +42,7 @@ type RegisterInputs = z.infer<typeof registerSchema>;
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -185,13 +186,27 @@ export default function RegisterPage() {
                   >
                     Password*
                   </FieldLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    className="dark:bg-background shadow-xs h-9 text-white"
-                    {...register('password')}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Enter your password"
+                      className="dark:bg-background shadow-xs h-9 text-white pr-10"
+                      {...register('password')}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none cursor-pointer"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                   {errors.password && (
                     <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
                   )}

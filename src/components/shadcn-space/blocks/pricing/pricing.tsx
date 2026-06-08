@@ -1,186 +1,139 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { Check } from "lucide-react";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
-type PricingPlan = {
+type ResourcePlan = {
   plan_name: string;
   plan_descp: string;
-  monthly_price: number;
-  annual_price: number;
+  price_label: string;
   plan_feature: string[];
   plan_popular: boolean;
   cta_label: string;
   cta_href: string;
 };
 
-const pricingData: PricingPlan[] = [
+const resourceData: ResourcePlan[] = [
   {
-    plan_name: "Starter Plan",
-    plan_descp: "For individuals, self-taught learners, and beginners.",
-    monthly_price: 25,
-    annual_price: 20,
+    plan_name: "Curated Resources",
+    plan_descp: "Learn with the best handpicked educational guides.",
+    price_label: "100+ Guides",
     plan_feature: [
-      "Access to introductory coding courses",
-      "Interactive code playground & compiler",
-      "Regular weekly lesson updates",
-      "Community forum access",
-      "Certificate of basic completion",
+      "YouTube Playlists",
+      "Official Documentation",
+      "AI Prompts Matrix",
+      "Boilerplates & Configs",
+      "Starter Templates",
+      "Development Checklists",
+      "Interactive Cheat Sheets",
     ],
     plan_popular: false,
-    cta_label: "Get Starter Plan",
-    cta_href: "/auth/sign-up",
+    cta_label: "Explore Resources",
+    cta_href: "#recipes",
   },
   {
-    plan_name: "Growth Plan",
-    plan_descp: "For growing developers and bootcamp students.",
-    monthly_price: 199,
-    annual_price: 159,
+    plan_name: "Modern Dev Tools",
+    plan_descp: "Build with the stack preferred by industry leaders.",
+    price_label: "11+ Stack Tools",
     plan_feature: [
-      "Everything in Starter",
-      "Advanced Full Stack courses",
-      "Access to real-world projects",
-      "Private mentor channel access",
-      "Priority support",
-      "Monthly code reviews",
+      "React & Next.js App Router",
+      "Supabase DB & Auth",
+      "WordPress & Elementor",
+      "ACF Pro & CPT UI",
+      "Webflow & Framer",
+      "Playwright & Vitest",
+      "Figma UI/UX Designs",
     ],
     plan_popular: true,
-    cta_label: "Start Growth Plan",
-    cta_href: "/auth/sign-up",
+    cta_label: "Explore Tools",
+    cta_href: "#categories",
   },
   {
-    plan_name: "Enterprise Plan",
-    plan_descp: "For teams, companies, and career-changers.",
-    monthly_price: 499,
-    annual_price: 399,
+    plan_name: "AI Code Mentor",
+    plan_descp: "Get instant code solutions and debugging guidance.",
+    price_label: "24/7 Access",
     plan_feature: [
-      "Everything in Growth",
-      "Unlimited one-on-one coaching",
-      "Priority job placement support",
-      "Custom portfolio project reviews",
-      "Mock interview preparation",
-      "Dedicated account manager",
+      "Hydration error solver",
+      "Next.js Server Action secure helper",
+      "WordPress custom loop generator",
+      "Vitest and Playwright test compiler",
+      "Performance optimization checklist",
+      "AI prompt engineering guidelines",
     ],
     plan_popular: false,
-    cta_label: "Get Enterprise Plan",
-    cta_href: "/auth/sign-up",
+    cta_label: "Try AI Mentor",
+    cta_href: "#ai-mentor",
   },
 ];
 
 const Pricing = () => {
-  const [isAnnual, setIsAnnual] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
   return (
-    <section className="relative bg-background overflow-hidden">
+    <section ref={sectionRef} id="resources" className="relative bg-background overflow-hidden">
       {/* Radial gradient glow */}
-      <div className="absolute left-1/2 -translate-x-1/2 -bottom-[12%] translate-y-1/3 w-[42rem] h-[36rem] bg-[radial-gradient(100%_100%_at_50%_0%,rgba(41,126,255,0.5)_9.13%,rgba(56,189,248,0.5)_100%)] blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute left-1/2 -translate-x-1/2 -bottom-[12%] translate-y-1/3 w-[42rem] h-[36rem] bg-[radial-gradient(100%_100%_at_50%_0%,rgba(147,51,234,0.15)_9.13%,rgba(99,102,241,0.15)_100%)] blur-[100px] rounded-full pointer-events-none" />
 
       {/* Heading */}
       <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
-        <div className="border-x border-border px-8 py-8 md:py-16">
-          <motion.div
-            className="flex flex-col gap-2 sm:gap-4 md:gap-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <p className="text-foreground">Pricing</p>
-            <div className="flex flex-wrap gap-12 items-end justify-between">
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-foreground max-w-md tracking-tight">
-                Start free{" "}
-                <span className="text-foreground/50">Upgrade to scale</span>
-              </h2>
-
-              {/* Billing toggle */}
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex items-center space-x-2">
-                  <Label
-                    htmlFor="billing"
-                    className={cn(
-                      "text-base font-normal cursor-pointer transition-colors",
-                      !isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
-                    )}
-                  >
-                    Monthly
-                  </Label>
-                  <Switch
-                    id="billing"
-                    checked={isAnnual}
-                    onCheckedChange={setIsAnnual}
-                    className="cursor-pointer"
-                  />
-                  <Label
-                    htmlFor="billing"
-                    className={cn(
-                      "text-base font-normal cursor-pointer transition-colors",
-                      isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
-                    )}
-                  >
-                    Annual
-                  </Label>
-                </div>
-                <Badge variant="outline" className="text-sm font-normal h-auto">
-                  SAVE 20%
-                </Badge>
+        <div className="border-x border-border px-5 md:px-8 py-8 md:py-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <motion.div
+              className="flex flex-col gap-4"
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground m-1.5" />
+                <span className="text-base font-normal text-muted-foreground">
+                  Resources & Tools
+                </span>
               </div>
-            </div>
-          </motion.div>
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-semibold text-foreground">
+                Resources.
+              </h2>
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Pricing cards grid */}
+      {/* Resource cards grid */}
       <div className="border-y border-border">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
           <div className="border-x border-border">
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {pricingData.map((plan, index) => (
-                <motion.div
+              {resourceData.map((plan, index) => (
+                <div
                   key={plan.plan_name}
                   className="flex flex-col border-border bg-muted/10 lg:odd:bg-muted/20 lg:even:bg-muted/10 border-b last:border-b-0 md:even:border-r-0 md:border-r lg:border-r lg:last:border-r-0 lg:border-b-0"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.12, ease: "easeOut" }}
                 >
-                  {/* Plan header */}
-                  <div className="px-8 xl:px-16 py-6 xl:py-12 flex flex-col gap-10 border-b border-border">
+                  {/* Card header */}
+                  <div className="px-6 sm:px-8 xl:px-16 py-6 xl:py-12 flex flex-col gap-8 sm:gap-10 border-b border-border">
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-3">
                         <p className="text-2xl font-medium text-foreground">
                           {plan.plan_name}
                         </p>
-                        {plan.plan_popular && (
-                          <Badge variant="outline" className="text-sm font-normal h-auto">
-                            Popular
-                          </Badge>
-                        )}
                       </div>
                       <p className="text-lg font-normal text-muted-foreground">
                         {plan.plan_descp}
                       </p>
                     </div>
 
-                    {/* Price */}
-                    <p className="text-6xl font-medium text-foreground">
-                      $
-                      <span>
-                        {isAnnual ? plan.annual_price : plan.monthly_price}
-                      </span>
-                      <span className="text-base font-normal ml-1.5 text-muted-foreground">
-                        /{isAnnual ? "mo, billed annually" : "month"}
-                      </span>
+                    {/* Badge details */}
+                    <p className="text-4xl font-medium text-foreground">
+                      {plan.price_label}
                     </p>
                   </div>
 
                   {/* Features + CTA */}
-                  <div className="px-8 xl:px-16 py-8 xl:py-12 flex flex-col flex-1 justify-between gap-12">
+                  <div className="px-6 sm:px-8 xl:px-16 py-6 sm:py-8 xl:py-12 flex flex-col flex-1 justify-between gap-8 sm:gap-12">
                     <ul className="flex flex-col gap-2">
                       {plan.plan_feature.map((feature) => (
                         <li
@@ -209,7 +162,7 @@ const Pricing = () => {
                       {plan.cta_label}
                     </Link>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

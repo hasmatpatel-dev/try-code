@@ -1,11 +1,15 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { Loader2, ArrowLeft, ArrowRight } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
+
+import "swiper/css";
 
 type BlogData = {
   coverImage: string;
@@ -17,52 +21,66 @@ type BlogData = {
 
 const placeholderBlogData: BlogData[] = [
   {
-    coverImage: "https://images.shadcnspace.com/assets/blog/blog-3-img-1.webp",
-    title: "Mastering React & Next.js",
+    // A clean, abstract view of an interface overlay / coding workspace
+    coverImage: "https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=285&h=340&fit=crop",
+    title: "AI for Developers in 2026",
     description:
-      "Learn how to build production-grade React apps with the Next.js App Router, Server Components, and modern data fetching patterns.",
-    date: "2026-01-01",
-    slug: "mastering-react-nextjs",
+      "Explore key prompt engineering guidelines, code agents, LLM integrations, and modern AI-powered tools.",
+    date: "2026-06-05",
+    slug: "ai-for-developers-2026",
   },
   {
-    coverImage: "https://images.shadcnspace.com/assets/blog/blog-3-img-2.webp",
-    title: "The Ultimate Guide to Build a SaaS App",
+    // Focus purely on a clean JavaScript/TypeScript IDE environment, no misplaced books
+    coverImage: "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?auto=compress&cs=tinysrgb&w=285&h=340&fit=crop",
+    title: "React Performance Checklist",
     description:
-      "Step-by-step breakdown of architecting a full-stack SaaS product — from auth and billing to deployment and monitoring.",
-    date: "2026-01-03",
-    slug: "getting-web-developer-job",
+      "A complete guide to React 19 compiler, hook optimization, component memoization, and avoiding layout shifts.",
+    date: "2026-06-03",
+    slug: "react-performance-checklist",
   },
   {
-    coverImage: "https://images.shadcnspace.com/assets/blog/blog-3-img-1.webp",
-    title: "AI Coding Tools in 2026",
+    // A software engineer designing complex system architectures and backend components
+    coverImage: "https://images.pexels.com/photos/3183156/pexels-photo-3183156.jpeg?auto=compress&cs=tinysrgb&w=285&h=340&fit=crop",
+    title: "Next.js Architecture Guide",
     description:
-      "A practical look at how LLMs, Copilot, and agentic coding workflows are reshaping day-to-day software engineering.",
-    date: "2026-01-05",
-    slug: "ai-coding-tools-2026",
+      "Architect full-stack systems using React Server Components, server actions, route handlers, and Supabase security configurations.",
+    date: "2026-06-01",
+    slug: "nextjs-architecture-guide",
   },
   {
-    coverImage: "https://images.shadcnspace.com/assets/blog/blog-3-img-2.webp",
-    title: "PostgreSQL & Supabase Deep Dive",
+    // A web designer reviewing typography and UI layouts on a laptop (Webflow, Elementor, Framer style)
+    coverImage: "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=285&h=340&fit=crop",
+    title: "Elementor + ACF Dynamic Websites",
     description:
-      "Master Row-Level Security, realtime subscriptions, and edge functions to build secure, scalable backends on Supabase.",
-    date: "2026-01-07",
-    slug: "postgresql-supabase-deep-dive",
+      "Build dynamic client websites with custom fields, repeaters, custom taxonomies, and high-performance asset loading.",
+    date: "2026-05-28",
+    slug: "elementor-acf-dynamic-websites",
+  },
+  {
+    // Terminal/Console environments running tests and deployment status indicators
+    coverImage: "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=285&h=340&fit=crop",
+    title: "Modern Testing Strategies",
+    description:
+      "Configure Playwright and Vitest for continuous integration, visual regressions, and self-healing test automation pipelines.",
+    date: "2026-05-25",
+    slug: "modern-testing-strategies",
   },
 ];
-
-const ITEMS_PER_SLIDE = 2;
 
 const Blog = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   // Fetch actual published posts from DB
   const { data: postsData, isLoading } = useQuery({
     queryKey: ["homepagePosts"],
     queryFn: async () => {
       const { data } = await axios.get("/api/posts", {
-        params: { status: "published", limit: 4 },
+        params: { status: "published", limit: 5 },
       });
       return data;
     },
@@ -82,21 +100,28 @@ const Blog = () => {
         }))
       : placeholderBlogData;
 
-  const totalSlides = Math.ceil(displayData.length / ITEMS_PER_SLIDE);
-  const progress = totalSlides > 1 ? (currentSlide / (totalSlides - 1)) * 100 : 100;
+  const prev = () => {
+    if (swiperInstance) swiperInstance.slidePrev();
+  };
 
-  const prev = useCallback(() => {
-    setCurrentSlide((s) => Math.max(0, s - 1));
-  }, []);
+  const next = () => {
+    if (swiperInstance) swiperInstance.slideNext();
+  };
 
-  const next = useCallback(() => {
-    setCurrentSlide((s) => Math.min(totalSlides - 1, s + 1));
-  }, [totalSlides]);
+  const handleSlideChange = (swiper: SwiperType) => {
+    setIsBeginning(swiper.isBeginning);
+    setIsEnd(swiper.isEnd);
+    setProgress(swiper.progress * 100);
+  };
 
-  const visibleItems = displayData.slice(
-    currentSlide * ITEMS_PER_SLIDE,
-    currentSlide * ITEMS_PER_SLIDE + ITEMS_PER_SLIDE
-  );
+  // Sync state on swiper initialization
+  useEffect(() => {
+    if (swiperInstance) {
+      setIsBeginning(swiperInstance.isBeginning);
+      setIsEnd(swiperInstance.isEnd);
+      setProgress(swiperInstance.progress * 100);
+    }
+  }, [swiperInstance]);
 
   return (
     <section ref={sectionRef} className="overflow-hidden">
@@ -113,11 +138,11 @@ const Blog = () => {
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground m-1.5" />
                 <span className="text-base font-normal text-muted-foreground">
-                  What&apos;s cooking?
+                  Latest Articles
                 </span>
               </div>
               <h2 className="text-5xl sm:text-6xl md:text-7xl font-semibold text-foreground">
-                Blogs.
+                Articles.
               </h2>
             </motion.div>
           </div>
@@ -133,15 +158,19 @@ const Blog = () => {
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               </div>
             ) : (
-              <div className="flex">
-                {visibleItems.map((post, index) => (
-                  <motion.div
-                    key={`${currentSlide}-${index}`}
-                    className="min-w-0 shrink-0 grow-0 basis-full md:basis-1/2"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-                  >
+              <Swiper
+                onSwiper={setSwiperInstance}
+                onSlideChange={handleSlideChange}
+                slidesPerView={1}
+                breakpoints={{
+                  768: {
+                    slidesPerView: 2,
+                  },
+                }}
+                className="w-full"
+              >
+                {displayData.map((post, index) => (
+                  <SwiperSlide key={post.slug || index}>
                     <Link
                       href={`/blog/${post.slug}`}
                       className="flex flex-col py-5 h-full bg-transparent group/card"
@@ -167,9 +196,9 @@ const Blog = () => {
                         </div>
                       </div>
                     </Link>
-                  </motion.div>
+                  </SwiperSlide>
                 ))}
-              </div>
+              </Swiper>
             )}
           </div>
         </div>
@@ -197,7 +226,7 @@ const Blog = () => {
               <button
                 type="button"
                 onClick={prev}
-                disabled={currentSlide === 0}
+                disabled={isBeginning}
                 aria-label="Previous slide"
                 className="h-10 w-10 rounded-full border border-foreground/10 bg-white hover:bg-white/90 shadow-sm flex items-center justify-center text-black disabled:opacity-40 disabled:pointer-events-none transition hover:cursor-pointer"
               >
@@ -206,7 +235,7 @@ const Blog = () => {
               <button
                 type="button"
                 onClick={next}
-                disabled={currentSlide >= totalSlides - 1}
+                disabled={isEnd}
                 aria-label="Next slide"
                 className="h-10 w-10 rounded-full border border-foreground/10 bg-white hover:bg-white/90 shadow-sm flex items-center justify-center text-black disabled:opacity-40 disabled:pointer-events-none transition hover:cursor-pointer"
               >

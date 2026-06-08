@@ -15,23 +15,23 @@ const aboutusData = [
     },
     {
       icon: Target,
-      title: "Bootcamp",
+      title: "AI-Powered",
       color: "bg-orange-400/10 text-orange-400" 
     }
 ];
 
 const statisticsCounter = [
     {
-        title: "Completed Code Projects",
-        count: 40
-    },
-    {
-        title: "Programming Courses",
+        title: "Topics Covered",
         count: 15
     },
     {
-        title: "Career Mentors",
-        count: 12
+        title: "Learning Roadmaps",
+        count: 10
+    },
+    {
+        title: "Curated Resources",
+        count: 100
     },
 ]
 

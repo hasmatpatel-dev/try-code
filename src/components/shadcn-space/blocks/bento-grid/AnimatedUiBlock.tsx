@@ -1,117 +1,113 @@
 "use client";
 import { motion } from "motion/react";
-import { AppWindowMac, BarChart3, Box, ChartColumnBig, Command, Presentation, ShieldCheck, WandSparkles } from "lucide-react";
+import { CircleCheck, Wind, FileCode2, Zap } from "lucide-react";
+
+const FEATURES = [
+  { label: "Routing Setup" },
+  { label: "Layout System" },
+  { label: "Markdown Support" },
+  { label: "Dark Mode" },
+  { label: "Utility Styling", highlight: true },
+  { label: "SEO Defaults" },
+  { label: "404 Page" },
+  { label: "GitHub Links" },
+  { label: "Deployment" },
+];
+
+function FeatureBadge({ label, highlight }: { label: string; highlight?: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap ${
+        highlight
+          ? "border border-blue-500 bg-background text-blue-500"
+          : "bg-muted text-muted-foreground border border-transparent"
+      }`}
+    >
+      <CircleCheck
+        size={14}
+        className={highlight ? "fill-blue-500 stroke-background" : "fill-foreground/20 stroke-muted"}
+        aria-hidden="true"
+      />
+      {label}
+    </span>
+  );
+}
 
 export default function AnimatedUiBlock() {
-    return (
-        <>
-            <div className="min-h-[216px] flex items-center justify-center relative w-full">
-                <span className="flex items-center justify-center rounded-full shadow-lg">
-                    <div className="mdn" aria-hidden="true"></div>
-                </span>
-                <motion.div
-                    className="absolute start-[70%] top-0 z-10"
-                    animate={{
-                        y: [-15, 15, -15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity
-                    }}>
-                    <span role="img" aria-label="Multiple Layouts" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
-                        <AppWindowMac size={32} />
-                    </span>
-                </motion.div>
-                <motion.div
-                    className="absolute start-[91%] top-[28%] z-10"
-                    animate={{
-                        y: [15, -15, 15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                    }}>
-                    <span role="img" aria-label="UI Blocks" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
-                        <Command size={24} />
-                    </span>
-                </motion.div>
-                <motion.div
-                    className="absolute start-[78%] top-[61%] z-10"
-                    animate={{
-                        y: [-15, 15, -15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        delay: 1
-                    }}>
-                    <span role="img" aria-label="Authentication" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
-                        <ShieldCheck size={36} />
-                    </span>
-                </motion.div>
-                <motion.div
-                    className="absolute end-[78%] top-0"
-                    animate={{
-                        y: [15, -15, 15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                    }}>
-                    <span role="img" aria-label="Animated Components" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
-                        <Presentation size={20} />
-                    </span>
-                </motion.div>
-                <motion.div
-                    className="absolute end-[67%] lg:top-[61%] top-[80%] z-10"
-                    animate={{
-                        y: [-15, 15, -15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        delay: 0.2
-                    }}>
-                    <span role="img" aria-label="Ai Builder" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
-                        <WandSparkles size={32} />
-                    </span>
-                </motion.div>
-                <motion.div
-                    className="absolute lg:end-[98%] end-[80%] lg:top-0 top-[30%]"
-                    animate={{
-                        y: [15, -15, 15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        delay: 0.5
-                    }}>
-                    <span role="img" aria-label="Charts" className="lg:size-18 size-11 flex items-center justify-center rounded-full bg-background">
-                        <BarChart3 size={32} />
-                    </span>
-                </motion.div>
-                <motion.div
-                    className="absolute end-[95%] top-[67%] z-10"
-                    animate={{
-                        y: [-15, 15, -15]
-                    }}
-                    transition={{
-                        duration: 3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        delay: 0.7
-                    }}>
-                    <span role="img" aria-label="UI Components" className="lg:size-12 size-7 flex items-center justify-center rounded-full bg-background">
-                        <Box size={22} />
-                    </span>
-                </motion.div>
-            </div >
-        </>
-    )
+  return (
+    <div className="w-full h-full flex items-center justify-center py-4 px-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full max-w-2xl">
+
+        {/* Left — two stacked cards */}
+        <div className="flex flex-col gap-3 h-full">
+          {/* Card: Built with Tailwind */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 shadow-xs py-6 px-6 flex flex-col gap-4"
+          >
+            <div className="size-8 flex items-center justify-center rounded-lg bg-sky-500/10 text-sky-500">
+              <Wind size={18} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-semibold text-foreground">Built with Tailwind</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Fully customizable styling with utility-first CSS.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Card: Write in MDX */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 shadow-xs py-6 px-6 flex flex-col gap-4"
+          >
+            <div className="size-8 flex items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
+              <FileCode2 size={18} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-semibold text-foreground">Write in MDX</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Mix Markdown and JSX for expressive documentation.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right — large card with badges + fast setup */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="rounded-xl bg-card ring-1 ring-foreground/10 shadow-xs overflow-hidden flex flex-col"
+        >
+          {/* Badge grid */}
+          <div className="px-5 py-5 bg-sky-400/5 flex-1">
+            <div className="flex flex-wrap gap-2">
+              {FEATURES.map((f) => (
+                <FeatureBadge key={f.label} label={f.label} highlight={f.highlight} />
+              ))}
+            </div>
+          </div>
+
+          {/* Fast Setup section */}
+          <div className="px-5 py-5 border-t border-border flex flex-col gap-3">
+            <div className="size-7 flex items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
+              <Zap size={16} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-semibold text-foreground">Fast Setup</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Get up and running in minutes with built-in routing, layouts, SEO, and styling—all preconfigured.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+    </div>
+  );
 }

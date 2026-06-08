@@ -6,34 +6,29 @@ import { Plus } from "lucide-react";
 
 const FAQ_DATA = [
   {
-    question: "What courses does TryCode offer?",
+    question: "Is Try-Code free?",
     answer:
-      "We provide interactive classes on JavaScript, React, Next.js, TypeScript, MERN and PERN stack, database design with Supabase, and AI coding tools.",
+      "Yes. The platform is free to access.",
   },
   {
-    question: "Do I need prior coding experience?",
+    question: "Who is Try-Code for?",
     answer:
-      "Not at all! Our courses are built to take you from absolute beginner to job-ready software engineer step by step.",
+      "Developers, designers, and creators who want modern skills.",
   },
   {
-    question: "Is there a free trial option available?",
+    question: "What makes Try-Code different?",
     answer:
-      "Yes, you can register and try our introductory programming labs for free before upgrading to a paid plan.",
+      "Roadmaps, Recipes, Resources, and AI Mentor combined in one platform.",
   },
   {
-    question: "Do you offer job placement support?",
+    question: "Can I use AI Mentor for coding help?",
     answer:
-      "Yes! We provide resume reviews, career coaching, mock interview prep, and direct job placement assistance on our Bootcamp and Enterprise tiers.",
+      "Yes. The AI Mentor is available 24/7 to help you explain concepts, write secure boilerplate blocks, and debug coding errors.",
   },
   {
-    question: "Can I learn AI development here?",
+    question: "Do I need prior experience?",
     answer:
-      "Absolutely! We offer specialized courses on building AI agents, using OpenAI APIs, and integrating machine learning tools in full-stack web applications.",
-  },
-  {
-    question: "How much do the courses cost?",
-    answer:
-      "Our Starter plan begins at $25/month. Growth (Bootcamp) is $199/month and Enterprise is $499/month. Annual billing saves you 20% across all tiers.",
+      "No. However, many roadmaps target intermediate and advanced learners.",
   },
 ];
 
@@ -89,7 +84,7 @@ export default function Faq() {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="https://images.shadcnspace.com/assets/backgrounds/faq-3.webp"
+                    src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=575&h=450&fit=crop"
                     alt="TryCode FAQ"
                     width={564}
                     height={536}
