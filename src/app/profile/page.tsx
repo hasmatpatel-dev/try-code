@@ -102,13 +102,13 @@ export default function ProfilePage() {
 
   const cmsNavItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['Admin', 'Editor', 'Author'] },
-    { label: 'Posts', href: '/dashboard/posts', icon: FileText, roles: ['Admin', 'Editor', 'Author'] },
-    { label: 'Categories', href: '/dashboard/categories', icon: FolderOpen, roles: ['Admin', 'Editor'] },
-    { label: 'Tags', href: '/dashboard/tags', icon: Tag, roles: ['Admin', 'Editor'] },
-    { label: 'Media Library', href: '/dashboard/media', icon: ImageIcon, roles: ['Admin', 'Editor', 'Author'] },
-    { label: 'Comments', href: '/dashboard/comments', icon: MessageSquare, roles: ['Admin', 'Editor'] },
-    { label: 'Users', href: '/dashboard/users', icon: UsersIcon, roles: ['Admin'] },
-    { label: 'Settings', href: '/dashboard/settings', icon: Settings, roles: ['Admin'] },
+    { label: 'Posts', href: '/posts', icon: FileText, roles: ['Admin', 'Editor', 'Author'] },
+    { label: 'Categories', href: '/categories', icon: FolderOpen, roles: ['Admin', 'Editor'] },
+    { label: 'Tags', href: '/tags', icon: Tag, roles: ['Admin', 'Editor'] },
+    { label: 'Media Library', href: '/media', icon: ImageIcon, roles: ['Admin', 'Editor', 'Author'] },
+    { label: 'Comments', href: '/comments', icon: MessageSquare, roles: ['Admin', 'Editor'] },
+    { label: 'Users', href: '/users', icon: UsersIcon, roles: ['Admin'] },
+    { label: 'Settings', href: '/settings', icon: Settings, roles: ['Admin'] },
   ].filter((item) => item.roles.includes(userRole));
 
   // Weekly study data for custom stylized bar chart

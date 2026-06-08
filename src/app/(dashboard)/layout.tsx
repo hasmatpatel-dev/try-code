@@ -38,13 +38,13 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['Admin', 'Editor', 'Author'] },
-  { title: 'Posts', href: '/dashboard/posts', icon: FileText, roles: ['Admin', 'Editor', 'Author'] },
-  { title: 'Categories', href: '/dashboard/categories', icon: FolderOpen, roles: ['Admin', 'Editor'] },
-  { title: 'Tags', href: '/dashboard/tags', icon: Tag, roles: ['Admin', 'Editor'] },
-  { title: 'Media Library', href: '/dashboard/media', icon: Image, roles: ['Admin', 'Editor', 'Author'] },
-  { title: 'Comments', href: '/dashboard/comments', icon: MessageSquare, roles: ['Admin', 'Editor'] },
-  { title: 'Users', href: '/dashboard/users', icon: Users, roles: ['Admin'] },
-  { title: 'Settings', href: '/dashboard/settings', icon: Settings, roles: ['Admin'] },
+  { title: 'Posts', href: '/posts', icon: FileText, roles: ['Admin', 'Editor', 'Author'] },
+  { title: 'Categories', href: '/categories', icon: FolderOpen, roles: ['Admin', 'Editor'] },
+  { title: 'Tags', href: '/tags', icon: Tag, roles: ['Admin', 'Editor'] },
+  { title: 'Media Library', href: '/media', icon: Image, roles: ['Admin', 'Editor', 'Author'] },
+  { title: 'Comments', href: '/comments', icon: MessageSquare, roles: ['Admin', 'Editor'] },
+  { title: 'Users', href: '/users', icon: Users, roles: ['Admin'] },
+  { title: 'Settings', href: '/settings', icon: Settings, roles: ['Admin'] },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -251,7 +251,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <div className="text-sm font-medium text-gray-400 hidden sm:block">
               CMS Admin <span className="mx-2 text-[#161C2C] select-none">/</span>{' '}
               <span className="text-white capitalize">
-                {pathname.split('/')[2] || 'Overview'}
+                {pathname.split('/')[1] || 'Overview'}
               </span>
             </div>
           </div>

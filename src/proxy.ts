@@ -50,8 +50,10 @@ export async function proxy(request: NextRequest) {
 
     isAuthenticated = !!user;
 
-    // Protect dashboard routes
-    if (pathname.startsWith('/dashboard') && !isAuthenticated) {
+    // Protect dashboard and CMS sub-routes
+    const protectedPaths = ['/dashboard', '/posts', '/categories', '/tags', '/media', '/comments', '/users', '/settings'];
+    const isProtected = protectedPaths.some((p) => pathname === p || pathname.startsWith(p + '/'));
+    if (isProtected && !isAuthenticated) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = '/auth/login';
       loginUrl.searchParams.set('redirect', pathname + request.nextUrl.search);
@@ -71,8 +73,10 @@ export async function proxy(request: NextRequest) {
     const sessionCookie = request.cookies.get('trycode-session')?.value;
     isAuthenticated = !!sessionCookie;
 
-    // Protect dashboard routes
-    if (pathname.startsWith('/dashboard') && !isAuthenticated) {
+    // Protect dashboard and CMS sub-routes
+    const protectedPaths2 = ['/dashboard', '/posts', '/categories', '/tags', '/media', '/comments', '/users', '/settings'];
+    const isProtected2 = protectedPaths2.some((p) => pathname === p || pathname.startsWith(p + '/'));
+    if (isProtected2 && !isAuthenticated) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = '/auth/login';
       loginUrl.searchParams.set('redirect', pathname + request.nextUrl.search);
@@ -91,5 +95,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/auth/:path*'],
+  matcher: ['/dashboard/:path*', '/posts/:path*', '/categories/:path*', '/tags/:path*', '/media/:path*', '/comments/:path*', '/users/:path*', '/settings/:path*', '/auth/:path*'],
 };

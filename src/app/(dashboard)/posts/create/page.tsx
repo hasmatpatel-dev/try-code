@@ -107,7 +107,7 @@ export default function CreatePostPage() {
     },
     onSuccess: () => {
       toast.success('Post created successfully!');
-      router.push('/dashboard/posts');
+      router.push('/posts');
       router.refresh();
     },
     onError: (err: any) => {
@@ -146,7 +146,7 @@ export default function CreatePostPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Link
-            href="/dashboard/posts"
+            href="/posts"
             className="p-2 rounded-xl border border-[#161C2C] bg-[#090D1A] text-gray-400 hover:text-white transition"
           >
             <ChevronLeft className="h-5 w-5" />
