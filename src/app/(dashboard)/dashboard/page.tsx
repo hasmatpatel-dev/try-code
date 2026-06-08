@@ -243,7 +243,7 @@ export default function DashboardPage() {
                 <p className="text-xs text-gray-500">Top viewed posts in your blog database.</p>
               </div>
               <Link
-                href="/dashboard/posts"
+              href="/posts"
                 className="text-xs text-purple-400 hover:text-purple-300 font-semibold flex items-center hover:underline"
               >
                 All Posts
