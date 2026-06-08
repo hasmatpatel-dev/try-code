@@ -21,6 +21,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -78,10 +79,12 @@ const UserProfileMenu = ({ user, handleLogout, router }: { user: any; handleLogo
         <ChevronDown className="h-3.5 w-3.5 text-gray-400 ml-1 shrink-0 animate-pulse" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 mt-2 border border-[#161C2C] bg-[#090D1A]/95 backdrop-blur-xl shadow-2xl p-1.5 rounded-2xl">
-        <DropdownMenuLabel className="px-2.5 py-2 flex flex-col">
-          <span className="text-xs font-bold text-white truncate">{user.name}</span>
-          <span className="text-[10px] text-gray-400 truncate">{user.email}</span>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-2.5 py-2 flex flex-col">
+            <span className="text-xs font-bold text-white truncate">{user.name}</span>
+            <span className="text-[10px] text-gray-400 truncate">{user.email}</span>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-[#161C2C] my-1" />
         <DropdownMenuItem
           onClick={() => router.push('/dashboard')}
@@ -135,32 +138,60 @@ const Header = ({ navigationData, className }: HeaderProps) => {
     {
       title: "Home",
       href: "/",
-      isActive: pathname === "/",
+      isActive: pathname === "/" && activeSection === "home",
+    },
+    {
+      title: "Roadmaps",
+      href: "/#roadmaps",
+      isActive: pathname === "/" && activeSection === "roadmaps",
+    },
+    {
+      title: "Topics",
+      href: "/#categories",
+      isActive: pathname === "/" && activeSection === "categories",
+    },
+    {
+      title: "Recipes",
+      href: "/#recipes",
+      isActive: pathname === "/" && activeSection === "recipes",
+    },
+    {
+      title: "Resources",
+      href: "/#resources",
+      isActive: pathname === "/" && activeSection === "resources",
     },
     {
       title: "Blog",
       href: "/blog",
       isActive: pathname === "/blog" || pathname.startsWith("/blog/"),
     },
+  ];
+
+  const mobileNavigationData: NavigationSection[] = [
     {
-      title: "Learning",
-      href: "/learning",
-      isActive: pathname === "/learning",
+      title: "Home",
+      href: "/",
+      isActive: pathname === "/" && activeSection === "home",
     },
     {
-      title: "Community",
-      href: "/community",
-      isActive: pathname === "/community" || (pathname.startsWith("/community") && pathname !== "/community/courses"),
+      title: "Roadmap",
+      href: "/#roadmaps",
+      isActive: pathname === "/" && activeSection === "roadmaps",
     },
     {
-      title: "Courses",
-      href: "/community/courses",
-      isActive: pathname === "/community/courses",
+      title: "Topic",
+      href: "/#categories",
+      isActive: pathname === "/" && activeSection === "categories",
     },
     {
-      title: "Profile",
-      href: "/profile",
-      isActive: pathname === "/profile",
+      title: "Recipes",
+      href: "/#recipes",
+      isActive: pathname === "/" && activeSection === "recipes",
+    },
+    {
+      title: "Resources",
+      href: "/#resources",
+      isActive: pathname === "/" && activeSection === "resources",
     },
   ];
 
@@ -170,13 +201,13 @@ const Header = ({ navigationData, className }: HeaderProps) => {
     setSticky(window.scrollY >= 50);
 
     // Active Section Logic
-    const sectionIds = ["home", "about-us", "awards", "services", "team", "pricing"];
+    const sectionIds = ["home", "roadmaps", "categories", "recipes", "resources"];
     const headerHeight = 120; // height of sticky header plus a buffer
 
     // Check if user has scrolled to the bottom of the page
     const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50;
     if (isAtBottom) {
-      setActiveSection("pricing");
+      setActiveSection("resources");
       return;
     }
 
@@ -296,10 +327,11 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                         className="items-start flex-none"
                       >
                         <NavigationMenuList className="flex flex-col items-start gap-3">
-                          {currentNavigationData.map((item) => (
+                          {mobileNavigationData.map((item) => (
                             <NavigationMenuItem key={item.title}>
                               <NavigationMenuLink
                                 href={item.href}
+                                onClick={() => setIsOpen(false)}
                                 className={cn(
                                   "group/nav flex items-center text-2xl font-semibold tracking-tight transition-all p-0 hover:bg-transparent focus:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent",
                                   item.isActive
@@ -322,7 +354,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                         </NavigationMenuList>
                       </NavigationMenu>
 
-                      <div className="w-fit">
+                      <div className="w-fit" onClick={() => setIsOpen(false)}>
                         {user ? (
                           <UserProfileMenu user={user} handleLogout={handleLogout} router={router} />
                         ) : (

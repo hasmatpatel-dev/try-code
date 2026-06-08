@@ -160,15 +160,18 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
             >
               <Link href="/" className="flex items-center gap-2.5">
-                <span className="text-xl font-bold text-foreground tracking-tight">TryCode</span>
+                <span className="text-xl font-bold text-foreground tracking-tight">Try-Code</span>
               </Link>
               <p className="text-sm font-normal text-muted-foreground">
-                © 2026 TryCode. All Rights Reserved.
+                © 2026 Try-Code. Modern Skills for Modern Developers.
               </p>
-              <div className="flex items-center gap-6 text-sm font-normal text-muted-foreground">
+              <div className="flex items-center flex-wrap gap-4 text-xs font-normal text-muted-foreground">
+                <Link href="#roadmaps" className="hover:text-foreground transition-colors">Roadmaps</Link>
+                <Link href="#categories" className="hover:text-foreground transition-colors">Topics</Link>
+                <Link href="#recipes" className="hover:text-foreground transition-colors">Recipes</Link>
+                <Link href="#resources" className="hover:text-foreground transition-colors">Resources</Link>
+                <Link href="#ai-mentor" className="hover:text-foreground transition-colors">AI Mentor</Link>
                 <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
-                <Link href="/courses" className="hover:text-foreground transition-colors">Courses</Link>
-                <Link href="/community" className="hover:text-foreground transition-colors">Community</Link>
               </div>
             </motion.div>
           </div>
