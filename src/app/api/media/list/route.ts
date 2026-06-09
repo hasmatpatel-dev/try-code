@@ -1,17 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
+import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, requireAuthRole, handleServerError } from '@/lib/api-utils';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
+    const session = await getSessionCookie();
+    const authError = requireAuthRole(session, ['Admin', 'Editor', 'Author']);
+    if (authError) return authError;
+
     const { searchParams } = new URL(req.url);
-    const bucket = searchParams.get('bucket') || 'blog-images';
+    const rawBucket = searchParams.get('bucket') || 'blog-images';
+    
+    // Sanitize bucket name
+    const bucket = rawBucket.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!bucket) {
+      return NextResponse.json({ error: 'Invalid bucket name' }, { status: 400 });
+    }
 
     const mediaList = await prisma.media.findMany({
       where: { bucket },
       orderBy: { createdAt: 'desc' },
     });
 
-    // Format response to look like Supabase Storage list response
     const formattedList = mediaList.map((item) => ({
       id: item.id,
       name: item.fileName,
@@ -25,7 +39,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(formattedList);
   } catch (error: any) {
-    console.error('List media API error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to list media' }, { status: 500 });
+    return handleServerError(error, 'Failed to list media files');
   }
 }

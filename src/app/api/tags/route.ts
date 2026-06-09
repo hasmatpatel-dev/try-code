@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { getSessionCookie } from '@/lib/auth/session';
 import slugify from 'slugify';
+import { methodGuard, requireAuthRole, handleServerError, validateBody } from '@/lib/api-utils';
+import { tagInputSchema } from '@/lib/validations';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
     const tags = await prisma.tag.findMany({
       include: {
@@ -15,22 +20,23 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json(tags);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to fetch tags' }, { status: 500 });
+    return handleServerError(error, 'Failed to fetch tags');
   }
 }
 
 export async function POST(req: NextRequest) {
+  const methodError = methodGuard(req, ['POST']);
+  if (methodError) return methodError;
+
   try {
     const session = await getSessionCookie();
-    if (!session || (session.user.role !== 'Admin' && session.user.role !== 'Editor')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authError = requireAuthRole(session, ['Admin', 'Editor']);
+    if (authError) return authError;
 
-    const { name } = await req.json();
+    const validation = await validateBody(req, tagInputSchema);
+    if (!validation.success) return validation.response;
 
-    if (!name) {
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-    }
+    const { name } = validation.data;
 
     let slug = slugify(name, { lower: true, strict: true });
     const existing = await prisma.tag.findUnique({
@@ -49,6 +55,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(tag);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to create tag' }, { status: 500 });
+    return handleServerError(error, 'Failed to create tag');
   }
 }

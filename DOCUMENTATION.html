@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TryCode — Project Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0b;
+      color: #e4e4e7;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid #27272a;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #a78bfa, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #71717a;
+      font-weight: 400;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #f4f4f5;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #27272a;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #e4e4e7;
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #a1a1aa;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.4rem;
+      color: #a1a1aa;
+    }
+
+    ul li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #52525b;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #27272a;
+      margin: 2.5rem 0;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .badge {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+    }
+
+    .badge strong {
+      display: block;
+      font-size: 0.9rem;
+      color: #e4e4e7;
+      margin-bottom: 0.15rem;
+    }
+
+    .badge span {
+      font-size: 0.85rem;
+      color: #71717a;
+    }
+
+    .highlight-box {
+      background: #18181b;
+      border-left: 3px solid #a78bfa;
+      border-radius: 0.5rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .highlight-box p {
+      margin-bottom: 0;
+      color: #d4d4d8;
+    }
+
+    .stack-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stack-tag {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.85rem;
+      color: #a1a1aa;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid #27272a;
+      color: #52525b;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TryCode</h1>
+      <p>Project Documentation — Concept, Inspiration &amp; Purpose</p>
+    </header>
+
+    <section>
+      <h2>Project Concept</h2>
+      <p>TryCode is a full-stack Blog CMS and Learning Management Foundation built on <strong>Next.js 16</strong>, <strong>Supabase</strong>, <strong>Prisma</strong>, and <strong>Tailwind CSS v4</strong>. It serves as a unified platform for publishing blog articles, managing AI tutorials, creating courses, and administering users — all from a single relational database backend.</p>
+      <p>The system features role-based access control (Admin, Editor, Author, Student), a Notion-style rich text editor (Tiptap), interactive media library with drag-and-drop (dnd-kit), comments moderation, SEO optimization per post, analytics dashboards (Recharts), and a public-facing blog with search, filters, and related posts.</p>
+      <p>TryCode is architected as a <strong>layered monolith</strong>:</p>
+      <ul>
+        <li><strong>Content Layer</strong> — Posts, Categories, Tags, Comments, Media</li>
+        <li><strong>Learning Layer</strong> — Courses, Lessons, Modules, Enrollments, Certificates</li>
+        <li><strong>AI Layer</strong> — AI Tools, Recommendations, Assistants (future expansion)</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Project Inspiration</h2>
+      <p>TryCode was inspired by a combination of production-grade tools and modern developer experiences:</p>
+      <div class="badge-grid">
+        <div class="badge"><strong>Vercel Dashboard</strong><span>Clean spacing, minimal layout, fast navigation</span></div>
+        <div class="badge"><strong>Linear</strong><span>Minimal, speed-first UI philosophy</span></div>
+        <div class="badge"><strong>Notion</strong><span>Content-first block-based editing experience</span></div>
+        <div class="badge"><strong>shadcn/ui</strong><span>Composable, accessible component patterns</span></div>
+        <div class="badge"><strong>Ghost CMS</strong><span>Headless CMS simplicity with modern tooling</span></div>
+        <div class="badge"><strong>Medium</strong><span>Clean reading experience and author workflows</span></div>
+      </div>
+      <div class="highlight-box">
+        <p>The goal was to combine the <strong>best UX patterns</strong> from these platforms into a single, self-hosted, production-ready CMS that doesn't require a third-party service.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Why We Need This</h2>
+
+      <h3>1. Unified Content Platform</h3>
+      <p>Most blogging platforms (Medium, Dev.to, WordPress.com) lock content into their ecosystems. TryCode gives <strong>full ownership</strong> of data — posts, media, comments, and user data live in your own PostgreSQL database.</p>
+
+      <h3>2. Foundation for Learning &amp; AI</h3>
+      <p>Unlike traditional CMS tools, TryCode is designed from day one to scale beyond blogging into <strong>courses, certifications, and AI-powered learning features</strong> — without needing a rewrite.</p>
+
+      <h3>3. Modern Tech Stack</h3>
+      <p>Built with the state of the art in 2026:</p>
+      <div class="stack-list">
+        <span class="stack-tag">Next.js 16</span>
+        <span class="stack-tag">Supabase</span>
+        <span class="stack-tag">Prisma</span>
+        <span class="stack-tag">Tailwind CSS v4</span>
+      </div>
+      <p>This stack eliminates the traditional "CMS lag" — developers get a modern DX while content editors get a smooth, fast interface.</p>
+
+      <h3>4. Production-First Features</h3>
+      <ul>
+        <li>Role-based access control (RBAC) for teams</li>
+        <li>SEO toolkit (meta tags, OG cards, JSON-LD, sitemaps)</li>
+        <li>Analytics dashboards with real-time visualizations</li>
+        <li>Media library with drag-and-drop uploads and CDN URLs</li>
+        <li>Comments moderation with spam filtering</li>
+      </ul>
+
+      <h3>5. Extensible by Design</h3>
+      <p>The architecture separates concerns cleanly (API layer, server state, forms, global state, tables, notifications, animations). Adding new modules (newsletter, paid courses, AI assistants) follows the same patterns, keeping the codebase predictable and maintainable.</p>
+
+      <h3>6. Developer Productivity</h3>
+      <ul>
+        <li>TypeScript end-to-end</li>
+        <li>Zod validation integrated with React Hook Form</li>
+        <li>TanStack Query for automatic caching and background sync</li>
+        <li>Redux Toolkit for predictable global state</li>
+        <li>TanStack Table for sortable, filterable data tables</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Summary</h2>
+      <div class="highlight-box">
+        <p>TryCode is not just a blog CMS — it is a <strong>content and learning platform foundation</strong> built with modern tools, inspired by the best UX in the industry, and designed to grow without limits.</p>
+      </div>
+    </section>
+
+    <div class="footer">
+      TryCode &mdash; Full-Stack Blog CMS &middot; Built with Next.js 16 &bull; Supabase &bull; Prisma &bull; Tailwind CSS v4
+    </div>
+  </div>
+</body>
+</html>

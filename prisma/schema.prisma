@@ -92,3 +92,43 @@ model SEO {
   twitterCard   String?
   schemaMarkup  String?
 }
+
+model Roadmap {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String?
+  icon        String?
+  color       String?
+  category    String?
+  order       Int      @default(0)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Recipe {
+  id           String   @id @default(uuid())
+  title        String
+  slug         String   @unique
+  description  String?
+  language     String   @default("typescript")
+  code         String?
+  dependencies String?
+  aiPrompt     String?
+  bestPractices String?
+  category     String?
+  published    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String?
+  order     Int      @default(0)
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

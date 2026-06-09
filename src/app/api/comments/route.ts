@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, requireAuthRole, handleServerError, validateBody } from '@/lib/api-utils';
+import { commentCreateSchema } from '@/lib/validations';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
     const session = await getSessionCookie();
-    if (!session || (session.user.role !== 'Admin' && session.user.role !== 'Editor')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authError = requireAuthRole(session, ['Admin', 'Editor']);
+    if (authError) return authError;
 
     const comments = await prisma.comment.findMany({
       include: {
@@ -20,32 +24,51 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(comments);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to fetch comments' }, { status: 500 });
+    return handleServerError(error, 'Failed to fetch comments');
   }
 }
 
-// Guest comments creation
 export async function POST(req: NextRequest) {
-  try {
-    const { postId, content, authorName, authorEmail } = await req.json();
+  const methodError = methodGuard(req, ['POST']);
+  if (methodError) return methodError;
 
-    if (!postId || !content || !authorName || !authorEmail) {
-      return NextResponse.json({ error: 'Required fields are missing' }, { status: 400 });
+  try {
+    const validation = await validateBody(req, commentCreateSchema);
+    if (!validation.success) return validation.response;
+
+    const { postId, content, authorName, authorEmail } = validation.data;
+
+    // Check if post exists and is published
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (!post || !post.published) {
+      return NextResponse.json({ error: 'Post not found or unavailable' }, { status: 404 });
+    }
+
+    // Input sanitization: Strip HTML tags to prevent XSS
+    const sanitize = (str: string) => str.replace(/<[^>]*>/g, '').trim();
+    const cleanContent = sanitize(content);
+    const cleanName = sanitize(authorName);
+    const cleanEmail = authorEmail.toLowerCase().trim();
+
+    if (!cleanContent) {
+      return NextResponse.json({ error: 'Comment content cannot be empty after sanitization' }, { status: 400 });
     }
 
     const comment = await prisma.comment.create({
       data: {
         postId,
-        content,
-        authorName,
-        authorEmail,
-        authorAvatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(authorName)}`,
+        content: cleanContent,
+        authorName: cleanName,
+        authorEmail: cleanEmail,
+        authorAvatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`,
         status: 'Pending', // Requires moderation approval
       },
     });
 
     return NextResponse.json(comment);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to submit comment' }, { status: 500 });
+    return handleServerError(error, 'Failed to submit comment');
   }
 }

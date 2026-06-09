@@ -22,6 +22,10 @@ import {
   ExternalLink,
   Loader2,
   Globe,
+  GraduationCap,
+  Map,
+  Code2,
+  HelpCircle,
 } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { setSession, clearSession } from '@/features/authSlice';
@@ -39,10 +43,14 @@ interface SidebarItem {
 const sidebarItems: SidebarItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['Admin', 'Editor', 'Author'] },
   { title: 'Posts', href: '/posts', icon: FileText, roles: ['Admin', 'Editor', 'Author'] },
+  { title: 'Courses', href: '/courses', icon: GraduationCap, roles: ['Admin', 'Editor'] },
+  { title: 'Roadmaps', href: '/roadmaps', icon: Map, roles: ['Admin', 'Editor'] },
+  { title: 'Recipes', href: '/recipes', icon: Code2, roles: ['Admin', 'Editor'] },
   { title: 'Categories', href: '/categories', icon: FolderOpen, roles: ['Admin', 'Editor'] },
   { title: 'Tags', href: '/tags', icon: Tag, roles: ['Admin', 'Editor'] },
   { title: 'Media Library', href: '/media', icon: Image, roles: ['Admin', 'Editor', 'Author'] },
   { title: 'Comments', href: '/comments', icon: MessageSquare, roles: ['Admin', 'Editor'] },
+  { title: 'FAQ', href: '/faq', icon: HelpCircle, roles: ['Admin', 'Editor'] },
   { title: 'Users', href: '/users', icon: Users, roles: ['Admin'] },
   { title: 'Settings', href: '/settings', icon: Settings, roles: ['Admin'] },
 ];

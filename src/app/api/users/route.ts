@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, requireAuthRole, handleServerError } from '@/lib/api-utils';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
     const session = await getSessionCookie();
-    if (!session || session.user.role !== 'Admin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    const authError = requireAuthRole(session, ['Admin']);
+    if (authError) return authError;
 
     const users = await prisma.user.findMany({
       orderBy: { createdAt: 'desc' },
@@ -23,6 +26,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(users);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to list users' }, { status: 500 });
+    return handleServerError(error, 'Failed to list users');
   }
 }

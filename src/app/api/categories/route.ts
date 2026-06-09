@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { getSessionCookie } from '@/lib/auth/session';
 import slugify from 'slugify';
+import { methodGuard, requireAuthRole, handleServerError, validateBody } from '@/lib/api-utils';
+import { categoryInputSchema } from '@/lib/validations';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
     const categories = await prisma.category.findMany({
       include: {
@@ -17,22 +22,23 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json(categories);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to fetch categories' }, { status: 500 });
+    return handleServerError(error, 'Failed to fetch categories');
   }
 }
 
 export async function POST(req: NextRequest) {
+  const methodError = methodGuard(req, ['POST']);
+  if (methodError) return methodError;
+
   try {
     const session = await getSessionCookie();
-    if (!session || (session.user.role !== 'Admin' && session.user.role !== 'Editor')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authError = requireAuthRole(session, ['Admin', 'Editor']);
+    if (authError) return authError;
 
-    const { name, description, parentId } = await req.json();
+    const validation = await validateBody(req, categoryInputSchema);
+    if (!validation.success) return validation.response;
 
-    if (!name) {
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-    }
+    const { name, description, parentId } = validation.data;
 
     let slug = slugify(name, { lower: true, strict: true });
     const existing = await prisma.category.findUnique({
@@ -53,6 +59,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(category);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to create category' }, { status: 500 });
+    return handleServerError(error, 'Failed to create category');
   }
 }

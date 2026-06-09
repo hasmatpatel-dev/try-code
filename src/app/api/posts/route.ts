@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { getSessionCookie } from '@/lib/auth/session';
 import slugify from 'slugify';
+import { methodGuard, requireAuthRole, handleServerError, validateBody } from '@/lib/api-utils';
+import { postInputSchema } from '@/lib/validations';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search') || '';
@@ -14,6 +19,11 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const skip = (page - 1) * limit;
 
+    const session = await getSessionCookie();
+    const isAuthenticated = !!(session && session.user);
+    const hasModeratorRole = isAuthenticated && ['Admin', 'Editor'].includes(session.user.role);
+    const hasAuthorRole = isAuthenticated && session.user.role === 'Author';
+
     const where: any = {};
 
     if (search) {
@@ -23,10 +33,40 @@ export async function GET(req: NextRequest) {
       ];
     }
 
-    if (status === 'published') {
+    if (!isAuthenticated) {
+      // Unauthenticated users can only see published posts
       where.published = true;
-    } else if (status === 'draft') {
-      where.published = false;
+    } else if (hasModeratorRole) {
+      // Admins/Editors can view status based on query parameter
+      if (status === 'published') {
+        where.published = true;
+      } else if (status === 'draft') {
+        where.published = false;
+      }
+    } else if (hasAuthorRole) {
+      // Authors can view status based on query parameter, but only for their own posts if draft is included
+      if (status === 'published') {
+        where.published = true;
+      } else if (status === 'draft') {
+        where.published = false;
+        where.authorId = session.user.id;
+      } else {
+        // 'all': they see all published posts, plus their own drafts
+        where.OR = [
+          { published: true },
+          { authorId: session.user.id }
+        ];
+        if (search) {
+          where.AND = [
+            { OR: where.OR },
+            { OR: [ { title: { contains: search } }, { content: { contains: search } } ] }
+          ];
+          delete where.OR;
+        }
+      }
+    } else {
+      // Students or other roles can only see published posts
+      where.published = true;
     }
 
     if (category) {
@@ -61,17 +101,21 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ items: posts, totalCount });
   } catch (error: any) {
-    console.error('Fetch posts API error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to fetch posts' }, { status: 500 });
+    return handleServerError(error, 'Failed to fetch posts');
   }
 }
 
 export async function POST(req: NextRequest) {
+  const methodError = methodGuard(req, ['POST']);
+  if (methodError) return methodError;
+
   try {
     const session = await getSessionCookie();
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authError = requireAuthRole(session, ['Admin', 'Editor', 'Author']);
+    if (authError) return authError;
+
+    const validation = await validateBody(req, postInputSchema);
+    if (!validation.success) return validation.response;
 
     const {
       title,
@@ -79,16 +123,12 @@ export async function POST(req: NextRequest) {
       excerpt,
       published,
       coverImage,
-      categories, // Array of Category IDs
-      tags, // Array of Tag IDs
+      categories,
+      tags,
       featured,
       scheduledAt,
       seo,
-    } = await req.json();
-
-    if (!title || !content) {
-      return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
-    }
+    } = validation.data;
 
     // Slugify
     let slug = slugify(title, { lower: true, strict: true });
@@ -110,7 +150,7 @@ export async function POST(req: NextRequest) {
         scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
         featured: featured || false,
         coverImage,
-        authorId: session.user.id,
+        authorId: session!.user.id,
         categories:
           categories && categories.length > 0
             ? {
@@ -143,7 +183,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(post);
   } catch (error: any) {
-    console.error('Create post API error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to create post' }, { status: 500 });
+    return handleServerError(error, 'Failed to create post');
   }
 }
