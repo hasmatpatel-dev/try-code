@@ -2,18 +2,39 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, requireAuthRole, handleServerError } from '@/lib/api-utils';
 
 export async function POST(req: NextRequest) {
-  try {
-    const { bucket, paths } = await req.json();
+  const methodError = methodGuard(req, ['POST']);
+  if (methodError) return methodError;
 
-    if (!bucket || !paths || !Array.isArray(paths)) {
+  try {
+    const session = await getSessionCookie();
+    const authError = requireAuthRole(session, ['Admin', 'Editor', 'Author']);
+    if (authError) return authError;
+
+    const { bucket: rawBucket, paths } = await req.json();
+
+    if (!rawBucket || !paths || !Array.isArray(paths)) {
       return NextResponse.json({ error: 'Bucket and paths are required' }, { status: 400 });
     }
 
+    // Sanitize bucket
+    const bucket = rawBucket.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!bucket) {
+      return NextResponse.json({ error: 'Invalid bucket name' }, { status: 400 });
+    }
+
     const results = [];
+    const expectedDir = path.resolve(path.join(process.cwd(), 'public', 'uploads', bucket));
 
     for (const filePathName of paths) {
+      if (typeof filePathName !== 'string') {
+        results.push({ path: String(filePathName), deleted: false, reason: 'Invalid path format' });
+        continue;
+      }
+
       const filename = path.basename(filePathName);
       const fileUrl = `/uploads/${bucket}/${filename}`;
 
@@ -23,12 +44,20 @@ export async function POST(req: NextRequest) {
       });
 
       if (record) {
+        const diskPath = path.join(expectedDir, filename);
+        const resolvedDiskPath = path.resolve(diskPath);
+
+        // Security check: must reside inside expected upload folder for this bucket
+        if (!resolvedDiskPath.startsWith(expectedDir)) {
+          results.push({ path: filePathName, deleted: false, reason: 'Access denied to file path' });
+          continue;
+        }
+
         // Remove from public directory
-        const diskPath = path.join(process.cwd(), 'public', 'uploads', bucket, filename);
         try {
-          await fs.unlink(diskPath);
+          await fs.unlink(resolvedDiskPath);
         } catch (err) {
-          console.warn(`File could not be deleted from disk at ${diskPath}`);
+          console.warn(`File could not be deleted from disk at ${resolvedDiskPath}`);
         }
 
         // Remove from DB
@@ -44,7 +73,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, results });
   } catch (error: any) {
-    console.error('Delete media API error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to delete' }, { status: 500 });
+    return handleServerError(error, 'Failed to delete media files');
   }
 }

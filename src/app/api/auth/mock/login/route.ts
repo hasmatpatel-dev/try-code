@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { setSessionCookie } from '@/lib/auth/session';
+import { methodGuard, guardMockRoute, handleServerError } from '@/lib/api-utils';
 
 export async function POST(req: NextRequest) {
+  const methodError = methodGuard(req, ['POST']);
+  if (methodError) return methodError;
+
+  const mockError = guardMockRoute();
+  if (mockError) return mockError;
+
   try {
     const { email, password } = await req.json();
 
@@ -56,7 +63,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(session);
   } catch (error: any) {
-    console.error('Mock login error:', error);
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+    return handleServerError(error, 'Login failed');
   }
 }

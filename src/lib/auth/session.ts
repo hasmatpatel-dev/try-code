@@ -38,19 +38,19 @@ export async function getSessionCookie() {
         }
       );
 
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error || !session) return null;
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) return null;
 
       return {
-        access_token: session.access_token,
+        access_token: '',
         user: {
-          id: session.user.id,
-          email: session.user.email,
-          role: session.user.user_metadata?.role || 'Student',
+          id: user.id,
+          email: user.email,
+          role: user.user_metadata?.role || 'Student',
           user_metadata: {
-            name: session.user.user_metadata?.name || session.user.email?.split('@')[0],
-            avatarUrl: session.user.user_metadata?.avatarUrl || session.user.user_metadata?.avatar_url || null,
-            role: session.user.user_metadata?.role || 'Student',
+            name: user.user_metadata?.name || user.email?.split('@')[0],
+            avatarUrl: user.user_metadata?.avatarUrl || user.user_metadata?.avatar_url || null,
+            role: user.user_metadata?.role || 'Student',
           },
         },
       };

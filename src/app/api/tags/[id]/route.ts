@@ -1,18 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, requireAuthRole, handleServerError, validateBody } from '@/lib/api-utils';
+import { tagInputSchema } from '@/lib/validations';
 
 type RouteParams = { params: Promise<{ id: string }> };
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
+  const methodError = methodGuard(req, ['PUT']);
+  if (methodError) return methodError;
+
   try {
     const { id } = await params;
     const session = await getSessionCookie();
-    if (!session || (session.user.role !== 'Admin' && session.user.role !== 'Editor')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authError = requireAuthRole(session, ['Admin', 'Editor']);
+    if (authError) return authError;
 
-    const { name } = await req.json();
+    const validation = await validateBody(req, tagInputSchema);
+    if (!validation.success) return validation.response;
+
+    const { name } = validation.data;
+
+    const existing = await prisma.tag.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Tag not found' }, { status: 404 });
+    }
 
     const tag = await prisma.tag.update({
       where: { id },
@@ -21,16 +33,23 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(tag);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to update tag' }, { status: 500 });
+    return handleServerError(error, 'Failed to update tag');
   }
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const methodError = methodGuard(req, ['DELETE']);
+  if (methodError) return methodError;
+
   try {
     const { id } = await params;
     const session = await getSessionCookie();
-    if (!session || (session.user.role !== 'Admin' && session.user.role !== 'Editor')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authError = requireAuthRole(session, ['Admin', 'Editor']);
+    if (authError) return authError;
+
+    const existing = await prisma.tag.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Tag not found' }, { status: 404 });
     }
 
     await prisma.tag.delete({
@@ -39,6 +58,6 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to delete tag' }, { status: 500 });
+    return handleServerError(error, 'Failed to delete tag');
   }
 }

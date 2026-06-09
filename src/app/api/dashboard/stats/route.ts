@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
 import { startOfDay, subDays, format } from 'date-fns';
+import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, requireAuthRole, handleServerError } from '@/lib/api-utils';
 
 export async function GET(req: NextRequest) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
+    const session = await getSessionCookie();
+    const authError = requireAuthRole(session, ['Admin', 'Editor', 'Author']);
+    if (authError) return authError;
+
     const { searchParams } = new URL(req.url);
     const range = searchParams.get('range') || '30d';
 
@@ -103,7 +112,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(stats);
   } catch (error: any) {
-    console.error('Failed to get dashboard stats:', error);
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+    return handleServerError(error, 'Failed to get dashboard stats');
   }
 }

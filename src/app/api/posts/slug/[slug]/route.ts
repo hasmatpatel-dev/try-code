@@ -1,11 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
+import { getSessionCookie } from '@/lib/auth/session';
+import { methodGuard, handleServerError } from '@/lib/api-utils';
 
 type RouteParams = { params: Promise<{ slug: string }> };
 
 export async function GET(req: NextRequest, { params }: RouteParams) {
+  const methodError = methodGuard(req, ['GET']);
+  if (methodError) return methodError;
+
   try {
     const { slug } = await params;
+
+    // Fetch the post first to inspect published status without changing views count first
+    const existingPost = await prisma.post.findUnique({
+      where: { slug },
+    });
+
+    if (!existingPost) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    // Secure draft view
+    if (!existingPost.published) {
+      const session = await getSessionCookie();
+      const isAuthenticated = !!(session && session.user);
+      const isAuthorOwner = isAuthenticated && existingPost.authorId === session.user.id;
+      const isModerator = isAuthenticated && ['Admin', 'Editor'].includes(session.user.role);
+
+      if (!isAuthorOwner && !isModerator) {
+        return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      }
+    }
 
     // Fetch the post and increment view count
     const post = await prisma.post.update({
@@ -27,10 +53,6 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       },
     });
 
-    if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
-    }
-
     // Fetch related posts (latest published posts, excluding current)
     const relatedPosts = await prisma.post.findMany({
       where: {
@@ -50,7 +72,6 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ post, relatedPosts });
   } catch (error: any) {
-    console.error('Fetch post by slug error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to fetch article' }, { status: 404 });
+    return handleServerError(error, 'Failed to fetch article');
   }
 }
