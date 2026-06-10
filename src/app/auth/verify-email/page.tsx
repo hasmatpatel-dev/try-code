@@ -17,6 +17,9 @@ import {
 } from '@/components/ui/card';
 import { Field, FieldDescription, FieldGroup } from '@/components/ui/field';
 
+import LogoSvg from '@/assets/trycode.svg';
+import Image from 'next/image';
+
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email') ?? 'your email address';
@@ -61,7 +64,7 @@ function VerifyEmailContent() {
         <CardHeader className="text-center gap-6 p-0">
           <div className="mx-auto">
             <Link href="/">
-              <div className="mdn">TryCode</div>
+              <div className="mdn"><Image src={LogoSvg} alt="TryCode" height={40} width={40} /></div>
             </Link>
           </div>
           <div className="flex flex-col gap-2 items-center">

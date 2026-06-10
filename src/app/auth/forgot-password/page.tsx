@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import LogoSvg from '@/assets/trycode.svg';
+import Image from 'next/image';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -58,7 +60,7 @@ export default function ForgotPasswordPage() {
         <CardHeader className="text-center gap-6 p-0">
           <div className="mx-auto">
             <Link href="/">
-              <div className="mdn">TryCode</div>
+              <div className="mdn"><Image src={LogoSvg} alt="TryCode" height={40} width={40} /></div>
             </Link>
           </div>
           <div className="flex flex-col gap-1">

@@ -30,6 +30,9 @@ import {
 } from '@/components/ui/select';
 import { Controller } from 'react-hook-form';
 
+import LogoSvg from '@/assets/trycode.svg';
+import Image from 'next/image';
+
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
@@ -108,7 +111,7 @@ export default function RegisterPage() {
         <CardHeader className="text-center gap-6 p-0">
           <div className="mx-auto">
             <Link href="/">
-              <div className="mdn">TryCode</div>
+              <div className="mdn"><Image src={LogoSvg} alt="TryCode" height={40} width={40} /></div>
             </Link>
           </div>
           <div className="flex flex-col gap-1">

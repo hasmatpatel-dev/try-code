@@ -17,6 +17,9 @@ import {
   InputOTP, InputOTPGroup, InputOTPSlot,
 } from '@/components/ui/input-otp';
 
+import LogoSvg from '@/assets/trycode.svg';
+import Image from 'next/image';
+
 const schema = z.object({
   otp: z.string().length(6, 'Enter the 6-digit code'),
 });
@@ -73,7 +76,7 @@ function TwoFactorContent() {
         <CardHeader className="text-center gap-6 p-0">
           <div className="mx-auto">
             <Link href="/">
-              <div className="mdn">TryCode</div>
+              <div className="mdn"><Image src={LogoSvg} alt="TryCode" height={40} width={40} /></div>
             </Link>
           </div>
           <div className="flex flex-col gap-1">
