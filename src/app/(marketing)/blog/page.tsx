@@ -33,6 +33,9 @@ const instrumentSerif = Instrument_Serif({
   style: ['italic'],
 });
 
+import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
+
 const fetchPublicPosts = async ({
   search,
   category,
@@ -85,220 +88,253 @@ export default function BlogListingPage() {
   const totalPages = postsData ? Math.ceil(postsData.totalCount / 9) : 0;
 
   return (
-    <div className="min-h-screen bg-[#030712] text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <Header className="fixed top-0 z-50 w-full hidden md:flex" />
 
-      {/* Background radial glow */}
-      <div className="relative overflow-hidden pt-20">
-        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-950/10 blur-[120px] pointer-events-none" />
-
+      {/* Hero & Listing Wrapper */}
+      <section className="relative overflow-hidden pt-16 md:pt-20">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16">
-          <div className="border-x border-border px-5 md:px-8 py-12 lg:py-16 space-y-12 flex flex-col min-h-screen">
-            {/* Title Section (Matching Landing Page Style) */}
-            <div className="flex flex-col gap-4 max-w-2xl text-left pb-8 border-b border-border/40">
-              <div className="flex gap-2 items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
-                <p className="text-sm text-muted-foreground font-normal tracking-wide uppercase">TryCode Blog</p>
+          <div className="border-x border-border w-full flex flex-col bg-background">
+            
+            {/* Hero Banner Area */}
+            <div className="relative w-full py-16 md:py-24 px-4 md:px-8 before:absolute before:left-0 before:right-0 before:w-full before:h-full before:bg-linear-to-r before:from-sky-100 before:via-white before:to-amber-100 before:rounded-full before:top-24 before:blur-3xl before:-z-10 dark:before:from-slate-800 dark:before:via-black dark:before:to-stone-700 dark:before:rounded-full dark:before:blur-3xl dark:before:-z-10">
+              <div className="relative z-10 flex flex-col max-w-5xl mx-auto gap-8">
+                <div className="relative flex flex-col text-center items-center sm:gap-6 gap-4">
+                  <motion.h1
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
+                    className="lg:text-8xl md:text-7xl text-4xl font-medium leading-14 md:leading-20 lg:leading-24"
+                  >
+                    Articles, guides &{" "} <br />
+                    <span
+                      className={`${instrumentSerif.className} tracking-tight`}
+                    >
+                      AI tutorials
+                    </span>
+                  </motion.h1>
+                  <motion.p
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
+                    className="text-base font-normal max-w-2xl text-muted-foreground leading-relaxed"
+                  >
+                    Master AI, React, Next.js, WordPress, Elementor, ACF Pro, Webflow, Framer, Testing, Performance, and Architecture through structured roadmaps, practical recipes, curated resources, and AI-powered guidance.
+                  </motion.p>
+                </div>
               </div>
-              <h1 className="text-4xl md:text-6xl font-medium tracking-tight text-white leading-tight">
-                Articles, guides &{" "}
-                <span className={`${instrumentSerif.className} tracking-tight text-purple-400`}>
-                  AI tutorials
-                </span>
-              </h1>
-              <p className="text-base md:text-lg font-normal text-muted-foreground leading-relaxed">
-                Deep dives into software architecture, full-stack design patterns, Next.js, and database scaling.
-              </p>
             </div>
 
-        {/* Search & filters bar */}
-        <div className="flex flex-col md:flex-row gap-4 bg-[#090D1A]/50 border border-[#161C2C] p-4 rounded-2xl backdrop-blur-xl">
-          <div className="relative flex-1">
-            <Search className="absolute inset-y-0 left-3 my-auto h-4.5 w-4.5 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search articles by keywords..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
-              className="w-full rounded-xl border border-[#161C2C] bg-gray-950/50 py-2.5 pl-10 pr-4 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-purple-500"
-            />
-          </div>
+            {/* Search & Filters block */}
+            <div className="border-t border-b border-border w-full py-6 px-5 md:px-8 flex flex-col md:flex-row gap-4 items-center justify-between bg-card/10">
+              <div className="relative w-full md:max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setPage(1);
+                  }}
+                  className="w-full pl-10 pr-4 py-2 text-sm bg-transparent border border-border rounded-full focus:outline-none focus:ring-1 focus:ring-foreground transition"
+                />
+              </div>
 
-          <div className="flex flex-wrap gap-2">
-            {/* Category selection */}
-            <Select
-              value={selectedCategory || "ALL_CATEGORIES"}
-              onValueChange={(val) => {
-                setSelectedCategory(val === "ALL_CATEGORIES" ? "" : (val ?? ""));
-                setPage(1);
-              }}
-            >
-              <SelectTrigger className="rounded-xl border border-[#161C2C] bg-gray-950 px-3.5 py-2 h-10 text-sm text-white outline-none transition focus:border-purple-500 cursor-pointer max-w-[180px] min-w-[150px] flex items-center justify-between">
-                <SelectValue placeholder="All Categories" />
-              </SelectTrigger>
-              <SelectContent className="bg-popover text-popover-foreground">
-                <SelectItem value="ALL_CATEGORIES">All Categories</SelectItem>
-                {filters?.categories.map((c: any) => (
-                  <SelectItem key={c.id} value={c.id}>
-                    {c.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+                {filters?.categories && (
+                  <Select
+                    value={selectedCategory}
+                    onValueChange={(val) => {
+                      setSelectedCategory(val === 'all' || !val ? '' : val);
+                      setPage(1);
+                    }}
+                  >
+                    <SelectTrigger className="w-full md:w-[180px] bg-transparent border-border rounded-full text-xs">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      {filters.categories.map((cat: any) => (
+                        <SelectItem key={cat.id} value={cat.slug || cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
 
-            {/* Tag selection */}
-            <Select
-              value={selectedTag || "ALL_TAGS"}
-              onValueChange={(val) => {
-                setSelectedTag(val === "ALL_TAGS" ? "" : (val ?? ""));
-                setPage(1);
-              }}
-            >
-              <SelectTrigger className="rounded-xl border border-[#161C2C] bg-gray-950 px-3.5 py-2 h-10 text-sm text-white outline-none transition focus:border-purple-500 cursor-pointer max-w-[180px] min-w-[150px] flex items-center justify-between">
-                <SelectValue placeholder="All Tags" />
-              </SelectTrigger>
-              <SelectContent className="bg-popover text-popover-foreground">
-                <SelectItem value="ALL_TAGS">All Tags</SelectItem>
-                {filters?.tags.map((t: any) => (
-                  <SelectItem key={t.id} value={t.id}>
-                    #{t.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+                {filters?.tags && (
+                  <Select
+                    value={selectedTag}
+                    onValueChange={(val) => {
+                      setSelectedTag(val === 'all' || !val ? '' : val);
+                      setPage(1);
+                    }}
+                  >
+                    <SelectTrigger className="w-full md:w-[150px] bg-transparent border-border rounded-full text-xs">
+                      <SelectValue placeholder="Tag" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Tags</SelectItem>
+                      {filters.tags.map((tag: any) => (
+                        <SelectItem key={tag.id} value={tag.slug || tag.id}>
+                          {tag.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
 
-        {/* Content list */}
-        {isLoading ? (
-          <div className="flex h-64 items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
-          </div>
-        ) : !postsData || postsData.items.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-[#161C2C] py-20 text-center">
-            <BookOpen className="h-12 w-12 text-gray-700 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white">No articles published yet</h3>
-            <p className="text-sm text-gray-500 mt-1 max-w-sm mx-auto">
-              Please check back later or modify your search filters to list available articles.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-12">
-            {/* Grid of posts */}
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {postsData.items.map((post: any, i: number) => (
-                <motion.article
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
-                  key={post.id}
-                  className="group rounded-2xl border border-[#161C2C] bg-[#090D1A]/35 overflow-hidden flex flex-col justify-between shadow-xl hover:border-purple-500/30 transition duration-300"
-                >
-                  <Link href={`/blog/${post.slug}`} className="block relative aspect-video bg-gray-950 overflow-hidden shrink-0 select-none">
-                    {post.coverImage ? (
-                      <img
-                        src={post.coverImage}
-                        alt={post.title}
-                        className="h-full w-full object-cover group-hover:scale-102 transition duration-500"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center bg-purple-950/10 text-purple-400">
-                        <BookOpen className="h-10 w-10 opacity-40" />
-                      </div>
-                    )}
-                  </Link>
+                {(selectedCategory || selectedTag || search) && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setSearch('');
+                      setSelectedCategory('');
+                      setSelectedTag('');
+                      setPage(1);
+                    }}
+                    className="text-xs text-muted-foreground hover:text-foreground rounded-full px-4 h-9"
+                  >
+                    Clear Filters
+                  </Button>
+                )}
+              </div>
+            </div>
 
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      {/* Meta inline values */}
-                      <div className="flex flex-wrap items-center gap-2.5 text-xs text-gray-500">
-                        <span className="flex items-center">
-                          <Calendar className="h-3.5 w-3.5 mr-1" />
-                          {format(new Date(post.createdAt), 'MMM dd, yyyy')}
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center">
-                          <Clock className="h-3.5 w-3.5 mr-1" />
-                          {estimateReadingTime(post.content)}
-                        </span>
-                      </div>
+            {/* Content list */}
+            {isLoading ? (
+              <div className="flex h-64 items-center justify-center border-b border-border">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : !postsData || postsData.items.length === 0 ? (
+              <div className="py-20 text-center border-b border-border">
+                <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <h3 className="text-lg font-medium text-foreground">No articles published yet</h3>
+                <p className="text-sm text-muted-foreground mt-1 max-w-sm mx-auto">
+                  Please check back later or modify your search filters to list available articles.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                {postsData.items.map((post: any, i: number) => (
+                  <motion.article
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    key={post.id}
+                    className="group flex flex-col md:flex-row border-b border-border last:border-b-0 w-full justify-between overflow-hidden bg-transparent"
+                  >
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="flex flex-col md:flex-row w-full justify-between items-stretch"
+                    >
+                      {/* Left: Text & Info */}
+                      <div className="flex flex-col justify-between flex-1 p-6 md:p-10 gap-6">
+                        <div className="space-y-4">
+                          {/* Meta inline values */}
+                          <div className="flex flex-wrap items-center gap-2.5 text-xs text-muted-foreground">
+                            <span className="flex items-center">
+                              <Calendar className="h-3.5 w-3.5 mr-1" />
+                              {format(new Date(post.createdAt), 'MMM dd, yyyy')}
+                            </span>
+                            <span>•</span>
+                            <span className="flex items-center">
+                              <Clock className="h-3.5 w-3.5 mr-1" />
+                              {estimateReadingTime(post.content)}
+                            </span>
+                            {post.categories.length > 0 && (
+                              <>
+                                <span>•</span>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {post.categories.map((c: any) => (
+                                    <span
+                                      key={c.id}
+                                      className="text-[10px] font-semibold bg-primary/10 text-primary border border-primary/15 px-2 py-0.5 rounded-full"
+                                    >
+                                      {c.name}
+                                    </span>
+                                  ))}
+                                </div>
+                              </>
+                            )}
+                          </div>
 
-                      {/* Title & summary */}
-                      <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition leading-snug">
-                        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                      </h3>
-                      {post.excerpt && (
-                        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{post.excerpt}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-4 pt-4 border-t border-[#161C2C]/50">
-                      {/* Categories / tags listing */}
-                      <div className="flex flex-wrap gap-1.5">
-                        {post.categories.map((c: any) => (
-                          <span
-                            key={c.id}
-                            className="text-[10px] font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/15 px-2 py-0.5 rounded"
-                          >
-                            {c.name}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Author detail & CTA link */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <img
-                            src={post.author?.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${post.author?.email}`}
-                            alt={post.author?.name}
-                            className="h-6 w-6 rounded-full"
-                          />
-                          <span className="text-xs text-gray-300 font-medium">{post.author?.name}</span>
+                          {/* Title & summary */}
+                          <h3 className="text-2xl md:text-3xl font-medium text-foreground group-hover:text-foreground/80 transition-colors leading-tight">
+                            {post.title}
+                          </h3>
+                          {post.excerpt && (
+                            <p className="text-sm font-normal text-muted-foreground line-clamp-3 leading-relaxed max-w-2xl">
+                              {post.excerpt}
+                            </p>
+                          )}
                         </div>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-xs text-purple-400 group-hover:text-purple-300 font-bold flex items-center hover:underline"
-                        >
-                          Read post
-                          <ArrowRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition" />
-                        </Link>
+
+                        {/* Author detail & CTA link */}
+                        <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                          <div className="flex items-center space-x-2.5">
+                            <img
+                              src={post.author?.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${post.author?.email}`}
+                              alt={post.author?.name}
+                              className="h-6 w-6 rounded-full"
+                            />
+                            <span className="text-xs text-muted-foreground font-medium">{post.author?.name}</span>
+                          </div>
+                          <div className="text-xs text-foreground font-semibold flex items-center gap-1 group-hover:underline">
+                            Read post
+                            <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
+
+                      {/* Right: Image */}
+                      <div className="w-full md:w-[40%] min-h-[200px] md:min-h-full border-t md:border-t-0 md:border-l border-border overflow-hidden relative">
+                        {post.coverImage ? (
+                          <img
+                            src={post.coverImage}
+                            alt={post.title}
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 min-h-[200px]"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="h-full w-full flex items-center justify-center bg-muted/10 text-muted-foreground min-h-[200px]">
+                            <BookOpen className="h-10 w-10 opacity-30" />
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  </motion.article>
+                ))}
+              </div>
+            )}
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-center space-x-2 select-none">
+              <div className="flex justify-center space-x-2 py-8 border-b border-border bg-card/5 select-none">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="rounded-xl border border-[#161C2C] bg-[#090D1A] px-4 py-2 text-sm text-gray-300 hover:text-white transition disabled:opacity-40"
+                  className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-foreground hover:bg-muted transition disabled:opacity-40 hover:cursor-pointer"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  className="rounded-xl border border-[#161C2C] bg-[#090D1A] px-4 py-2 text-sm text-gray-300 hover:text-white transition disabled:opacity-40"
+                  className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-foreground hover:bg-muted transition disabled:opacity-40 hover:cursor-pointer"
                 >
                   Next
                 </button>
               </div>
             )}
-          </div>
-        )}
+
           </div>
         </div>
-        <Footer02 />
-      </div>
+      </section>
+
+      <Footer02 />
     </div>
   );
 }

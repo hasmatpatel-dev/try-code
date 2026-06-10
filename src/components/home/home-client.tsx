@@ -1175,13 +1175,12 @@ export default function HomeClient({ latestArticles }: HomeClientProps) {
                 </ul>
               </div>
 
-              {/* Community Links */}
+              {/* Resources Links */}
               <div className="space-y-4">
-                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Community</h4>
+                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Resources</h4>
                 <ul className="space-y-2.5 text-xs text-gray-500 font-semibold">
                   <li><Link href="/blog" className="hover:text-white transition">Engineering Blog</Link></li>
-                  <li><Link href="/community" className="hover:text-white transition">Forum Discussions</Link></li>
-                  <li><Link href="/community/courses" className="hover:text-white transition">All Courses</Link></li>
+                  <li><Link href="/bootcamps" className="hover:text-white transition">All Courses</Link></li>
                   <li><Link href="/profile" className="hover:text-white transition">Developer Profile</Link></li>
                 </ul>
               </div>

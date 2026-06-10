@@ -125,7 +125,7 @@ export default function RoadmapDetailPage({ params }: { params: Promise<{ slug: 
               {/* CTA */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center py-8">
                 <Link
-                  href="/community/courses"
+                  href="/bootcamps"
                   className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:from-purple-500 hover:to-indigo-500 transition active:scale-95"
                 >
                   <BookOpen className="mr-2 h-4 w-4" />

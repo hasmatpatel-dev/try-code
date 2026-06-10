@@ -22,6 +22,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 
+import Image from 'next/image';
+import LogoSvg from '@/assets/trycode.svg';
+
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -107,7 +110,7 @@ function LoginContent() {
         <CardHeader className="text-center gap-6 p-0">
           <div className="mx-auto">
             <Link href="/">
-              <div className="mdn">TryCode</div>
+              <div className="mdn"><Image src={LogoSvg} alt="TryCode" height={40} width={40} /></div>
             </Link>
           </div>
           <div className="flex flex-col gap-1">

@@ -66,7 +66,7 @@ export default function Footer() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
               >
-                <h2 className="text-4xl lg:text-5xl xl:text-6xl font-medium text-foreground">
+                <h2 className="text-4xl lg:text-5xl xl:text-5xl font-medium text-foreground">
                   Ready to start your coding journey? Let&apos;s do it.
                 </h2>
                 <p className="text-base font-normal text-muted-foreground">
