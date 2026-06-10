@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     if (published === 'true') where.published = true;
     else if (published === 'false') where.published = false;
 
-    const faqs = await prisma.fAQ.findMany({
+    const faqs = await prisma.faq.findMany({
       where,
       orderBy: { order: 'asc' },
     });
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     const { question, answer, order, published } = validation.data;
 
-    const faq = await prisma.fAQ.create({
+    const faq = await prisma.faq.create({
       data: { question, answer, order: order || 0, published: published || false },
     });
 

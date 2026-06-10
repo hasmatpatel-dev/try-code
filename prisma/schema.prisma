@@ -123,7 +123,7 @@ model Recipe {
   updatedAt    DateTime @updatedAt
 }
 
-model FAQ {
+model Faq {
   id        String   @id @default(uuid())
   question  String
   answer    String?
@@ -131,4 +131,6 @@ model FAQ {
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("FAQ")
 }

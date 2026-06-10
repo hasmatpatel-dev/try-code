@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
   try {
     const { id } = await params;
-    const faq = await prisma.fAQ.findUnique({ where: { id } });
+    const faq = await prisma.faq.findUnique({ where: { id } });
     if (!faq) {
       return NextResponse.json({ error: 'FAQ not found' }, { status: 404 });
     }
@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (authError) return authError;
 
     const { id } = await params;
-    const existing = await prisma.fAQ.findUnique({ where: { id } });
+    const existing = await prisma.faq.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: 'FAQ not found' }, { status: 404 });
     }
@@ -40,7 +40,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const { question, answer, order, published } = validation.data;
 
-    const faq = await prisma.fAQ.update({
+    const faq = await prisma.faq.update({
       where: { id },
       data: {
         question: question ?? existing.question,
@@ -66,12 +66,12 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     if (authError) return authError;
 
     const { id } = await params;
-    const existing = await prisma.fAQ.findUnique({ where: { id } });
+    const existing = await prisma.faq.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: 'FAQ not found' }, { status: 404 });
     }
 
-    await prisma.fAQ.delete({ where: { id } });
+    await prisma.faq.delete({ where: { id } });
     return NextResponse.json({ message: 'FAQ deleted successfully' });
   } catch (error: any) {
     return handleServerError(error, 'Failed to delete FAQ');
