@@ -147,7 +147,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
 
         {/* Section 1: Breadcrumb & Title */}
         <section>
-          <div className="max-w-7xl mx-auto w-full px-4 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 w-full relative z-10">
             <div className="border-x border-b border-border w-full px-8 lg:px-12 py-10 flex flex-col justify-between items-start gap-6">
               <div className="flex group items-center gap-1">
                 <nav aria-label="breadcrumb">
@@ -182,7 +182,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                 </nav>
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter relative text-left">
-                <span className="bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">
+                <span className="text-white">
                   {post.title}
                 </span>
               </h1>
@@ -192,7 +192,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
 
         {/* Section 2: Article Cover & Content */}
         <section className="relative">
-          <div className="max-w-7xl mx-auto w-full px-4 flex flex-col gap-8">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 w-full flex flex-col gap-8">
             <div className="border-x border-border w-full p-8 lg:p-12">
               {post.coverImage && (
                 <div className="overflow-hidden mb-8 rounded-xl border border-border/40 max-h-[500px]">
@@ -356,7 +356,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                       <h3 className="font-bold text-white text-xs uppercase tracking-wider border-b border-[#161C2C] pb-3">
                         Table of Contents
                       </h3>
-                      <nav className="space-y-2 max-h-64 overflow-y-auto pr-2 select-none text-xs">
+                      <nav className="space-y-2 max-h-[600px] overflow-y-auto pr-2 select-none text-xs">
                         {headings.map((item) => (
                           <a
                             key={item.id}
@@ -371,43 +371,6 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                       </nav>
                     </div>
                   )}
-
-                  {/* Share Widget */}
-                  <div className="rounded-2xl border border-[#161C2C] bg-[#090D1A]/50 p-6 shadow-xl backdrop-blur-xl space-y-4">
-                    <h3 className="font-bold text-white text-xs uppercase tracking-wider border-b border-[#161C2C] pb-3">
-                      Share Article
-                    </h3>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleShare('twitter')}
-                        className="flex-1 flex items-center justify-center p-2 rounded-xl bg-gray-950 border border-[#161C2C] text-gray-400 hover:text-white hover:bg-gray-900 transition cursor-pointer"
-                        title="Share on Twitter"
-                      >
-                        <Twitter className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handleShare('facebook')}
-                        className="flex-1 flex items-center justify-center p-2 rounded-xl bg-gray-950 border border-[#161C2C] text-gray-400 hover:text-white hover:bg-gray-900 transition cursor-pointer"
-                        title="Share on Facebook"
-                      >
-                        <Facebook className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handleShare('linkedin')}
-                        className="flex-1 flex items-center justify-center p-2 rounded-xl bg-gray-950 border border-[#161C2C] text-gray-400 hover:text-white hover:bg-gray-900 transition cursor-pointer"
-                        title="Share on LinkedIn"
-                      >
-                        <Linkedin className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handleShare('copy')}
-                        className="flex-1 flex items-center justify-center p-2 rounded-xl bg-gray-950 border border-[#161C2C] text-gray-400 hover:text-white hover:bg-gray-900 transition cursor-pointer"
-                        title="Copy Link"
-                      >
-                        <LinkIcon className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
 
                   {/* Related Posts */}
                   {relatedPosts && relatedPosts.length > 0 && (
