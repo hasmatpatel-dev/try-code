@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma/client';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { getSessionCookie } from '@/lib/auth/session';
-import { methodGuard, requireAuthRole, handleServerError } from '@/lib/api-utils';
+import { methodGuard, requireAuthRole, handleServerError, isSupabaseConfigured } from '@/lib/api-utils';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(req: NextRequest) {
   const methodError = methodGuard(req, ['POST']);
@@ -36,28 +37,49 @@ export async function POST(req: NextRequest) {
       }
 
       const filename = path.basename(filePathName);
-      const fileUrl = `/uploads/${bucket}/${filename}`;
 
       // Search DB
       const record = await prisma.media.findFirst({
-        where: { fileUrl, bucket },
+        where: {
+          OR: [
+            { fileUrl: filePathName, bucket },
+            { fileUrl: `/uploads/${bucket}/${filename}`, bucket }
+          ]
+        },
       });
 
       if (record) {
-        const diskPath = path.join(expectedDir, filename);
-        const resolvedDiskPath = path.resolve(diskPath);
+        if (isSupabaseConfigured()) {
+          const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+          const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            supabaseServiceKey
+          );
 
-        // Security check: must reside inside expected upload folder for this bucket
-        if (!resolvedDiskPath.startsWith(expectedDir)) {
-          results.push({ path: filePathName, deleted: false, reason: 'Access denied to file path' });
-          continue;
-        }
+          const dbFilename = record.fileUrl.split('/').pop() || filename;
+          const { error: deleteError } = await supabase.storage
+            .from(bucket)
+            .remove([dbFilename]);
 
-        // Remove from public directory
-        try {
-          await fs.unlink(resolvedDiskPath);
-        } catch (err) {
-          console.warn(`File could not be deleted from disk at ${resolvedDiskPath}`);
+          if (deleteError) {
+            console.warn(`File could not be deleted from Supabase Storage: ${deleteError.message}`);
+          }
+        } else {
+          const diskPath = path.join(expectedDir, filename);
+          const resolvedDiskPath = path.resolve(diskPath);
+
+          // Security check: must reside inside expected upload folder for this bucket
+          if (!resolvedDiskPath.startsWith(expectedDir)) {
+            results.push({ path: filePathName, deleted: false, reason: 'Access denied to file path' });
+            continue;
+          }
+
+          // Remove from public directory
+          try {
+            await fs.unlink(resolvedDiskPath);
+          } catch (err) {
+            console.warn(`File could not be deleted from disk at ${resolvedDiskPath}`);
+          }
         }
 
         // Remove from DB

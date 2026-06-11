@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma/client';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { getSessionCookie } from '@/lib/auth/session';
-import { methodGuard, requireAuthRole, handleServerError } from '@/lib/api-utils';
+import { methodGuard, requireAuthRole, handleServerError, isSupabaseConfigured } from '@/lib/api-utils';
+import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,29 +63,56 @@ export async function POST(req: NextRequest) {
       ? path.basename(customPath).replace(/[^a-zA-Z0-9_.-]/g, '_')
       : `${Date.now()}-${safeBaseName}`;
 
-    // Target upload folder in public/
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', bucket);
-    
-    // Safety check: ensure uploadDir is inside process.cwd() / public / uploads
-    const resolvedPath = path.resolve(uploadDir);
-    const expectedBase = path.resolve(path.join(process.cwd(), 'public', 'uploads'));
-    if (!resolvedPath.startsWith(expectedBase)) {
-      return NextResponse.json({ error: 'Invalid upload destination' }, { status: 400 });
+    let fileUrl = '';
+
+    if (isSupabaseConfigured()) {
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        supabaseServiceKey
+      );
+
+      const { error: uploadError } = await supabase.storage
+        .from(bucket)
+        .upload(filename, buffer, {
+          contentType: file.type,
+          upsert: true,
+        });
+
+      if (uploadError) {
+        return NextResponse.json({ error: `Supabase upload error: ${uploadError.message}` }, { status: 500 });
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucket)
+        .getPublicUrl(filename);
+      
+      fileUrl = publicUrl;
+    } else {
+      // Target upload folder in public/
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads', bucket);
+      
+      // Safety check: ensure uploadDir is inside process.cwd() / public / uploads
+      const resolvedPath = path.resolve(uploadDir);
+      const expectedBase = path.resolve(path.join(process.cwd(), 'public', 'uploads'));
+      if (!resolvedPath.startsWith(expectedBase)) {
+        return NextResponse.json({ error: 'Invalid upload destination' }, { status: 400 });
+      }
+
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const filePath = path.join(uploadDir, filename);
+      
+      // Safety check for final file path
+      const resolvedFilePath = path.resolve(filePath);
+      if (!resolvedFilePath.startsWith(resolvedPath)) {
+        return NextResponse.json({ error: 'Invalid file path' }, { status: 400 });
+      }
+
+      await fs.writeFile(resolvedFilePath, buffer);
+
+      fileUrl = `/uploads/${bucket}/${filename}`;
     }
-
-    await fs.mkdir(uploadDir, { recursive: true });
-
-    const filePath = path.join(uploadDir, filename);
-    
-    // Safety check for final file path
-    const resolvedFilePath = path.resolve(filePath);
-    if (!resolvedFilePath.startsWith(resolvedPath)) {
-      return NextResponse.json({ error: 'Invalid file path' }, { status: 400 });
-    }
-
-    await fs.writeFile(resolvedFilePath, buffer);
-
-    const fileUrl = `/uploads/${bucket}/${filename}`;
 
     // Write to database
     const media = await prisma.media.create({
