@@ -26,7 +26,13 @@ const postFormSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
   excerpt: z.string().optional(),
   content: z.string().min(10, 'Content must be at least 10 characters'),
-  coverImage: z.string().url('Must be a valid URL').or(z.string().length(0)).optional(),
+  coverImage: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+      { message: 'Must be a valid URL or path' }
+    ),
   published: z.boolean(),
   featured: z.boolean(),
   scheduledAt: z.string().optional(),
@@ -264,6 +270,9 @@ export default function CreatePostPage() {
                       className="w-full rounded-xl border border-[#161C2C] bg-gray-950 py-2 px-3 text-xs text-white outline-none placeholder:text-gray-600 transition focus:border-purple-500"
                       {...register('coverImage')}
                     />
+                    {errors.coverImage && (
+                      <p className="text-xs text-red-500">{errors.coverImage.message}</p>
+                    )}
                     <div className="flex items-center space-x-2">
                       <label className="inline-flex items-center justify-center rounded-xl bg-purple-600/10 border border-purple-500/20 text-purple-400 px-3 py-2 text-xs font-semibold hover:bg-purple-600/20 transition cursor-pointer">
                         {uploadingImage ? (
