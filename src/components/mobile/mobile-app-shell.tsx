@@ -13,6 +13,7 @@ import {
   X,
   Sparkles,
   Download,
+  Newspaper,
 } from 'lucide-react';
 import { useMobileShell } from './mobile-shell-context';
 
@@ -28,6 +29,7 @@ const mainNavItems: NavigationItem[] = [
   { label: 'Topic', href: '/#categories', icon: BookOpen },
   { label: 'Recipes', href: '/#recipes', icon: Terminal },
   { label: 'Resources', href: '/#resources', icon: Layers },
+  { label: 'Blog', href: '/blog', icon: Newspaper },
 ];
 
 export default function MobileAppShell({ children }: { children: React.ReactNode }) {

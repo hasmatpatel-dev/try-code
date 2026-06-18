@@ -20,6 +20,9 @@ import {
   ChevronRight,
   BookOpen,
   Loader2,
+  FileText,
+  Check,
+  Copy,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -34,6 +37,86 @@ const commentSchema = z.object({
 
 type CommentInputs = z.infer<typeof commentSchema>;
 
+function convertHtmlToMarkdown(html: string): string {
+  if (!html) return '';
+
+  let markdown = html;
+
+  // 1. Remove comments
+  markdown = markdown.replace(/<!--[\s\S]*?-->/g, '');
+
+  // 2. Pre block code content formatting (to preserve newlines and prevent stripping)
+  const preBlocks: string[] = [];
+  markdown = markdown.replace(/<pre(?:\s+[^>]*)?>\s*<code(?:\s+class="language-([^"]*)")?[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/gi, (match, lang, code) => {
+    const placeholder = `__PRE_BLOCK_PLACEHOLDER_${preBlocks.length}__`;
+    const cleanCode = code
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+    
+    preBlocks.push(`\`\`\`${lang || ''}\n${cleanCode.trim()}\n\`\`\``);
+    return placeholder;
+  });
+
+  // 3. Inline code blocks
+  markdown = markdown.replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, (match, code) => {
+    const cleanCode = code
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+    return ` \`${cleanCode}\` `;
+  });
+
+  // 4. Headers
+  markdown = markdown.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, '\n# $1\n');
+  markdown = markdown.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, '\n## $1\n');
+  markdown = markdown.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, '\n### $1\n');
+  markdown = markdown.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, '\n#### $1\n');
+
+  // 5. Strong / Bold
+  markdown = markdown.replace(/<(strong|b)[^>]*>([\s\S]*?)<\/\1>/gi, '**$2**');
+
+  // 6. Emphasis / Italic
+  markdown = markdown.replace(/<(em|i)[^>]*>([\s\S]*?)<\/\1>/gi, '*$2*');
+
+  // 7. Links
+  markdown = markdown.replace(/<a\s+[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, '[$2]($1)');
+
+  // 8. Lists
+  markdown = markdown.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '* $1\n');
+  markdown = markdown.replace(/<\/ul>/gi, '\n');
+  markdown = markdown.replace(/<\/ol>/gi, '\n');
+  markdown = markdown.replace(/<ul[^>]*>/gi, '\n');
+  markdown = markdown.replace(/<ol[^>]*>/gi, '\n');
+
+  // 9. Blockquotes
+  markdown = markdown.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/gi, '\n> $1\n');
+
+  // 10. Line breaks and paragraphs
+  markdown = markdown.replace(/<br[^>]*>/gi, '\n');
+  markdown = markdown.replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '\n$1\n');
+
+  // 11. Remove all other HTML tags
+  markdown = markdown.replace(/<[^>]*>/g, '');
+
+  // 12. Restore pre blocks
+  preBlocks.forEach((block, idx) => {
+    markdown = markdown.replace(`__PRE_BLOCK_PLACEHOLDER_${idx}__`, `\n${block}\n`);
+  });
+
+  // Clean up formatting
+  markdown = markdown
+    .replace(/\n\s+\n/g, '\n\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  return markdown;
+}
+
 interface PostContentProps {
   post: any;
   relatedPosts: any[];
@@ -42,6 +125,33 @@ interface PostContentProps {
 export default function PostContent({ post, relatedPosts }: PostContentProps) {
   const [headings, setHeadings] = useState<{ id: string; text: string; level: number }[]>([]);
   const [copied, setCopied] = useState(false);
+  const [copiedMd, setCopiedMd] = useState(false);
+
+  const handleCopyMarkdown = () => {
+    try {
+      const frontmatter = [
+        '---',
+        `title: "${post.title.replace(/"/g, '\\"')}"`,
+        post.excerpt ? `excerpt: "${post.excerpt.replace(/"/g, '\\"')}"` : '',
+        post.coverImage ? `coverImage: "${post.coverImage}"` : '',
+        `date: "${format(new Date(post.createdAt), 'yyyy-MM-dd')}"`,
+        post.author?.name ? `author: "${post.author.name}"` : '',
+        post.tags && post.tags.length > 0 
+          ? `tags:\n${post.tags.map((t: any) => `  - ${t.name}`).join('\n')}` 
+          : '',
+        '---',
+        '',
+        convertHtmlToMarkdown(post.content)
+      ].filter(Boolean).join('\n');
+
+      navigator.clipboard.writeText(frontmatter);
+      setCopiedMd(true);
+      toast.success('Markdown content copied!');
+      setTimeout(() => setCopiedMd(false), 2000);
+    } catch (err) {
+      toast.error('Failed to copy Markdown');
+    }
+  };
 
   const {
     register,
@@ -74,14 +184,56 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
       });
       setHeadings(items);
 
-      // Inject IDs into the actual rendering container headings
-      // For simplicity, we match headers in actual DOM
+      // Inject IDs into the actual rendering container headings and copy buttons for code blocks
+      // For simplicity, we match headers and pre blocks in actual DOM
       setTimeout(() => {
         const renderedContainer = document.getElementById('post-content-container');
         if (renderedContainer) {
           const renderedHeadings = renderedContainer.querySelectorAll('h1, h2, h3');
           renderedHeadings.forEach((el, index) => {
             el.setAttribute('id', `heading-${index}`);
+          });
+
+          // Inject copy buttons for pre/code blocks
+          const existingButtons = renderedContainer.querySelectorAll('.code-copy-button');
+          existingButtons.forEach(btn => btn.remove());
+
+          const preElements = renderedContainer.querySelectorAll('pre');
+          preElements.forEach((pre) => {
+            pre.style.position = 'relative';
+            pre.classList.add('group');
+
+            const button = document.createElement('button');
+            button.className = 'code-copy-button absolute top-3 right-3 p-1.5 rounded-lg bg-gray-900/90 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100';
+            button.setAttribute('type', 'button');
+            button.setAttribute('aria-label', 'Copy code');
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            `;
+
+            button.addEventListener('click', async () => {
+              const codeElement = pre.querySelector('code');
+              const codeText = codeElement ? codeElement.innerText : pre.innerText;
+              
+              try {
+                await navigator.clipboard.writeText(codeText.trim());
+                toast.success('Code copied to clipboard!');
+                
+                button.innerHTML = `
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
+                `;
+                
+                setTimeout(() => {
+                  button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  `;
+                }, 2000);
+              } catch (err) {
+                toast.error('Failed to copy code');
+              }
+            });
+
+            pre.appendChild(button);
           });
         }
       }, 500);
@@ -230,6 +382,24 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                       <Clock className="h-3.5 w-3.5 mr-1" />
                       {estimateReadingTime(post.content)}
                     </span>
+                    <span>•</span>
+                    <button
+                      type="button"
+                      onClick={handleCopyMarkdown}
+                      className="flex items-center text-purple-400 hover:text-purple-300 font-medium transition cursor-pointer"
+                    >
+                      {copiedMd ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 mr-1 text-emerald-400" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <FileText className="h-3.5 w-3.5 mr-1" />
+                          <span>Copy Markdown</span>
+                        </>
+                      )}
+                    </button>
                   </div>
 
                   <div className="blog-details markdown max-w-5xl mx-auto">

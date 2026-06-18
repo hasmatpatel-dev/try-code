@@ -193,6 +193,11 @@ const Header = ({ navigationData, className }: HeaderProps) => {
       href: "/#resources",
       isActive: pathname === "/" && activeSection === "resources",
     },
+    {
+      title: "Blog",
+      href: "/blog",
+      isActive: pathname === "/blog" || pathname.startsWith("/blog/"),
+    },
   ];
 
   const currentNavigationData = navigationData || defaultNavigationData;
