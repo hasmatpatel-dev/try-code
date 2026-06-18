@@ -41,14 +41,16 @@ const fetchPublicPosts = async ({
   category,
   tag,
   page,
+  orderBy,
 }: {
   search: string;
   category: string;
   tag: string;
   page: number;
+  orderBy: string;
 }) => {
   const { data } = await axios.get('/api/posts', {
-    params: { search, category, tag, page, status: 'published', limit: 9 },
+    params: { search, category, tag, page, status: 'published', limit: 9, orderBy },
   });
   return data;
 };
@@ -58,11 +60,12 @@ export default function BlogListingPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [page, setPage] = useState(1);
+  const [orderBy, setOrderBy] = useState('newest');
 
   // Fetch posts
   const { data: postsData, isLoading } = useQuery({
-    queryKey: ['publicPosts', search, selectedCategory, selectedTag, page],
-    queryFn: () => fetchPublicPosts({ search, category: selectedCategory, tag: selectedTag, page }),
+    queryKey: ['publicPosts', search, selectedCategory, selectedTag, page, orderBy],
+    queryFn: () => fetchPublicPosts({ search, category: selectedCategory, tag: selectedTag, page, orderBy }),
   });
 
   // Fetch filters list
@@ -79,9 +82,21 @@ export default function BlogListingPage() {
 
   // Helper: Estimate reading time
   const estimateReadingTime = (text: string) => {
-    const wordsPerMinute = 200;
-    const words = text ? text.split(/\s+/).length : 0;
-    const minutes = Math.ceil(words / wordsPerMinute);
+    if (!text) return '1 min read';
+    
+    // Clean markdown and HTML code formatting to obtain plain text
+    const cleanText = text
+      .replace(/```[\s\S]*?```/g, '') // remove multi-line code blocks
+      .replace(/`([^`]+)`/g, '$1')     // remove inline backticks
+      .replace(/!\[.*?\]\(.*?\)/g, '') // remove images
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1') // remove links, keep text
+      .replace(/^#+\s+/gm, '')        // remove header markdown
+      .replace(/<[^>]*>/g, '')         // remove HTML tags
+      .replace(/^[\s>*+-]+/gm, '');    // remove quotes, list bullets
+    
+    const wordsPerMinute = 225; // standard tech reading rate
+    const wordsCount = cleanText.trim().split(/\s+/).filter(Boolean).length;
+    const minutes = Math.max(1, Math.ceil(wordsCount / wordsPerMinute));
     return `${minutes} min read`;
   };
 
@@ -89,7 +104,7 @@ export default function BlogListingPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+      <Header className="fixed top-0 z-50 w-full flex" />
 
       {/* Hero & Listing Wrapper */}
       <section className="relative overflow-hidden pt-16 md:pt-20">
@@ -186,13 +201,33 @@ export default function BlogListingPage() {
                   </Select>
                 )}
 
-                {(selectedCategory || selectedTag || search) && (
+                <Select
+                  value={orderBy}
+                  onValueChange={(val) => {
+                    setOrderBy(val || 'newest');
+                    setPage(1);
+                  }}
+                >
+                  <SelectTrigger className="w-full md:w-[150px] bg-transparent border-border rounded-full text-xs">
+                    <SelectValue placeholder="Sort By" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="oldest">Oldest First</SelectItem>
+                    <SelectItem value="views">Most Popular</SelectItem>
+                    <SelectItem value="title-asc">Title (A-Z)</SelectItem>
+                    <SelectItem value="title-desc">Title (Z-A)</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {(selectedCategory || selectedTag || search || orderBy !== 'newest') && (
                   <Button
                     variant="ghost"
                     onClick={() => {
                       setSearch('');
                       setSelectedCategory('');
                       setSelectedTag('');
+                      setOrderBy('newest');
                       setPage(1);
                     }}
                     className="text-xs text-muted-foreground hover:text-foreground rounded-full px-4 h-9"

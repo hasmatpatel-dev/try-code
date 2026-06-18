@@ -3,6 +3,8 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import NextImage from 'next/image';
+import LogoSvg from '@/assets/trycode.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -159,27 +161,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const allowedSidebarItems = sidebarItems.filter((item) => item.roles.includes(userRole));
 
   return (
-    <div className="min-h-screen bg-[#030712] text-gray-100 flex font-sans">
+    <div className="min-h-screen bg-background text-foreground flex font-sans">
       {/* Sidebar - Desktop */}
       <aside
-        className={`hidden md:flex flex-col shrink-0 bg-[#090D1A] border-r border-[#161C2C] transition-all duration-300 ${
+        className={`hidden md:flex flex-col shrink-0 bg-card border-r border-border transition-all duration-300 ${
           sidebarOpen ? 'w-64' : 'w-20'
         }`}
       >
         {/* Sidebar Header */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-[#161C2C]">
-          <Link href="/dashboard" className="flex items-center space-x-3 overflow-hidden select-none">
-            <div className="h-9 w-9 flex items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shrink-0 shadow-md">
-              <BookOpen className="h-5 w-5" />
-            </div>
+        <div className="h-16 flex items-center justify-between px-4 border-b border-border">
+          <Link href="/dashboard" className="flex items-center gap-2.5 overflow-hidden select-none">
+            <NextImage src={LogoSvg} alt="TryCode" height={36} width={36} className="shrink-0" />
             {sidebarOpen && (
-              <motion.span
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="font-bold text-lg bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+                className="flex items-center gap-2"
               >
-                TryCode<span className="text-purple-500 font-medium text-xs ml-1 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wide">CMS</span>
-              </motion.span>
+                <span className="font-bold text-lg text-white">TRY CODE</span>
+                <span className="text-purple-500 font-medium text-[10px] bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wide">CMS</span>
+              </motion.div>
             )}
           </Link>
         </div>
@@ -196,7 +197,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 className={`flex items-center rounded-xl p-3 text-sm font-medium transition group relative ${
                   isActive
                     ? 'bg-purple-600/10 text-purple-400 border border-purple-500/20'
-                    : 'text-gray-400 hover:bg-[#111827] hover:text-white border border-transparent'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent'
                 }`}
               >
                 <Icon className={`h-5 w-5 shrink-0 ${isActive ? 'text-purple-400' : 'text-gray-400 group-hover:text-white'}`} />
@@ -218,10 +219,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-3 border-t border-[#161C2C] space-y-1">
+        <div className="p-3 border-t border-border space-y-1">
           <Link
             href="/blog"
-            className="flex items-center rounded-xl p-3 text-sm text-gray-400 hover:bg-[#111827] hover:text-white transition group"
+            className="flex items-center rounded-xl p-3 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition group"
           >
             <Globe className="h-5 w-5 shrink-0" />
             {sidebarOpen && <span className="ml-3 truncate">Visit Site</span>}
@@ -236,7 +237,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </button>
           <button
             onClick={() => dispatch(toggleSidebar())}
-            className="hidden md:flex items-center justify-center w-full py-2 text-gray-500 hover:text-gray-300 border-t border-[#161C2C]/50 mt-2"
+            className="hidden md:flex items-center justify-center w-full py-2 text-muted-foreground/60 hover:text-foreground border-t border-border/50 mt-2"
           >
             {sidebarOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
           </button>
@@ -246,18 +247,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-16 hidden md:flex items-center justify-between px-4 md:px-6 bg-[#090D1A]/85 backdrop-blur-md border-b border-[#161C2C] sticky top-0 z-20">
+        <header className="h-16 hidden md:flex items-center justify-between px-4 md:px-6 bg-card/85 backdrop-blur-md border-b border-border sticky top-0 z-20">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-400 hover:bg-[#111827] hover:text-white transition"
+              className="md:hidden p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition"
             >
               <Menu className="h-5 w-5" />
             </button>
 
             {/* Breadcrumb info */}
             <div className="text-sm font-medium text-gray-400 hidden sm:block">
-              CMS Admin <span className="mx-2 text-[#161C2C] select-none">/</span>{' '}
+              CMS Admin <span className="mx-2 text-border select-none">/</span>{' '}
               <span className="text-white capitalize">
                 {pathname.split('/')[1] || 'Overview'}
               </span>
@@ -267,13 +268,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {/* Top Bar Actions */}
           <div className="flex items-center space-x-4">
             {/* Notification trigger */}
-            <button className="relative p-2 rounded-lg text-gray-400 hover:bg-[#111827] hover:text-white transition">
+            <button className="relative p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition">
               <Bell className="h-5 w-5" />
-              <span className="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-purple-500 ring-2 ring-[#090D1A]" />
+              <span className="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-purple-500 ring-2 ring-card" />
             </button>
 
             {/* Profile widget */}
-            <div className="flex items-center space-x-3 pl-2 border-l border-[#161C2C]">
+            <div className="flex items-center space-x-3 pl-2 border-l border-border">
               <div className="hidden text-right md:block">
                 <p className="text-sm font-semibold text-white leading-tight">{user?.name}</p>
                 <p className="text-xs text-purple-400 font-medium capitalize">{user?.role}</p>
@@ -309,18 +310,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 bottom-0 left-0 w-64 bg-[#090D1A] border-r border-[#161C2C] z-50 p-4 flex flex-col md:hidden"
+              className="fixed top-0 bottom-0 left-0 w-64 bg-card border-r border-border z-50 p-4 flex flex-col md:hidden"
             >
-              <div className="flex items-center justify-between pb-6 border-b border-[#161C2C]">
-                <div className="flex items-center space-x-3">
-                  <div className="h-9 w-9 flex items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white">
-                    <BookOpen className="h-5 w-5" />
+              <div className="flex items-center justify-between pb-6 border-b border-border">
+                <div className="flex items-center gap-2.5">
+                  <NextImage src={LogoSvg} alt="TryCode" height={36} width={36} className="shrink-0" />
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-lg text-white">TRY CODE</span>
+                    <span className="text-purple-500 font-medium text-[10px] bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wide">CMS</span>
                   </div>
-                  <span className="font-bold text-lg text-white">TryCode</span>
                 </div>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="p-1 rounded-lg text-gray-400 hover:bg-[#111827]"
+                  className="p-1 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
@@ -336,7 +338,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
                       className={`flex items-center rounded-xl p-3 text-sm font-medium transition ${
-                        isActive ? 'bg-purple-600/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:bg-[#111827] hover:text-white'
+                        isActive ? 'bg-purple-600/10 text-purple-400 border border-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                       }`}
                     >
                       <Icon className="h-5 w-5 shrink-0" />
@@ -346,11 +348,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 })}
               </nav>
 
-              <div className="pt-4 border-t border-[#161C2C] space-y-2">
+              <div className="pt-4 border-t border-border space-y-2">
                 <Link
                   href="/blog"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center rounded-xl p-3 text-sm text-gray-400 hover:bg-[#111827] hover:text-white transition"
+                  className="flex items-center rounded-xl p-3 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition"
                 >
                   <Globe className="h-5 w-5 shrink-0" />
                   <span className="ml-3 truncate">Visit Site</span>

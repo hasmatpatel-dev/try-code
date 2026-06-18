@@ -16,6 +16,7 @@ import {
   Loader2,
   Calendar,
   User as UserIcon,
+  Copy,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -103,6 +104,21 @@ export default function PostsPage() {
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.error || 'Failed to delete post');
+    },
+  });
+
+  // Clone post mutation
+  const cloneMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await axios.post(`/api/posts/${id}/clone`);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      toast.success('Post cloned successfully as a draft!');
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.error || 'Failed to clone post');
     },
   });
 
@@ -340,6 +356,19 @@ export default function PostsPage() {
                               {post.published ? 'Draft' : 'Publish'}
                             </button>
                           )}
+
+                          <button
+                            onClick={() => cloneMutation.mutate(post.id)}
+                            disabled={isAuthorOnly}
+                            className="p-2 rounded-xl border border-[#161C2C] bg-[#090D1A] text-gray-400 hover:text-white hover:bg-gray-800 transition disabled:opacity-40 cursor-pointer"
+                            title="Clone post"
+                          >
+                            {cloneMutation.isPending && cloneMutation.variables === post.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin text-purple-400" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </button>
 
                           <Link
                             href={`/posts/edit/${post.id}`}

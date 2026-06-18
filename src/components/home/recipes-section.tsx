@@ -302,23 +302,42 @@ export default function FeaturedRecipes() {
                   </div>
 
                   {activeSubTab === "code" && (
-                    <button
-                      onClick={handleCopy}
-                      aria-label="Copy code snippet to clipboard"
-                      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border border-border px-3 py-1.5 rounded-lg hover:bg-muted/20 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
-                          <span className="text-emerald-500 font-medium">Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                          <span>Copy Snippet</span>
-                        </>
-                      )}
-                    </button>
+                    <div className="relative group">
+                      <button
+                        onClick={handleCopy}
+                        aria-label="Copy code snippet to clipboard"
+                        className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background/50 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:bg-muted/30 hover:border-muted-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-all duration-200 active:scale-95 cursor-pointer overflow-hidden shadow-sm"
+                      >
+                        <AnimatePresence mode="wait" initial={false}>
+                          {copied ? (
+                            <motion.div
+                              key="check"
+                              initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                              exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
+                              transition={{ duration: 0.15 }}
+                              className="flex items-center justify-center"
+                            >
+                              <Check className="h-4 w-4 text-emerald-500" aria-hidden="true" />
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="copy"
+                              initial={{ opacity: 0, scale: 0.5, rotate: 45 }}
+                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                              exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                              transition={{ duration: 0.15 }}
+                              className="flex items-center justify-center"
+                            >
+                              <Copy className="h-4 w-4" aria-hidden="true" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </button>
+                      <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2.5 py-1 text-[10px] font-medium rounded-md bg-popover text-popover-foreground border border-border shadow-md pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
+                        {copied ? "Copied!" : "Copy Snippet"}
+                      </span>
+                    </div>
                   )}
                 </div>
 

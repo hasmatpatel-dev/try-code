@@ -83,11 +83,7 @@ function LoginContent() {
     }
   };
 
-  const handleFillDemoAdmin = () => {
-    setValue('email', 'admin@trycode.com');
-    setValue('password', 'admin123');
-    toast.info('Demo credentials loaded!');
-  };
+
 
   const handleOAuthSignIn = async (provider: 'google') => {
     try {
@@ -233,14 +229,7 @@ function LoginContent() {
                   )}
                 </Button>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleFillDemoAdmin}
-                  className="w-full text-xs text-muted-foreground border-dashed border-purple-500/30 hover:bg-purple-500/5 h-9 cursor-pointer"
-                >
-                  Use Demo Admin Account (admin@trycode.com)
-                </Button>
+
 
                 <FieldDescription className="text-center text-sm font-normal text-muted-foreground">
                   Don&apos;t have an account?{' '}

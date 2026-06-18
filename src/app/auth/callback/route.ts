@@ -7,7 +7,6 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/dashboard';
-  const role = searchParams.get('role');
 
   if (code) {
     const supabase = await createClient();
@@ -27,21 +26,13 @@ export async function GET(request: Request) {
             email: user.email!,
             name: userMetadata.name || user.email!.split('@')[0],
             avatarUrl: userMetadata.avatarUrl || userMetadata.avatar_url || userMetadata.picture || null,
-            role: userMetadata.role || role || 'Student',
+            role: userMetadata.role || 'Student',
           },
           update: {
             name: userMetadata.name || undefined,
             avatarUrl: userMetadata.avatarUrl || userMetadata.avatar_url || userMetadata.picture || undefined,
-            role: role || undefined,
           },
         });
-
-        // Update role in Supabase Auth user metadata if role was passed and differs
-        if (role && ['Admin', 'Editor', 'Author', 'Student'].includes(role) && userMetadata.role !== role) {
-          await supabase.auth.updateUser({
-            data: { role },
-          });
-        }
       } catch (dbError) {
         console.error('Failed to sync user in auth callback:', dbError);
       }

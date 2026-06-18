@@ -41,7 +41,7 @@ export default function RoadmapDetailPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="min-h-screen bg-[#030712] text-foreground">
-      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+      <Header className="fixed top-0 z-50 w-full flex" />
 
       <div className="relative overflow-hidden pt-24">
         <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-purple-950/10 blur-[120px] pointer-events-none" />

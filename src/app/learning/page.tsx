@@ -156,7 +156,7 @@ export default function LearningPage() {
 
   return (
     <div className="min-h-screen bg-[#030712] text-foreground flex flex-col">
-      {!readingMode && <Header className="fixed top-0 z-50 w-full hidden md:flex" />}
+      {!readingMode && <Header className="fixed top-0 z-50 w-full flex" />}
 
       {/* Background radial glow */}
       <div className={cn("relative flex-1 flex flex-col w-full", readingMode ? "" : "pt-20")}>

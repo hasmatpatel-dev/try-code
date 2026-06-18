@@ -102,7 +102,7 @@ export default function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-[#030712] text-foreground">
-      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+      <Header className="fixed top-0 z-50 w-full flex" />
 
       {/* Background radial glow */}
       <div className="relative overflow-hidden pt-20">

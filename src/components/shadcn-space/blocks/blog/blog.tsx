@@ -178,10 +178,10 @@ const Blog = () => {
                       <div className="flex flex-col sm:flex-row h-full border-y border-border justify-between">
                         {/* Text */}
                         <div className="flex flex-col justify-between gap-6 p-6 xl:p-10 sm:flex-1">
-                          <h3 className="text-2xl font-medium text-foreground group-hover/card:text-foreground/80 transition-colors">
+                          <h3 className="text-2xl font-medium text-foreground group-hover/card:text-foreground/80 transition-colors line-clamp-3">
                             {post.title}
                           </h3>
-                          <p className="text-sm font-normal text-muted-foreground">
+                          <p className="text-sm font-normal text-muted-foreground line-clamp-3">
                             {post.description}
                           </p>
                         </div>

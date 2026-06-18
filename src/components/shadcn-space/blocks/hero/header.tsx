@@ -270,7 +270,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
           {/* Desktop Navigation */}
           <div>
-            <NavigationMenu className="max-lg:hidden bg-muted p-0.5 rounded-full">
+            <NavigationMenu className="hidden lg:flex bg-muted p-0.5 rounded-full">
               <NavigationMenuList className="flex gap-0">
                 {currentNavigationData.map((navItem) => (
                   <NavigationMenuItem key={navItem.title}>

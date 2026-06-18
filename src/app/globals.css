@@ -182,20 +182,35 @@
 }
 
 .blog-details.markdown h1 {
-  font-size: 2.25rem;
+  font-size: 1.75rem; /* 28px on mobile */
 }
 
 .blog-details.markdown h2 {
-  font-size: 1.875rem;
+  font-size: 1.375rem; /* 22px on mobile */
   padding-bottom: 0.25rem;
 }
 
 .blog-details.markdown h3 {
-  font-size: 1.5rem;
+  font-size: 1.125rem; /* 18px on mobile */
 }
 
 .blog-details.markdown h4 {
-  font-size: 1.25rem;
+  font-size: 1rem; /* 16px on mobile */
+}
+
+@media (min-width: 768px) {
+  .blog-details.markdown h1 {
+    font-size: 2.25rem; /* 36px on tablet/desktop */
+  }
+  .blog-details.markdown h2 {
+    font-size: 1.875rem; /* 30px on tablet/desktop */
+  }
+  .blog-details.markdown h3 {
+    font-size: 1.5rem; /* 24px on tablet/desktop */
+  }
+  .blog-details.markdown h4 {
+    font-size: 1.25rem; /* 20px on tablet/desktop */
+  }
 }
 
 .blog-details.markdown p {
@@ -309,3 +324,51 @@
   font-weight: 600;
   color: oklch(0.985 0 0);
 }
+
+/* Dashboard theme overrides to map dashboard arbitrary hex codes to standard design system tokens */
+.bg-\[\#090D1A\] {
+  background-color: var(--card) !important;
+}
+.bg-\[\#090D1A\]\/20 {
+  background-color: color-mix(in srgb, var(--card) 20%, transparent) !important;
+}
+.bg-\[\#090D1A\]\/30 {
+  background-color: color-mix(in srgb, var(--card) 30%, transparent) !important;
+}
+.bg-\[\#090D1A\]\/40 {
+  background-color: color-mix(in srgb, var(--card) 40%, transparent) !important;
+}
+.bg-\[\#090D1A\]\/50 {
+  background-color: color-mix(in srgb, var(--card) 50%, transparent) !important;
+}
+.bg-\[\#090D1A\]\/70 {
+  background-color: color-mix(in srgb, var(--card) 70%, transparent) !important;
+}
+.bg-\[\#030712\] {
+  background-color: var(--background) !important;
+}
+.border-\[\#161C2C\] {
+  border-color: var(--border) !important;
+}
+.border-b-\[\#161C2C\] {
+  border-bottom-color: var(--border) !important;
+}
+.border-t-\[\#161C2C\] {
+  border-top-color: var(--border) !important;
+}
+.border-r-\[\#161C2C\] {
+  border-right-color: var(--border) !important;
+}
+.border-l-\[\#161C2C\] {
+  border-left-color: var(--border) !important;
+}
+.border-\[\#161C2C\]\/15 {
+  border-color: color-mix(in srgb, var(--border) 15%, transparent) !important;
+}
+.border-\[\#161C2C\]\/50 {
+  border-color: color-mix(in srgb, var(--border) 50%, transparent) !important;
+}
+.border-t-\[\#161C2C\]\/50 {
+  border-top-color: color-mix(in srgb, var(--border) 50%, transparent) !important;
+}
+

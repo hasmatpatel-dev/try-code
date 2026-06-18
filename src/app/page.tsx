@@ -14,7 +14,7 @@ import MarqueeBanner from "@/components/ui/marquee-banner";
 export default function Page() {
   return (
     <div className="relative">
-      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+      <Header className="fixed top-0 z-50 w-full flex" />
 
       {/* Marquee Banner — mobile only */}
       <div className="md:hidden">
@@ -27,7 +27,7 @@ export default function Page() {
       </div>
 
       {/* 2. Trust Stats Section */}
-      <div id="about-us" className="scroll-mt-20 hidden md:block">
+      <div id="about-us" className="scroll-mt-20">
         <AboutAndStats01 />
       </div>
 
@@ -48,23 +48,23 @@ export default function Page() {
       </div>
 
       {/* 8. Latest Blog Articles */}
-      <div className="hidden md:block">
+      <div>
         <Blog />
       </div>
 
 
       {/* 10. FAQ */}
-      <div className="hidden md:block">
+      <div>
         <Faq />
       </div>
 
       {/* 11. Final CTA */}
-      <div className="hidden md:block">
+      <div>
         <CTA01 />
       </div>
 
       {/* 12. Footer */}
-      <div className="hidden md:block">
+      <div>
         <Footer02 />
       </div>
     </div>

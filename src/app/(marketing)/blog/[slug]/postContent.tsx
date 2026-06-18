@@ -204,11 +204,11 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
             pre.classList.add('group');
 
             const button = document.createElement('button');
-            button.className = 'code-copy-button absolute top-3 right-3 p-1.5 rounded-lg bg-gray-900/90 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100';
+            button.className = 'code-copy-button absolute top-3 right-3 h-10 w-10 flex items-center justify-center rounded-lg bg-gray-900/90 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-850 hover:border-gray-700 transition duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 active:scale-95 cursor-pointer shadow-md';
             button.setAttribute('type', 'button');
             button.setAttribute('aria-label', 'Copy code');
             button.innerHTML = `
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             `;
 
             button.addEventListener('click', async () => {
@@ -220,12 +220,12 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                 toast.success('Code copied to clipboard!');
                 
                 button.innerHTML = `
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
                 `;
                 
                 setTimeout(() => {
                   button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                   `;
                 }, 2000);
               } catch (err) {
@@ -279,9 +279,22 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
   };
 
   const estimateReadingTime = (text: string) => {
-    const wordsPerMinute = 200;
-    const words = text ? text.split(/\s+/).length : 0;
-    return `${Math.max(1, Math.ceil(words / wordsPerMinute))} min read`;
+    if (!text) return '1 min read';
+    
+    // Clean markdown and HTML code formatting to obtain plain text
+    const cleanText = text
+      .replace(/```[\s\S]*?```/g, '') // remove multi-line code blocks
+      .replace(/`([^`]+)`/g, '$1')     // remove inline backticks
+      .replace(/!\[.*?\]\(.*?\)/g, '') // remove images
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1') // remove links, keep text
+      .replace(/^#+\s+/gm, '')        // remove header markdown
+      .replace(/<[^>]*>/g, '')         // remove HTML tags
+      .replace(/^[\s>*+-]+/gm, '');    // remove quotes, list bullets
+    
+    const wordsPerMinute = 225; // standard tech reading rate
+    const wordsCount = cleanText.trim().split(/\s+/).filter(Boolean).length;
+    const minutes = Math.max(1, Math.ceil(wordsCount / wordsPerMinute));
+    return `${minutes} min read`;
   };
 
   const onSubmit = (data: CommentInputs) => {
@@ -290,7 +303,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
 
   return (
     <div className="min-h-screen bg-[#030712] text-foreground">
-      <Header className="fixed top-0 z-50 w-full hidden md:flex" />
+      <Header className="fixed top-0 z-50 w-full flex" />
 
       {/* Background radial glow */}
       <div className="relative overflow-hidden pt-20">
@@ -300,7 +313,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
         {/* Section 1: Breadcrumb & Title */}
         <section>
           <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 w-full relative z-10">
-            <div className="border-x border-b border-border w-full px-8 lg:px-12 py-10 flex flex-col justify-between items-start gap-6">
+            <div className="border-x border-b border-border w-full px-4 sm:px-8 lg:px-12 py-6 sm:py-10 flex flex-col justify-between items-start gap-6">
               <div className="flex group items-center gap-1">
                 <nav aria-label="breadcrumb">
                   <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
@@ -345,7 +358,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
         {/* Section 2: Article Cover & Content */}
         <section className="relative">
           <div className="max-w-7xl mx-auto px-4 lg:px-8 xl:px-16 w-full flex flex-col gap-8">
-            <div className="border-x border-border w-full p-8 lg:p-12">
+            <div className="border-x border-border w-full p-4 sm:p-8 lg:p-12">
               {post.coverImage && (
                 <div className="overflow-hidden mb-8 rounded-xl border border-border/40 max-h-[500px]">
                   <img
@@ -361,7 +374,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
               {/* Grid Layout */}
               <div className="grid gap-10 lg:grid-cols-4 items-start">
                 {/* Main Content Side */}
-                <div className="lg:col-span-3 space-y-8 text-left">
+                <div className="lg:col-span-3 space-y-8 text-left min-w-0 w-full">
                   {/* Publication Metadata */}
                   <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 pb-2 border-b border-[#161C2C]/50 py-3">
                     <div className="flex items-center space-x-2">
@@ -405,7 +418,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                   <div className="blog-details markdown max-w-5xl mx-auto">
                     <article
                       id="post-content-container"
-                      className="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base md:text-lg focus:outline-none"
+                      className="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base md:text-lg focus:outline-none break-words"
                       dangerouslySetInnerHTML={{ __html: post.content }}
                     />
                   </div>
@@ -519,7 +532,7 @@ export default function PostContent({ post, relatedPosts }: PostContentProps) {
                 </div>
 
                 {/* Right Sidebar: TOC & Related Posts */}
-                <div className="space-y-6 lg:col-span-1 sticky top-6">
+                <div className="space-y-6 lg:col-span-1 sticky top-6 min-w-0 w-full">
                   {/* Table of Contents */}
                   {headings.length > 0 && (
                     <div className="rounded-2xl border border-[#161C2C] bg-[#090D1A]/50 p-6 shadow-xl backdrop-blur-xl space-y-4">

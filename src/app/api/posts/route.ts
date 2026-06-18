@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const skip = (page - 1) * limit;
+    const orderByParam = searchParams.get('orderBy') || 'newest';
 
     const session = await getSessionCookie();
     const isAuthenticated = !!(session && session.user);
@@ -81,7 +82,7 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const [posts, totalCount] = await Promise.all([
+    const [allPosts, totalCount] = await Promise.all([
       prisma.post.findMany({
         where,
         include: {
@@ -92,14 +93,39 @@ export async function GET(req: NextRequest) {
           tags: { select: { id: true, name: true, slug: true } },
           seo: true,
         },
-        orderBy: { createdAt: 'desc' },
-        skip,
-        take: limit,
       }),
       prisma.post.count({ where }),
     ]);
 
-    return NextResponse.json({ items: posts, totalCount });
+    // Sort in memory using alphanumeric (natural) comparison for strings and numeric comparison for numbers/dates
+    allPosts.sort((a: any, b: any) => {
+      if (orderByParam === 'oldest') {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateA - dateB;
+      } else if (orderByParam === 'views') {
+        const viewsA = a.views || 0;
+        const viewsB = b.views || 0;
+        return viewsB - viewsA;
+      } else if (orderByParam === 'title-asc') {
+        const titleA = a.title || '';
+        const titleB = b.title || '';
+        return titleA.localeCompare(titleB, undefined, { numeric: true, sensitivity: 'base' });
+      } else if (orderByParam === 'title-desc') {
+        const titleA = a.title || '';
+        const titleB = b.title || '';
+        return titleB.localeCompare(titleA, undefined, { numeric: true, sensitivity: 'base' });
+      } else {
+        // default: newest
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      }
+    });
+
+    const paginatedPosts = allPosts.slice(skip, skip + limit);
+
+    return NextResponse.json({ items: paginatedPosts, totalCount });
   } catch (error: any) {
     return handleServerError(error, 'Failed to fetch posts');
   }

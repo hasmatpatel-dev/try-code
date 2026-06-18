@@ -90,13 +90,12 @@ export default function RegisterPage() {
   };
 
   const handleOAuthSignUp = async (provider: 'google') => {
-    const selectedRole = watch('role') || 'Student';
     try {
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${appUrl}/auth/callback?role=${selectedRole}`,
+          redirectTo: `${appUrl}/auth/callback`,
         },
       });
       if (error) toast.error(error.message);
