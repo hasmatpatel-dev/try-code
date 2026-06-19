@@ -4,12 +4,10 @@ import { useState, useEffect, useCallback } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Icon } from "@iconify/react";
-import { Menu, X, LogOut, LayoutDashboard, User as UserIcon, ChevronDown } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, User as UserIcon, ChevronDown, ArrowUpRight, Dribbble, Instagram, Twitter, Linkedin } from 'lucide-react';
 import Logo from "@/assets/logo/logo";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
 import Link from 'next/link';
 
 import { useAppDispatch, useAppSelector } from "@/lib/store";
@@ -249,10 +247,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
   }, [handleScroll, handleResize]);
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -32 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
+    <header
       className={cn(
         "inset-x-0 z-50 sticky top-0 w-full bg-background/80 backdrop-blur-md border-b border-border transition-all duration-300",
         sticky ? "shadow-md shadow-primary/5" : "",
@@ -371,18 +366,18 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     <div className="mt-auto flex flex-col gap-4">
                       <div className="flex gap-3">
                         {[
-                          { icon: "lucide:dribbble", label: "Dribbble" },
-                          { icon: "lucide:instagram", label: "Instagram" },
-                          { icon: "lucide:twitter", label: "Twitter" },
-                          { icon: "lucide:linkedin", label: "LinkedIn" },
-                        ].map(({ icon, label }) => (
+                          { Icon: Dribbble, label: "Dribbble" },
+                          { Icon: Instagram, label: "Instagram" },
+                          { Icon: Twitter, label: "Twitter" },
+                          { Icon: Linkedin, label: "LinkedIn" },
+                        ].map(({ Icon, label }) => (
                           <a
-                            key={icon}
+                            key={label}
                             href="#"
                             aria-label={label}
                             className="flex items-center justify-center rounded-full outline outline-border hover:bg-muted transition p-3 shadow-xs"
                           >
-                            <Icon icon={icon} width={16} height={16} />
+                            <Icon width={16} height={16} />
                           </a>
                         ))}
                       </div>
@@ -398,7 +393,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
           </div>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 };
 

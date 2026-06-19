@@ -18,6 +18,8 @@ const ITEMS = [
 export default function MarqueeBanner() {
   return (
     <div
+      role="region"
+      aria-label="Highlights Marquee"
       className="w-full bg-[#0a0a0a] text-white border-b border-white/10 py-2.5 z-40 relative"
       style={{ overflow: "hidden" }}
     >
@@ -48,6 +50,7 @@ export default function MarqueeBanner() {
 
       {/* Scrolling track */}
       <div
+        className="tc-marquee-track"
         style={{
           display: "flex",
           width: "max-content",
@@ -77,7 +80,9 @@ export default function MarqueeBanner() {
               </strong>
             ) : (
               <span style={{ fontWeight: 400, opacity: 0.55 }}>{item}</span>
-            )}
+            )
+            /* Mark duplicate entries aria-hidden if redundant, but here standard inline structure */
+            }
             <span style={{ opacity: 0.2, fontSize: "8px" }}>◆</span>
           </span>
         ))}
@@ -89,6 +94,13 @@ export default function MarqueeBanner() {
             @keyframes tc-marquee {
               0%   { transform: translate3d(0, 0, 0); }
               100% { transform: translate3d(-50%, 0, 0); }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .tc-marquee-track {
+                animation: none !important;
+                overflow-x: auto !important;
+                display: inline-flex !important;
+              }
             }
           `,
         }}
