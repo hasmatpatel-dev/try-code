@@ -1,6 +1,7 @@
 "use client";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
 import { motion } from "motion/react";
+import Image from "next/image";
 
 export interface BrandList {
   image: string;
@@ -31,17 +32,25 @@ function BrandSlider({ brandList }: { brandList: BrandList[] }) {
           <div className="py-4">
             <Marquee pauseOnHover className="[--duration:20s] p-0">
               {brandList.map((brand, index) => (
-                <div key={index}>
-                  <img
-                    src={brand.image}
-                    alt={brand.name}
-                    className="w-36 h-8 mr-6 lg:mr-20 dark:hidden"
-                  />
-                  <img
-                    src={brand.lightimg}
-                    alt={brand.name}
-                    className="hidden dark:block w-36 h-8 mr-12 lg:mr-20"
-                  />
+                <div key={index} className="flex items-center">
+                  <div className="relative w-36 h-8 mr-6 lg:mr-20 dark:hidden">
+                    <Image
+                      src={brand.image}
+                      alt={brand.name}
+                      fill
+                      sizes="144px"
+                      className="object-contain"
+                    />
+                  </div>
+                  <div className="relative hidden dark:block w-36 h-8 mr-12 lg:mr-20">
+                    <Image
+                      src={brand.lightimg}
+                      alt={brand.name}
+                      fill
+                      sizes="144px"
+                      className="object-contain"
+                    />
+                  </div>
                 </div>
               ))}
             </Marquee>

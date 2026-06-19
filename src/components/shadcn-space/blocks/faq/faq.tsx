@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Plus } from "lucide-react";
+import Image from "next/image";
 
 const FAQ_DATA = [
   {
@@ -82,14 +83,15 @@ export default function Faq() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=575&h=450&fit=crop"
-                    alt="TryCode FAQ"
-                    width={564}
-                    height={536}
-                    className="w-full h-auto object-cover max-h-[48rem]"
-                  />
+                  <div className="relative w-full aspect-[564/536] max-h-[48rem] overflow-hidden rounded-2xl">
+                    <Image
+                      src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=575&h=450&fit=crop"
+                      alt="TryCode FAQ"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
                 </motion.div>
 
                 {/* Right — accordion */}

@@ -72,16 +72,22 @@ export default function MobileAppShell({ children }: { children: React.ReactNode
     readingMode,
   } = useMobileShell();
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <div className="relative flex min-h-screen w-full flex-col bg-[#030712] text-gray-100 font-sans select-none overflow-x-hidden antialiased">
       {/* PWA Install Banner */}
       <AnimatePresence>
-        {showInstallBanner && (
+        {mounted && showInstallBanner && (
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed top-4 left-4 right-4 z-50 rounded-2xl border border-purple-500/30 bg-[#090D1A]/95 p-4 shadow-2xl backdrop-blur-xl flex items-center justify-between"
+            className="fixed top-4 left-4 right-4 z-50 md:hidden rounded-2xl border border-purple-500/30 bg-[#090D1A]/95 p-4 shadow-2xl backdrop-blur-xl flex items-center justify-between"
           >
             <div className="flex items-center space-x-3">
               <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shrink-0 shadow-md animate-pulse">
@@ -116,10 +122,11 @@ export default function MobileAppShell({ children }: { children: React.ReactNode
 
       {/* Main Content Area */}
       <main
-        className="flex-1 w-full flex flex-col"
-        style={{
-          paddingBottom: readingMode ? '0px' : 'calc(68px + env(safe-area-inset-bottom, 0px))',
-        }}
+        className={`flex-1 w-full flex flex-col transition-all duration-300 ${
+          readingMode
+            ? 'pb-0'
+            : 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-0'
+        }`}
       >
         {children}
       </main>
@@ -131,7 +138,7 @@ export default function MobileAppShell({ children }: { children: React.ReactNode
             initial={{ y: 100 }}
             animate={{ y: 0 }}
             exit={{ y: 100 }}
-            className="fixed bottom-0 left-0 right-0 z-40 bg-[#090D1A]/90 backdrop-blur-xl border-t border-[#161C2C]/50 flex justify-around items-center px-2 py-2.5 transition-all duration-300"
+            className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#090D1A]/90 backdrop-blur-xl border-t border-[#161C2C]/50 flex justify-around items-center px-2 py-2.5 transition-all duration-300"
             style={{
               paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 0px))',
             }}

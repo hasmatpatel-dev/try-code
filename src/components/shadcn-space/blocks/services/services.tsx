@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import Image from "next/image";
 
 type ServiceItem = {
   number: string;
@@ -102,12 +103,13 @@ const Services = () => {
               </div>
 
               {/* Image */}
-              <div className="lg:p-5 lg:max-w-xs w-full border-x group-hover:border-white/10 group-hover:bg-card-foreground dark:group-hover:bg-white overflow-hidden transition-colors duration-300">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+              <div className="relative min-h-[14rem] lg:min-h-[16rem] lg:p-5 lg:max-w-xs w-full border-x group-hover:border-white/10 group-hover:bg-card-foreground dark:group-hover:bg-white overflow-hidden transition-colors duration-300">
+                <Image
                   src={service.image}
                   alt={service.title}
-                  className="group-hover:scale-125 transition-transform duration-300 ease-out h-full w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 320px"
+                  className="group-hover:scale-125 transition-transform duration-300 ease-out object-cover"
                 />
               </div>
 
