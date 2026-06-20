@@ -5,6 +5,10 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableHeader from '@tiptap/extension-table-header';
+import TableCell from '@tiptap/extension-table-cell';
 import {
   Bold,
   Italic,
@@ -44,6 +48,12 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
       Placeholder.configure({
         placeholder: 'Write your story here... (Markdown shortcuts supported)',
       }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: value,
     onUpdate: ({ editor }) => {
@@ -93,6 +103,7 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         }
         .ProseMirror p {
           margin-bottom: 0.875rem;
+          display: block;
         }
         .ProseMirror h1 {
           font-size: 1.875rem;
@@ -168,6 +179,30 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
           color: #4b5563;
           pointer-events: none;
           height: 0;
+        }
+        .ProseMirror table {
+          border-collapse: collapse;
+          margin: 1rem 0;
+          width: 100%;
+        }
+        .ProseMirror table td,
+        .ProseMirror table th {
+          border: 1px solid #161c2c;
+          padding: 0.75rem;
+          text-align: left;
+          min-width: 100px;
+        }
+        .ProseMirror table th {
+          background-color: rgba(139, 92, 246, 0.1);
+          font-weight: 600;
+          color: #c084fc;
+        }
+        .ProseMirror table td {
+          background-color: rgba(15, 23, 42, 0.5);
+          color: #e5e7eb;
+        }
+        .ProseMirror table tr:hover td {
+          background-color: rgba(139, 92, 246, 0.05);
         }
       ` }} />
 
